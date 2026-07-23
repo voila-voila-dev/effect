@@ -1,0 +1,54 @@
+name: Pull request cleanup
+
+# Tears down the per-PR preview workers when the PR closes. One job per app,
+# mirroring the preview matrix in pull-request.yml; each updates the same
+# sticky comment its deploy job created.
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  teardown:
+    name: Tear down ${{ matrix.label }} preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - app: storybook.ui.voila.dev
+            worker: storybook-ui-voila-dev
+            label: Storybook
+          - app: ui.voila.dev
+            worker: ui-voila-dev
+            label: Docs
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # The worker may never have been created (checks failed, fork PR), so a
+      # failure here is expected; the step outcome gates the comment below.
+      - name: Delete preview worker
+        id: delete
+        continue-on-error: true
+        uses: ./.github/actions/delete-preview-worker
+        with:
+          cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cloudflare-account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          worker-name: ${{ matrix.worker }}-pr-${{ github.event.pull_request.number }}
+
+      - name: Mark the preview as torn down
+        if: steps.delete.outcome == 'success'
+        uses: voila-voila-dev/.github/actions/sticky-pr-comment@81236edbf9d9298d770ddaeb6df370f0c5f87778 # main
+        with:
+          id: ${{ matrix.app }}_preview
+          body: |
+            **${{ matrix.label }} preview torn down** :wastebasket:
+
+            Worker `${{ matrix.worker }}-pr-${{ github.event.pull_request.number }}` has been deleted.

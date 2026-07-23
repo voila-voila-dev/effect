@@ -1,0 +1,58 @@
+{
+	"name": "@voila.dev/ui-monorepo",
+	"version": "0.0.0",
+	"private": true,
+	"packageManager": "bun@1.3.4",
+	"engines": {
+		"bun": "1.3.2",
+		"node": "23.8.0"
+	},
+	"scripts": {
+		"format": "biome format --write",
+		"lint": "biome lint --write",
+		"ci": "biome ci",
+		"dev": "turbo run dev",
+		"build": "turbo run build",
+		"test": "turbo run test",
+		"check": "turbo run check",
+		"lint:all": "turbo run lint",
+		"check-types": "turbo run check-types",
+		"storybook:dev": "turbo run dev --filter @voila.dev/storybook.ui.voila.dev",
+		"storybook:build": "turbo run build --filter @voila.dev/storybook.ui.voila.dev",
+		"docs:dev": "turbo run dev --filter @voila.dev/ui.voila.dev",
+		"docs:build": "turbo run build --filter @voila.dev/ui.voila.dev"
+	},
+	"workspaces": {
+		"packages": [
+			"apps/*",
+			"packages/*"
+		],
+		"catalog": {
+			"@biomejs/biome": "2.4.15",
+			"@types/bun": "1.3.14",
+			"@types/node": "25.8.0",
+			"typescript": "6.0.3",
+			"vite": "8.1.0",
+			"vitest": "4.1.7"
+		},
+		"catalogs": {
+			"react": {
+				"react": "19.2.6",
+				"react-dom": "19.2.6",
+				"@phosphor-icons/react": "2.1.10"
+			},
+			"tailwind": {
+				"tailwindcss": "4.3.0",
+				"@tailwindcss/vite": "4.3.0",
+				"@tailwindcss/typography": "0.5.19"
+			},
+			"maplibre": {
+				"maplibre-gl": "5.24.0"
+			}
+		}
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"turbo": "^2.9.16"
+	}
+}

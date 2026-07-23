@@ -1,0 +1,64 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage
+
+# Turbo
+.turbo
+
+# TypeScript incremental build info
+*.tsbuildinfo
+tsbuildinfo.json
+
+# Vercel
+.vercel
+
+# Build Outputs
+.next/
+out/
+build
+dist
+
+
+# Debug
+npm-debug.log*
+
+# Misc
+.DS_Store
+*.pem
+
+# Local dev file storage
+.storage/
+
+# Playwright CLI sessions (snapshots, screenshots, logs)
+.playwright-cli/
+
+# Wrangler local state/cache
+.wrangler/
+
+# Manual QA artifacts (screenshots, videos) — not for the repo
+qa-artifacts/
+.fallow/
+
+# Astro
+.astro/
+.output/
+
+# Storybook
+storybook-static/
+
+# Generated wrangler preview configs
+wrangler.preview.json
+wrangler.preview-env.json

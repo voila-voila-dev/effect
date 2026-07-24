@@ -27,11 +27,11 @@ sidebar:
   order: 1
 ---
 
-import Preview from "../../../components/preview.astro";
+import Preview from "@/components/docs/preview";
 import * as Example from "../../../examples/ui/button";
 
 <Preview layout="stack">
-	<Example.Default client:load />
+	<Example.Default />
 </Preview>
 
 ```tsx
@@ -49,15 +49,14 @@ These are not hypothetical — each one cost a build during the earlier batches.
    is invalid YAML the moment it contains a colon. Always
    `description: "…"`, always `title: "…"`.
 
-2. **The relative depth is `../../../`.** Pages live at
+2. **The relative depth for examples is `../../../`.** Pages live at
    `src/content/docs/<package>/<slug>.mdx`, which is three levels below `src`.
    `../../` resolves to nothing and the build fails with `Could not resolve`.
+   `Preview` itself imports via the `@/` alias, so that line is always the same.
 
-3. **Never put a React component inside a React island from MDX.**
-   `<Preview client:load><Button /></Preview>` throws *"Objects are not valid as
-   a React child ({astro:jsx, type, props})"* — MDX children arrive as Astro JSX.
-   `Preview` is an `.astro` component on purpose; the island is the example
-   component inside it, and `client:load` goes on **that**.
+3. **`Preview` is a plain React component** (`@/components/docs/preview`); the
+   examples inside it are ordinary React children. There are no Astro island
+   directives any more — a leftover `client:load` will fail the MDX compile.
 
 4. **One example module per package**, at
    `src/examples/<package>/<name>.tsx`, exporting one component per page. Do not

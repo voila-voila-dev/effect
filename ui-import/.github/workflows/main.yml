@@ -44,8 +44,10 @@ jobs:
     if: github.event_name == 'push' || inputs.publish
     env:
       # Monotonic and zero-maintenance. Swap this for Changesets once the API is
-      # stable enough that a semver bump means something.
-      PUBLISH_VERSION: 0.0.${{ github.run_number }}
+      # stable enough that a semver bump means something. 1.1.x, not 0.0.x:
+      # @voila.dev/ui had 1.0.0–1.0.19 published then unpublished, and npm
+      # 409s a revived package at versions below its unpublished history.
+      PUBLISH_VERSION: 1.1.${{ github.run_number }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7

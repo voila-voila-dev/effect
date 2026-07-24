@@ -75,8 +75,9 @@ jobs:
 
       # Resolves the workspace links so `bun publish` can substitute concrete
       # versions for `workspace:*` and `catalog:` in the tarball.
+      # Not frozen: the version stamp above edits the manifests on purpose.
       - name: Install dependencies
-        run: bun install --frozen-lockfile=false
+        run: bun install
 
       # Consumers never install devDependencies, and one of them
       # (@voila.dev/typescript-config) is private and unpublished, so leaving

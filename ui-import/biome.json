@@ -40,12 +40,12 @@
 	"overrides": [
 		{
 			"includes": [
-				"packages/ui/src/components/ui/**",
-				"packages/ui-chart/src/components/**",
-				"packages/ui-datatable/src/**",
-				"packages/ui-spreadsheet/src/components/**",
-				"packages/ui-map/src/components/**",
-				"packages/ui-filter/src/components/**"
+				"packages/ui/src/components/**",
+				"packages/ui/src/chart/components/**",
+				"packages/ui/src/datatable/**",
+				"packages/ui/src/spreadsheet/components/**",
+				"packages/ui/src/map/components/**",
+				"packages/ui/src/filter/components/**"
 			],
 			"linter": {
 				"rules": {
@@ -60,12 +60,12 @@
 		},
 		{
 			"includes": [
-				"packages/ui/src/components/ui/**",
-				"packages/ui-chart/src/components/**",
-				"packages/ui-datatable/src/**",
-				"packages/ui-spreadsheet/src/**",
-				"packages/ui-landing/src/components/**",
-				"packages/ui-email-block-editor/src/**"
+				"packages/ui/src/components/**",
+				"packages/ui/src/chart/components/**",
+				"packages/ui/src/datatable/**",
+				"packages/ui/src/spreadsheet/**",
+				"packages/ui/src/landing/components/**",
+				"packages/ui/src/email-block-editor/**"
 			],
 			"linter": {
 				"rules": {

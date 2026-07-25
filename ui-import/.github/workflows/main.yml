@@ -1,8 +1,7 @@
 name: Main
 
-# Everything that happens when `main` moves: the checks run, the packages go to
-# public npm at one shared version, and both sites redeploy to their production
-# Cloudflare Workers.
+# Everything that happens when `main` moves: the checks run, @voila.dev/ui goes
+# to public npm, and both sites redeploy to their production Cloudflare Workers.
 
 on:
   push:
@@ -10,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       publish:
-        description: 'Publish the packages to npm'
+        description: 'Publish @voila.dev/ui to npm'
         type: boolean
         default: true
 
@@ -55,84 +54,29 @@ jobs:
       - name: Setup Bun
         uses: ./.github/actions/setup-bun
 
-      # Every package publishes at the same version, so the `workspace:*`
-      # cross-deps bun resolves at pack time always line up.
-      - name: Stamp the shared version
-        shell: bash
-        run: |
-          set -euo pipefail
-          for dir in packages/*/; do
-            manifest="${dir}package.json"
-            [ -f "$manifest" ] || continue
-            node -e '
-              const fs = require("node:fs");
-              const file = process.argv[1];
-              const pkg = JSON.parse(fs.readFileSync(file, "utf8"));
-              if (pkg.private) process.exit(0);
-              pkg.version = process.env.PUBLISH_VERSION;
-              fs.writeFileSync(file, `${JSON.stringify(pkg, null, "\t")}\n`);
-              console.log(`${pkg.name}@${pkg.version}`);
-            ' "$manifest"
-          done
+      # Writes PUBLISH_VERSION into the manifest before install so `catalog:`
+      # refs resolve to concrete versions in the tarball.
+      - name: Stamp the version
+        run: node scripts/publish-manifests.mjs stamp
 
-      # Resolves the workspace links so `bun publish` can substitute concrete
-      # versions for `workspace:*` and `catalog:` in the tarball.
-      # Not frozen: the version stamp above edits the manifests on purpose.
       - name: Install dependencies
         run: bun install
 
-      # Consumers never install devDependencies, and one of them
-      # (@voila.dev/typescript-config) is private and unpublished, so leaving
-      # them in the tarball manifest is noise at best.
-      #
-      # The `workspace:*` cross-deps are pinned here rather than left for
-      # `bun publish` to substitute: bun resolves them from the lockfile's
-      # recorded versions, which predate the version stamp, so 1.1.x tarballs
-      # shipped with cross-deps on the in-repo 0.0.0. This runs after
-      # `bun install` on purpose - install still needs the workspace protocol
-      # to link local packages.
-      - name: Pin workspace deps and drop devDependencies in the published manifests
-        shell: bash
-        run: |
-          set -euo pipefail
-          for dir in packages/*/; do
-            manifest="${dir}package.json"
-            [ -f "$manifest" ] || continue
-            node -e '
-              const fs = require("node:fs");
-              const file = process.argv[1];
-              const pkg = JSON.parse(fs.readFileSync(file, "utf8"));
-              if (pkg.private) process.exit(0);
-              delete pkg.devDependencies;
-              for (const group of [pkg.dependencies, pkg.peerDependencies]) {
-                for (const [name, range] of Object.entries(group ?? {})) {
-                  if (range.startsWith("workspace:")) {
-                    group[name] = process.env.PUBLISH_VERSION;
-                  }
-                }
-              }
-              fs.writeFileSync(file, `${JSON.stringify(pkg, null, "\t")}\n`);
-            ' "$manifest"
-          done
+      # dist/ is what the published exports point at: per-file ESM + .d.ts
+      # mirrored from src/, so the glob exports and tree-shaking still work.
+      - name: Build
+        run: bun x turbo run build --filter='./packages/*'
 
-      - name: Configure npm auth
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+      # Points exports at dist/ and drops devDependencies.
+      - name: Finalize the published manifest
+        run: node scripts/publish-manifests.mjs finalize
+
+      - name: Publish
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+          cd packages/ui && bun publish --access public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      # Order matters only for readability: npm has no install-time ordering
-      # requirement, and all versions are identical anyway.
-      - name: Publish
-        shell: bash
-        run: |
-          set -euo pipefail
-          for name in ui-tokens ui-icon ui ui-chart ui-map ui-datatable ui-spreadsheet ui-filter ui-landing ui-email-block-editor; do
-            dir="packages/$name"
-            [ -d "$dir" ] || { echo "::warning::$dir not found, skipping"; continue; }
-            echo "::group::@voila.dev/$name@$PUBLISH_VERSION"
-            (cd "$dir" && bun publish --access public)
-            echo "::endgroup::"
-          done
 
       - name: Clean up the npm token
         if: always()

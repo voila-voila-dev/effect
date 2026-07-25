@@ -53,6 +53,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",
+		"esbuild": "^0.28.1",
 		"turbo": "^2.9.16"
 	}
 }

@@ -84,7 +84,14 @@ jobs:
       # Consumers never install devDependencies, and one of them
       # (@voila.dev/typescript-config) is private and unpublished, so leaving
       # them in the tarball manifest is noise at best.
-      - name: Drop devDependencies from the published manifests
+      #
+      # The `workspace:*` cross-deps are pinned here rather than left for
+      # `bun publish` to substitute: bun resolves them from the lockfile's
+      # recorded versions, which predate the version stamp, so 1.1.x tarballs
+      # shipped with cross-deps on the in-repo 0.0.0. This runs after
+      # `bun install` on purpose - install still needs the workspace protocol
+      # to link local packages.
+      - name: Pin workspace deps and drop devDependencies in the published manifests
         shell: bash
         run: |
           set -euo pipefail
@@ -97,6 +104,13 @@ jobs:
               const pkg = JSON.parse(fs.readFileSync(file, "utf8"));
               if (pkg.private) process.exit(0);
               delete pkg.devDependencies;
+              for (const group of [pkg.dependencies, pkg.peerDependencies]) {
+                for (const [name, range] of Object.entries(group ?? {})) {
+                  if (range.startsWith("workspace:")) {
+                    group[name] = process.env.PUBLISH_VERSION;
+                  }
+                }
+              }
               fs.writeFileSync(file, `${JSON.stringify(pkg, null, "\t")}\n`);
             ' "$manifest"
           done
@@ -112,7 +126,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for name in ui-tokens ui ui-chart ui-map ui-datatable ui-spreadsheet ui-filter ui-landing ui-email-block-editor; do
+          for name in ui-tokens ui-icon ui ui-chart ui-map ui-datatable ui-spreadsheet ui-filter ui-landing ui-email-block-editor; do
             dir="packages/$name"
             [ -d "$dir" ] || { echo "::warning::$dir not found, skipping"; continue; }
             echo "::group::@voila.dev/$name@$PUBLISH_VERSION"

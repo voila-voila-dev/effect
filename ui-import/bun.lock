@@ -84,6 +84,7 @@
         "unist-util-visit": "^5.0.0",
         "vite": "catalog:",
         "wrangler": "^4.48.0",
+        "zod": "^4.4.3",
       },
     },
     "packages/typescript-config": {

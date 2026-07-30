@@ -61,3 +61,7 @@ storybook-static/
 # Generated wrangler preview configs
 wrangler.preview.json
 wrangler.preview-env.json
+
+# Claude Code local state, including git worktrees. Untracked, and a worktree
+# here holds a second biome.json that "biome ci" reads as a nested root config.
+.claude/

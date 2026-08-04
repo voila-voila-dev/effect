@@ -18,6 +18,7 @@
 		"lint:all": "turbo run lint",
 		"check-types": "turbo run check-types",
 		"check-docs": "bun scripts/check-docs.mjs",
+		"check-labels": "node scripts/check-email-editor-labels.mjs",
 		"storybook:dev": "turbo run dev --filter @voila.dev/storybook.ui.voila.dev",
 		"storybook:build": "turbo run build --filter @voila.dev/storybook.ui.voila.dev",
 		"docs:dev": "turbo run dev --filter @voila.dev/ui.voila.dev",

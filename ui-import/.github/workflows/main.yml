@@ -42,11 +42,12 @@ jobs:
     needs: checks
     if: github.event_name == 'push' || inputs.publish
     env:
-      # Monotonic and zero-maintenance. Swap this for Changesets once the API is
-      # stable enough that a semver bump means something. 1.1.x, not 0.0.x:
-      # @voila.dev/ui had 1.0.0–1.0.19 published then unpublished, and npm
-      # 409s a revived package at versions below its unpublished history.
-      PUBLISH_VERSION: 1.1.${{ github.run_number }}
+      # Monotonic and zero-maintenance: the patch is the run number, so every
+      # push publishes. The major is bumped by hand when a release breaks
+      # callers — 2.0 is the configurable email editor (see CHANGELOG.md).
+      # Not 0.0.x: @voila.dev/ui had 1.0.0–1.0.19 published then unpublished,
+      # and npm 409s a revived package below its unpublished history.
+      PUBLISH_VERSION: 2.0.${{ github.run_number }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7

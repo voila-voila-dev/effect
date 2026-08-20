@@ -72,17 +72,33 @@ jobs:
       - name: Finalize the published manifest
         run: node scripts/publish-manifests.mjs finalize
 
-      # The token travels as an environment variable rather than through an
-      # .npmrc: bun reads `$XDG_CONFIG_HOME/.npmrc` in preference to
-      # `~/.npmrc`, and the runners set XDG_CONFIG_HOME, so a file written to
-      # HOME was never read. Unauthenticated, `bun publish` falls back to its
-      # default `web` auth type, prints a login URL and fails after waiting
-      # five minutes for a human. It stays `bun publish` rather than npm:
-      # only bun resolves the `catalog:` refs away at pack time.
+      # bun packs and npm publishes, because each does one half of the job:
+      # bun is what resolves the manifest's `catalog:` refs into concrete
+      # versions, and npm is what speaks npm's OIDC trusted publishing.
+      #
+      # A token cannot publish this package from a runner at all: npm answers
+      # a token publish with a 2FA challenge, and `bun publish` turns that
+      # into its `web` auth flow — a login URL nobody can click, five minutes
+      # of waiting, then a failure. OIDC has no such challenge, and leaves no
+      # long-lived credential to rotate. NODE_AUTH_TOKEN stays only as the
+      # fallback npm reaches for when OIDC is unavailable, so the failure
+      # stays legible rather than silent.
+      - name: Set up Node for npm's OIDC publishing
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Pack
+        run: cd packages/ui && bun pm pack --destination "${RUNNER_TEMP}"
+
       - name: Publish
-        run: cd packages/ui && bun publish --access public
+        run: |
+          npm --version
+          npm publish "${RUNNER_TEMP}"/voila.dev-ui-*.tgz --access public
         env:
-          BUN_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   deploy:
     name: Deploy ${{ matrix.label }}

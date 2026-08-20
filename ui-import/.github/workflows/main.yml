@@ -72,20 +72,17 @@ jobs:
       - name: Finalize the published manifest
         run: node scripts/publish-manifests.mjs finalize
 
-      # The token goes in HOME, not the repo root: `bun publish` runs from
-      # packages/ui and only reads the .npmrc of its own directory or of HOME,
-      # so a root one leaves it unauthenticated — it then falls back to the
-      # interactive browser flow, waits five minutes for a human, and fails.
+      # The token travels as an environment variable rather than through an
+      # .npmrc: bun reads `$XDG_CONFIG_HOME/.npmrc` in preference to
+      # `~/.npmrc`, and the runners set XDG_CONFIG_HOME, so a file written to
+      # HOME was never read. Unauthenticated, `bun publish` falls back to its
+      # default `web` auth type, prints a login URL and fails after waiting
+      # five minutes for a human. It stays `bun publish` rather than npm:
+      # only bun resolves the `catalog:` refs away at pack time.
       - name: Publish
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > "${HOME}/.npmrc"
-          cd packages/ui && bun publish --access public
+        run: cd packages/ui && bun publish --access public
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Clean up the npm token
-        if: always()
-        run: rm -f "${HOME}/.npmrc"
+          BUN_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   deploy:
     name: Deploy ${{ matrix.label }}

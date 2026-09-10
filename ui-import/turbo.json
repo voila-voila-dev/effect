@@ -3,6 +3,7 @@
 	"ui": "tui",
 	"concurrency": "15",
 	"globalDependencies": ["tsconfig.json"],
+	"globalEnv": ["PUBLISH_VERSION"],
 	"tasks": {
 		"dev": {
 			"cache": false,

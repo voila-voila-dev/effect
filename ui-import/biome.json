@@ -58,7 +58,8 @@
 				"packages/ui/src/globe-view/components/**",
 				"packages/ui/src/map-view/components/**",
 				"packages/ui/src/radius-map/components/**",
-				"packages/ui/src/filter/components/**"
+				"packages/ui/src/filter/components/**",
+				"packages/ui/src/content-editor/**"
 			],
 			"linter": {
 				"rules": {
@@ -84,7 +85,8 @@
 				"packages/ui/src/slider/components/**",
 				"packages/ui/src/spreadsheet/**",
 				"packages/ui/src/landing/components/**",
-				"packages/ui/src/email-block-editor/**"
+				"packages/ui/src/email-block-editor/**",
+				"packages/ui/src/content-editor/**"
 			],
 			"linter": {
 				"rules": {

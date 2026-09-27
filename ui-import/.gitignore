@@ -14,6 +14,8 @@ node_modules
 
 # Testing
 coverage
+# Vitest browser mode: failure screenshots
+.vitest/
 
 # Turbo
 .turbo

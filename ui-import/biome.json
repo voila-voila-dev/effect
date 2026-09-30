@@ -85,7 +85,6 @@
 				"packages/ui/src/slider/components/**",
 				"packages/ui/src/spreadsheet/**",
 				"packages/ui/src/landing/components/**",
-				"packages/ui/src/email-block-editor/**",
 				"packages/ui/src/content-editor/**"
 			],
 			"linter": {

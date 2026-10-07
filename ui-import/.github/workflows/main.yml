@@ -1,7 +1,8 @@
 name: Main
 
-# Everything that happens when `main` moves: the checks run, @voila.dev/ui goes
-# to public npm, and both sites redeploy to their production Cloudflare Workers.
+# Everything that happens when `main` moves: the checks run, @voila.dev/ui and
+# @voila.dev/chart go to public npm, and both sites redeploy to their
+# production Cloudflare Workers.
 
 on:
   push:
@@ -9,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       publish:
-        description: 'Publish @voila.dev/ui to npm'
+        description: 'Publish @voila.dev/ui and @voila.dev/chart to npm'
         type: boolean
         default: true
 
@@ -92,12 +93,19 @@ jobs:
           package-manager-cache: false
 
       - name: Pack
-        run: cd packages/ui && bun pm pack --destination "${RUNNER_TEMP}"
+        run: |
+          for package in ui chart; do
+            (cd "packages/${package}" && bun pm pack --destination "${RUNNER_TEMP}")
+          done
 
+      # Each package has its own npm trusted publisher (this workflow), so
+      # each publish is a separate OIDC exchange.
       - name: Publish
         run: |
           npm --version
-          npm publish "${RUNNER_TEMP}"/voila.dev-ui-*.tgz --access public
+          for tarball in "${RUNNER_TEMP}"/voila.dev-*.tgz; do
+            npm publish "${tarball}" --access public
+          done
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

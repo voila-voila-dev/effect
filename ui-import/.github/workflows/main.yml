@@ -94,7 +94,7 @@ jobs:
 
       - name: Pack
         run: |
-          for package in ui chart; do
+          for package in ui chart motion; do
             (cd "packages/${package}" && bun pm pack --destination "${RUNNER_TEMP}")
           done
 

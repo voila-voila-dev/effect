@@ -25,7 +25,7 @@
     },
     "packages/effect-ddd": {
       "name": "@voila.dev/effect-ddd",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "devDependencies": {
         "@types/bun": "catalog:",
         "effect": "catalog:",
@@ -37,7 +37,7 @@
     },
     "packages/env": {
       "name": "@voila.dev/env",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "devDependencies": {
         "@types/bun": "catalog:",
         "effect": "catalog:",

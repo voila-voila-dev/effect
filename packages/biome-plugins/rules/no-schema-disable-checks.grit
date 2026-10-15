@@ -1,0 +1,3 @@
+`disableChecks: true` as $option where {
+	register_diagnostic(span=$option, message="Construct with the schema's checks: disableChecks lets a value that breaks its invariants into the domain. Keep it to test fixtures.", severity="error")
+}

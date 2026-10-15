@@ -1,0 +1,3 @@
+`Math.random()` as $call where {
+	register_diagnostic(span=$call, message="Math.random cannot be seeded from a test: draw from Effect's Random service (Random.next, Random.nextIntBetween), and use crypto.getRandomValues for anything secret.", severity="error")
+}

@@ -5,6 +5,7 @@ from production code and kept free of any one product's vocabulary.
 
 | Package | What it gives you |
 | --- | --- |
+| [`@voila.dev/biome-plugins`](./packages/biome-plugins) | Biome lint rules that keep an Effect codebase honest: schema-backed errors, seedable randomness, injected identifiers, validated construction, `runMain` entrypoints. |
 | [`@voila.dev/effect-ddd`](./packages/effect-ddd) | Use cases with a declared gate, a registry, a permission catalogue, and architecture tests that freeze your bounded-context boundaries. |
 | [`@voila.dev/env`](./packages/env) | `.env` files into `process.env` or an Effect `ConfigProvider`: several files, earlier wins, the real environment always wins. |
 
@@ -51,8 +52,8 @@ Merging to `main` opens the "Version packages" PR; merging that publishes.
 
 ## Roadmap
 
-1. `effect-ddd`, `env` — **0.1**
-2. `outbox`, `http`, `crypto`, `cache-lock`, `live`, `biome-plugins`
+1. `effect-ddd`, `env`, `biome-plugins` — **0.1**
+2. `outbox`, `http`, `crypto`, `cache-lock`, `live`
 3. Documentation site on `@voila.dev/docs`
 
 Third-party adapters (Stripe, Resend, Annuaire Entreprises, VIES…) live in their

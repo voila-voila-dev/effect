@@ -1,0 +1,11 @@
+or {
+	`process.exit($_)`,
+	`process.exit()`,
+	`Effect.runPromise($_)`,
+	`Effect.runPromiseExit($_)`,
+	`Effect.runSync($_)`,
+	`Effect.runSyncExit($_)`,
+	`Effect.runFork($_)`
+} as $call where {
+	register_diagnostic(span=$call, message="End a program with runMain from @effect/platform-bun or @effect/platform-node: it sets the exit code, interrupts the fiber on SIGINT so finalizers run, and reports the failure.", severity="error")
+}

@@ -1,0 +1,3 @@
+`Data.TaggedError($_)` as $error where {
+	register_diagnostic(span=$error, message="Declare errors with Schema.TaggedError: a Data.TaggedError has no schema, so it cannot be encoded on an HttpApi or RPC endpoint nor decoded on the other side.", severity="error")
+}

@@ -1,0 +1,7 @@
+or {
+	`crypto.randomUUID()`,
+	`globalThis.crypto.randomUUID()`,
+	`randomUUID()`
+} as $call where {
+	register_diagnostic(span=$call, message="Generate identifiers through a service provided as a Layer, never crypto.randomUUID: tests can then pin them, and the format (a time-ordered UUIDv7 for database keys) is chosen in one place.", severity="error")
+}

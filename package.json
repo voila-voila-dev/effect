@@ -24,7 +24,7 @@
 		"build": "bun run --filter './packages/*' build",
 		"changeset": "changeset",
 		"version-packages": "changeset version && bun install",
-		"release": "bun run build && changeset publish"
+		"release": "bun run build && bun scripts/publish.ts"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",

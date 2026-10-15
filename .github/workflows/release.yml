@@ -2,8 +2,9 @@ name: Release
 
 # On main: opens or updates the "Version packages" PR from the pending
 # changesets; once that PR is merged, publishes the bumped packages to npm.
-# Kept in this repo rather than the shared one: npm trusted publishing (OIDC)
-# is configured per package against this workflow file.
+# Publishing is token-free: npm trusted publishing (OIDC) is configured on each
+# package against this workflow file, which is why it stays in this repo rather
+# than the shared one. A new package's first version is published by hand.
 
 on:
   push:
@@ -51,7 +52,3 @@ jobs:
           commit: 'chore: version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Only for the very first publish, before trusted publishing can be
-          # configured on the packages; OIDC takes over afterwards.
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: 'true'

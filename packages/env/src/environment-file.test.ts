@@ -5,7 +5,6 @@ import { join } from "node:path";
 import {
 	loadEnvironmentFiles,
 	mergeEnvironment,
-	parseEnvironment,
 	readEnvironmentFile,
 } from "./environment-file.ts";
 
@@ -23,39 +22,6 @@ afterEach(() => {
 	for (const directory of directories.splice(0)) {
 		rmSync(directory, { recursive: true, force: true });
 	}
-});
-
-describe("parseEnvironment", () => {
-	it("reads keys, quotes, comments and export prefixes", () => {
-		expect(
-			parseEnvironment(
-				[
-					"# a comment",
-					"",
-					"PLAIN=value",
-					'DOUBLE="two words"',
-					"SINGLE='it''s \\n literal'",
-					'ESCAPED="line\\nbreak"',
-					"export EXPORTED=yes",
-					"TRAILING=kept # dropped",
-					"HASH=pa#ss",
-					"EMPTY=",
-					"NO_SEPARATOR",
-					"WINDOWS=crlf\r",
-				].join("\n"),
-			),
-		).toStrictEqual({
-			PLAIN: "value",
-			DOUBLE: "two words",
-			SINGLE: "it''s \\n literal",
-			ESCAPED: "line\nbreak",
-			EXPORTED: "yes",
-			TRAILING: "kept",
-			HASH: "pa#ss",
-			EMPTY: "",
-			WINDOWS: "crlf",
-		});
-	});
 });
 
 describe("readEnvironmentFile", () => {

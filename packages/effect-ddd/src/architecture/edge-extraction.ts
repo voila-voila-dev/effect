@@ -12,15 +12,19 @@ export interface Edge {
 
 const IMPORT = /(?:\bfrom|\bimport)\s*\(?\s*["']([^"']+)["']/gu;
 
+function importSpecifiers(contents: string): ReadonlyArray<string> {
+	return [...contents.matchAll(IMPORT)].map(([, specifier = ""]) => specifier);
+}
+
 /**
- * Resolves a specifier to a root-relative module, or `null` for a package
- * import. `alias` is the subpath-import prefix that maps to the root (`#` for
- * `"imports": { "#*": "./src/*" }`).
+ * The root-relative module a specifier names, or `null` for a package import
+ * or a path outside the root. `alias` is the subpath-import prefix that maps
+ * to the root (`#` for `"imports": { "#*": "./src/*" }`).
  */
-function resolveSpecifier(
+export function resolveSpecifier(
 	file: string,
 	specifier: string,
-	alias: string | undefined,
+	alias?: string,
 ): string | null {
 	if (specifier.startsWith(".")) {
 		const resolved = posix.normalize(
@@ -46,8 +50,8 @@ export function importEdges(options: {
 }): ReadonlyArray<Edge> {
 	return options.files.flatMap((file) => {
 		const source = options.contextOf(file);
-		return [...readSource(options.root, file).matchAll(IMPORT)].flatMap(
-			([, specifier = ""]) => {
+		return importSpecifiers(readSource(options.root, file)).flatMap(
+			(specifier) => {
 				const module = resolveSpecifier(file, specifier, options.alias);
 				if (module === null) return [];
 				const target = options.contextOf(module);
@@ -62,42 +66,4 @@ export function describeEdges(
 	edges: ReadonlyArray<Edge>,
 ): ReadonlyArray<string> {
 	return edges.map((edge) => `${edge.file} -> ${edge.module}`).sort();
-}
-
-export type ContextPair = readonly [source: string, target: string];
-
-function pairKey(source: string, target: string): string {
-	return `${source} -> ${target}`;
-}
-
-/**
- * The edges between two contexts `among` selects that the table does not
- * list. The table is the architecture's written decisions: an edge outside it
- * is an import that happened to compile.
- */
-export function undeclaredEdges(
-	edges: ReadonlyArray<Edge>,
-	allowed: ReadonlyArray<ContextPair>,
-	among: (context: string) => boolean = () => true,
-): ReadonlyArray<Edge> {
-	const table = new Set(
-		allowed.map(([source, target]) => pairKey(source, target)),
-	);
-	return edges.filter(
-		(edge) =>
-			among(edge.source) &&
-			among(edge.target) &&
-			!table.has(pairKey(edge.source, edge.target)),
-	);
-}
-
-/** The table's pairs no import uses any more, so the table keeps saying what the code does. */
-export function staleEdges(
-	edges: ReadonlyArray<Edge>,
-	allowed: ReadonlyArray<ContextPair>,
-): ReadonlyArray<string> {
-	const live = new Set(edges.map((edge) => pairKey(edge.source, edge.target)));
-	return allowed
-		.map(([source, target]) => pairKey(source, target))
-		.filter((pair) => !live.has(pair));
 }

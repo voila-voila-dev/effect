@@ -1,6 +1,11 @@
 export {
 	loadEnvironmentFiles,
 	mergeEnvironment,
-	parseEnvironment,
 	readEnvironmentFile,
 } from "./environment-file.ts";
+export {
+	type Environment,
+	parseEnvironment,
+	parseLine,
+	parseValue,
+} from "./parse-environment.ts";

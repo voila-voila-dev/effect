@@ -1,5 +1,5 @@
 import { Effect, Exit, Metric, Option, Schema } from "effect";
-import { AccessDeniedError } from "./access-denied-error.ts";
+import { AccessDeniedError } from "../access-denied-error.ts";
 
 /** A use case is called, a job ticks, a subscriber reacts: all report on the same two metrics. */
 export type UnitKind = "usecase" | "job" | "subscriber";

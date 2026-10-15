@@ -1,13 +1,11 @@
 import { describe, expect, it } from "bun:test";
 import { Effect, Exit, Schema } from "effect";
-import { AccessDeniedError } from "./access-denied-error.ts";
-import { Gate } from "./gate.ts";
-import {
-	PERMISSION_CHECKED_ATTRIBUTE,
-	permissionRef,
-} from "./permission-ref.ts";
-import { UNIT_OUTCOME_ATTRIBUTE } from "./unit-metrics.ts";
-import { makeUseCaseConstructor } from "./use-case.ts";
+import { AccessDeniedError } from "../access-denied-error.ts";
+import { Gate } from "../gate/index.ts";
+import { UNIT_OUTCOME_ATTRIBUTE } from "../metrics/unit-metrics.ts";
+import { permissionRef } from "../permission/permission-ref.ts";
+import { PERMISSION_CHECKED_ATTRIBUTE } from "../permission/permission-tracing.ts";
+import { makeUseCaseConstructor } from "./make-use-case.ts";
 
 class UserActor extends Schema.TaggedClass<UserActor>()("UserActor", {
 	userId: Schema.String,

@@ -1,8 +1,8 @@
 import { describe, expect, it } from "bun:test";
 import { Effect, Exit, Option, Schema } from "effect";
-import { AccessDeniedError } from "./access-denied-error.ts";
-import { Gate, gateHolds } from "./gate.ts";
-import { permissionRef } from "./permission-ref.ts";
+import { AccessDeniedError } from "../access-denied-error.ts";
+import { permissionRef } from "../permission/permission-ref.ts";
+import { Gate, gateHolds } from "./index.ts";
 
 interface Input {
 	readonly role: string;

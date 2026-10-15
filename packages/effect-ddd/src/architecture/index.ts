@@ -1,15 +1,11 @@
+export { contextResolver } from "./context-resolver.ts";
 export {
-	type ContextPair,
 	describeEdges,
 	type Edge,
 	importEdges,
-	staleEdges,
-	undeclaredEdges,
-} from "./import-edges.ts";
+	resolveSpecifier,
+} from "./edge-extraction.ts";
+export { type ContextPair, staleEdges, undeclaredEdges } from "./edge-table.ts";
 export { ratchet } from "./ratchet.ts";
-export {
-	contextResolver,
-	listSourceFiles,
-	readSource,
-	useCaseNameOf,
-} from "./source-files.ts";
+export { listSourceFiles, readSource } from "./source-files.ts";
+export { useCaseNameOf } from "./use-case-name.ts";

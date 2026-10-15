@@ -1,28 +1,10 @@
 import { Effect, Option, type Tracer } from "effect";
+import { type PermissionRef, renderPermissionRef } from "./permission-ref.ts";
 
 /**
- * One permission a gate asks for, in a shape a catalogue can index:
- * `{ kind: "organization", name: "invoice.manage" }`,
- * `{ kind: "actor", name: "system" }`. The kinds and names are the
- * application's own vocabulary.
- */
-export interface PermissionRef {
-	readonly kind: string;
-	readonly name: string;
-}
-
-export function permissionRef(kind: string, name: string): PermissionRef {
-	return { kind, name };
-}
-
-export function renderPermissionRef(ref: PermissionRef): string {
-	return `${ref.kind}:${ref.name}`;
-}
-
-/**
- * The span attribute listing every permission a gate checked during the call.
- * One comma-joined string rather than an array attribute: a trace store groups
- * and matches a string column without a cast.
+ * The span attribute listing every permission checked during the call. One
+ * comma-joined string rather than an array attribute: a trace store groups and
+ * matches a string column without a cast.
  */
 export const PERMISSION_CHECKED_ATTRIBUTE = "permission.checked";
 
@@ -40,6 +22,18 @@ function alreadyChecked(span: Tracer.Span): ReadonlyArray<string> {
 	);
 }
 
+function recordOn(
+	span: Tracer.Span,
+	permissions: ReadonlyArray<PermissionRef>,
+): Effect.Effect<void> {
+	return Effect.annotateCurrentSpan(
+		PERMISSION_CHECKED_ATTRIBUTE,
+		[...alreadyChecked(span), ...permissions.map(renderPermissionRef)].join(
+			SEPARATOR,
+		),
+	);
+}
+
 /**
  * Records `permissions` on the current span, then runs the fence. Recording
  * comes first because a denied check is the one worth reading back; with no
@@ -51,14 +45,7 @@ export function checked(permissions: ReadonlyArray<PermissionRef>) {
 			Effect.flatMap(
 				Option.match({
 					onNone: () => Effect.void,
-					onSome: (span) =>
-						Effect.annotateCurrentSpan(
-							PERMISSION_CHECKED_ATTRIBUTE,
-							[
-								...alreadyChecked(span),
-								...permissions.map(renderPermissionRef),
-							].join(SEPARATOR),
-						),
+					onSome: (span) => recordOn(span, permissions),
 				}),
 			),
 			Effect.andThen(fence),

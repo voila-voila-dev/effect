@@ -45,7 +45,8 @@ bun run build
 Packages resolve each other through their sources (the `@voila.dev/source`
 export condition), so no build is needed while developing.
 
-A change to a published package comes with a changeset (`bun run changeset`).
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the conventions. A change to a
+published package comes with a changeset (`bun run changeset`).
 Merging to `main` opens the "Version packages" PR; merging that publishes.
 
 ## Roadmap

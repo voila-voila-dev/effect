@@ -1,0 +1,57 @@
+name: Release
+
+# On main: opens or updates the "Version packages" PR from the pending
+# changesets; once that PR is merged, publishes the bumped packages to npm.
+# Kept in this repo rather than the shared one: npm trusted publishing (OIDC)
+# is configured per package against this workflow file.
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: voila-voila-dev/.github/actions/setup-bun@main
+        with:
+          enable-cache: 'true'
+
+      # npm >= 11.5 speaks OIDC trusted publishing.
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        uses: voila-voila-dev/.github/actions/install@main
+
+      - name: Version or publish
+        uses: changesets/action@v1
+        with:
+          version: bun run version-packages
+          publish: bun run release
+          title: Version packages
+          commit: 'chore: version packages'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Only for the very first publish, before trusted publishing can be
+          # configured on the packages; OIDC takes over afterwards.
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: 'true'

@@ -1,6 +1,6 @@
 {
 	"name": "@voila.dev/biome-plugins",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "Biome GritQL lint rules for Effect codebases: schema-backed errors, seedable randomness, injected identifiers, validated construction, runMain entrypoints.",
 	"license": "MIT",
 	"type": "module",

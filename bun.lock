@@ -25,7 +25,7 @@
     },
     "packages/biome-plugins": {
       "name": "@voila.dev/biome-plugins",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "devDependencies": {
         "@biomejs/biome": "catalog:",
         "@types/bun": "catalog:",
@@ -37,7 +37,7 @@
     },
     "packages/cache-lock": {
       "name": "@voila.dev/cache-lock",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "devDependencies": {
         "@types/bun": "catalog:",
         "@voila.dev/effect-ddd": "workspace:*",
@@ -50,7 +50,7 @@
     },
     "packages/crypto": {
       "name": "@voila.dev/crypto",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "devDependencies": {
         "@types/bun": "catalog:",
         "@voila.dev/effect-ddd": "workspace:*",
@@ -63,7 +63,7 @@
     },
     "packages/effect-ddd": {
       "name": "@voila.dev/effect-ddd",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "devDependencies": {
         "@types/bun": "catalog:",
         "effect": "catalog:",
@@ -75,7 +75,7 @@
     },
     "packages/env": {
       "name": "@voila.dev/env",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "devDependencies": {
         "@types/bun": "catalog:",
         "effect": "catalog:",
@@ -90,7 +90,7 @@
     },
     "packages/http": {
       "name": "@voila.dev/http",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "dependencies": {
         "@voila.dev/crypto": "workspace:*",
       },
@@ -106,7 +106,7 @@
     },
     "packages/outbox": {
       "name": "@voila.dev/outbox",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "dependencies": {
         "@voila.dev/effect-ddd": "workspace:*",
       },

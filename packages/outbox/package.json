@@ -1,6 +1,6 @@
 {
 	"name": "@voila.dev/outbox",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "Domain events written in the same transaction as the change and delivered at least once, with retries, backoff and parking, plus cron jobs, on Effect.",
 	"license": "MIT",
 	"type": "module",

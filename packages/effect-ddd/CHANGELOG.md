@@ -1,5 +1,11 @@
 # @voila.dev/effect-ddd
 
+## 0.1.2
+
+### Patch Changes
+
+- 769a316: Package metadata: author and issue tracker. First release published from CI over npm trusted publishing.
+
 ## 0.1.1
 
 ### Patch Changes

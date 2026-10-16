@@ -1,6 +1,6 @@
 {
 	"name": "@voila.dev/env",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Load .env files into process.env or an Effect ConfigProvider: several files, earlier wins, the real environment always wins.",
 	"license": "MIT",
 	"author": "voila.dev",

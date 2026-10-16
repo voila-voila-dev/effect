@@ -1,6 +1,6 @@
 {
 	"name": "@voila.dev/crypto",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Secret box, signed tokens, token digests and secure random on Effect, over Web Crypto: the same in Bun, Node and Workers.",
 	"license": "MIT",
 	"author": "voila.dev",

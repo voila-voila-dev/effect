@@ -48,7 +48,7 @@
 		"test": "bun test --conditions=@voila.dev/source"
 	},
 	"dependencies": {
-		"@voila.dev/crypto": "workspace:*"
+		"@voila.dev/crypto": "workspace:^"
 	},
 	"peerDependencies": {
 		"effect": "^4.0.0"

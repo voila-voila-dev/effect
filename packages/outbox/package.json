@@ -48,7 +48,7 @@
 		"test": "bun test"
 	},
 	"dependencies": {
-		"@voila.dev/effect-ddd": "workspace:*"
+		"@voila.dev/effect-ddd": "workspace:^"
 	},
 	"peerDependencies": {
 		"effect": "^4.0.0"

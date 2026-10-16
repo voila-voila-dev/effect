@@ -1,0 +1,148 @@
+{
+	"openapi": "3.1.0",
+	"info": {
+		"title": "Api",
+		"version": "0.0.1"
+	},
+	"paths": {
+		"/health": {
+			"get": {
+				"tags": ["Health"],
+				"operationId": "health.check",
+				"parameters": [],
+				"security": [],
+				"responses": {
+					"200": {
+						"description": "The API is ready: its database answers.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HealthReady"
+								}
+							}
+						}
+					},
+					"503": {
+						"description": "The API is not ready: its database did not answer, or the probe itself failed.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HealthUnavailable"
+								}
+							}
+						}
+					}
+				},
+				"description": "Check that the API is ready: it reaches the database with a SELECT 1, answers 200 while the database answers and 503 as soon as it does not. No authentication, so an uptime monitor can poll it every minute.",
+				"summary": "Check Health"
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"HealthUnavailable": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"type": "string",
+						"enum": ["unavailable"]
+					},
+					"version": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "null"
+							}
+						],
+						"description": "The commit the running build was made from, or null outside a deployed build."
+					},
+					"checks": {
+						"type": "object",
+						"properties": {
+							"database": {
+								"type": "boolean",
+								"description": "Whether the database answered a SELECT 1."
+							},
+							"payments": {
+								"type": "boolean",
+								"description": "Whether a payment provider key is configured. No call is made to the provider, and this check never makes the API unavailable."
+							}
+						},
+						"required": ["database", "payments"],
+						"additionalProperties": false
+					}
+				},
+				"required": ["status", "version", "checks"],
+				"additionalProperties": false,
+				"description": "The API is not ready: its database did not answer, or the probe itself failed.",
+				"examples": [
+					{
+						"status": "unavailable",
+						"version": "6d649b3612c4e0f1a8b2d9c7e5f30a4b1c2d3e4f",
+						"checks": {
+							"database": false,
+							"payments": true
+						}
+					}
+				]
+			},
+			"HealthReady": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"type": "string",
+						"enum": ["ok"]
+					},
+					"version": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "null"
+							}
+						],
+						"description": "The commit the running build was made from, or null outside a deployed build."
+					},
+					"checks": {
+						"type": "object",
+						"properties": {
+							"database": {
+								"type": "boolean",
+								"description": "Whether the database answered a SELECT 1."
+							},
+							"payments": {
+								"type": "boolean",
+								"description": "Whether a payment provider key is configured. No call is made to the provider, and this check never makes the API unavailable."
+							}
+						},
+						"required": ["database", "payments"],
+						"additionalProperties": false
+					}
+				},
+				"required": ["status", "version", "checks"],
+				"additionalProperties": false,
+				"description": "The API is ready: its database answers.",
+				"examples": [
+					{
+						"status": "ok",
+						"version": "6d649b3612c4e0f1a8b2d9c7e5f30a4b1c2d3e4f",
+						"checks": {
+							"database": true,
+							"payments": true
+						}
+					}
+				]
+			}
+		},
+		"securitySchemes": {}
+	},
+	"security": [],
+	"tags": [
+		{
+			"name": "Health"
+		}
+	]
+}

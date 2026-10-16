@@ -123,6 +123,19 @@
         "effect": "^4.0.0",
       },
     },
+    "packages/email": {
+      "name": "@voila.dev/email",
+      "version": "0.0.0",
+      "devDependencies": {
+        "@types/bun": "catalog:",
+        "@voila.dev/effect-ddd": "workspace:*",
+        "effect": "catalog:",
+        "typescript": "catalog:",
+      },
+      "peerDependencies": {
+        "effect": "^4.0.0",
+      },
+    },
     "packages/env": {
       "name": "@voila.dev/env",
       "version": "0.1.2",
@@ -177,6 +190,24 @@
       },
       "devDependencies": {
         "@types/bun": "catalog:",
+        "effect": "catalog:",
+        "typescript": "catalog:",
+      },
+      "peerDependencies": {
+        "effect": "^4.0.0",
+      },
+    },
+    "packages/resend": {
+      "name": "@voila.dev/resend",
+      "version": "0.0.0",
+      "dependencies": {
+        "@voila.dev/crypto": "workspace:^",
+        "@voila.dev/email": "workspace:^",
+        "@voila.dev/http": "workspace:^",
+      },
+      "devDependencies": {
+        "@types/bun": "catalog:",
+        "@voila.dev/effect-ddd": "workspace:*",
         "effect": "catalog:",
         "typescript": "catalog:",
       },
@@ -523,6 +554,8 @@
 
     "@voila.dev/effect-ddd": ["@voila.dev/effect-ddd@workspace:packages/effect-ddd"],
 
+    "@voila.dev/email": ["@voila.dev/email@workspace:packages/email"],
+
     "@voila.dev/env": ["@voila.dev/env@workspace:packages/env"],
 
     "@voila.dev/example-organizations": ["@voila.dev/example-organizations@workspace:examples/organizations"],
@@ -532,6 +565,8 @@
     "@voila.dev/live": ["@voila.dev/live@workspace:packages/live"],
 
     "@voila.dev/outbox": ["@voila.dev/outbox@workspace:packages/outbox"],
+
+    "@voila.dev/resend": ["@voila.dev/resend@workspace:packages/resend"],
 
     "@voila.dev/ui-docs": ["@voila.dev/ui-docs@workspace:packages/ui-docs"],
 

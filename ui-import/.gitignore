@@ -1,0 +1,69 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage
+# Vitest browser mode: failure screenshots
+.vitest/
+
+# Turbo
+.turbo
+
+# TypeScript incremental build info
+*.tsbuildinfo
+tsbuildinfo.json
+
+# Vercel
+.vercel
+
+# Build Outputs
+.next/
+out/
+build
+dist
+
+
+# Debug
+npm-debug.log*
+
+# Misc
+.DS_Store
+*.pem
+
+# Local dev file storage
+.storage/
+
+# Playwright CLI sessions (snapshots, screenshots, logs)
+.playwright-cli/
+
+# Wrangler local state/cache
+.wrangler/
+
+# Manual QA artifacts (screenshots, videos) — not for the repo
+qa-artifacts/
+.fallow/
+
+# Astro
+.output/
+
+# Storybook
+storybook-static/
+
+# Generated wrangler preview configs
+wrangler.preview.json
+wrangler.preview-env.json
+
+# Claude Code local state, including git worktrees. Untracked, and a worktree
+# here holds a second biome.json that "biome ci" reads as a nested root config.
+.claude/

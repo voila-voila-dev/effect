@@ -26,7 +26,7 @@ export function DocsLayout({
 	const section = manifest.sections.find((s) =>
 		s.items.some((item) => item.slug === slug),
 	);
-	const editUrl = `https://github.com/voila-voila-dev/ui/edit/main/apps/ui.voila.dev/src/content/docs${slug}.mdx`;
+	const editUrl = `https://github.com/voila-voila-dev/platform/edit/main/apps/ui.voila.dev/src/content/docs${slug}.mdx`;
 
 	return (
 		<div className="min-h-svh bg-background text-foreground">

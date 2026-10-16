@@ -466,7 +466,9 @@ function Home() {
 									size="lg"
 									variant="outline"
 									nativeButton={false}
-									render={<a href="https://github.com/voila-voila-dev/ui" />}
+									render={
+										<a href="https://github.com/voila-voila-dev/platform/tree/main/packages/ui" />
+									}
 								>
 									Star it on GitHub
 								</Button>

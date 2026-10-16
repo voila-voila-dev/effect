@@ -65,7 +65,9 @@ export function SiteHeader({ activeSlug }: { activeSlug?: string }) {
 						size="icon-sm"
 						aria-label="GitHub repository"
 						nativeButton={false}
-						render={<a href="https://github.com/voila-voila-dev/ui" />}
+						render={
+							<a href="https://github.com/voila-voila-dev/platform/tree/main/packages/ui" />
+						}
 					>
 						<GithubLogoIcon />
 					</Button>

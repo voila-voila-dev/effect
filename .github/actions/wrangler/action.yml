@@ -37,7 +37,7 @@ runs:
         node-version: '22'
 
     - name: Setup Bun
-      uses: ./.github/actions/setup-bun
+      uses: voila-voila-dev/.github/actions/setup-bun@main
 
     - name: Run wrangler
       id: run

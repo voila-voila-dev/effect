@@ -1,7 +1,7 @@
-name: Pull request cleanup
+name: UI sites cleanup
 
 # Tears down the per-PR preview workers when the PR closes. One job per app,
-# mirroring the preview matrix in pull-request.yml; each updates the same
+# mirroring the preview matrix in ui-sites.yml; each updates the same
 # sticky comment its deploy job created.
 
 on:

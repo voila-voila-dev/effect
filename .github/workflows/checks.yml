@@ -15,3 +15,8 @@ permissions:
 jobs:
   checks:
     uses: voila-voila-dev/.github/.github/workflows/bun-checks.yml@main
+    with:
+      # check-docs / check-labels guard the UI docs and editor copy;
+      # install-browsers fetches the Chromium the UI's browser tests run in.
+      scripts: 'ci check-types check-docs check-labels install-browsers test build'
+      setup-node: true

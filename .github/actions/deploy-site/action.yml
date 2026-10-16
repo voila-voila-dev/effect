@@ -26,16 +26,15 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - name: Setup Bun
-      uses: ./.github/actions/setup-bun
-
-    - name: Setup Node
-      uses: actions/setup-node@v6
+    - name: Setup Bun and Node
+      uses: voila-voila-dev/.github/actions/setup-bun@main
       with:
-        node-version: '23.8.0'
+        setup-node: 'true'
+        node-version: '24'
+        enable-cache: 'true'
 
     - name: Install dependencies
-      uses: ./.github/actions/install-dependencies
+      uses: voila-voila-dev/.github/actions/install@main
 
     - name: Build ${{ inputs.app }}
       shell: bash

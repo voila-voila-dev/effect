@@ -1,8 +1,10 @@
 # @voila.dev/ui
 
-Versions are `MAJOR.MINOR.<CI run number>`: every push to `main` publishes, and
-the major moves by hand when a release breaks callers. This file records those
-moves — not every publish.
+Since 6.0.135 releases go through Changesets in the voila-voila-dev/platform
+monorepo, and every published version has its entry. Up to 6.0.134 versions
+were `MAJOR.MINOR.<CI run number>`: every push to `main` of
+voila-voila-dev/ui published, and the major moved by hand when a release broke
+callers. The entries below record those moves — not every publish.
 
 ## 6.0 — the chart's tween is an import
 

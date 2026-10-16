@@ -1,7 +1,11 @@
-# voila.dev / effect
+# voila.dev / platform
 
-Building blocks for B2B backends on [Effect](https://effect.website) 4, extracted
-from production code and kept free of any one product's vocabulary.
+Building blocks for B2B products, extracted from production code and kept free
+of any one product's vocabulary. Everything lives in this repository and is
+published as `@voila.dev/*`; a package moves to a repository of its own only
+when it needs to.
+
+## Backend on [Effect](https://effect.website) 4
 
 | Package | What it gives you |
 | --- | --- |
@@ -14,7 +18,7 @@ from production code and kept free of any one product's vocabulary.
 | [`@voila.dev/live`](./packages/live) | Live updates over WebSocket: channels with a gate and a filter, a batching socket hub, a replay log on Redis streams, and a reconnecting browser client. |
 | [`@voila.dev/outbox`](./packages/outbox) | Domain events written in the same transaction as the change, delivered at least once with retries, backoff and parking (in memory or on Postgres), and cron jobs. |
 
-## Example
+### Example
 
 [`examples/organizations`](./examples/organizations) is a small context written
 the way these packages expect: actors and gates in `identity/`, an aggregate, a
@@ -58,9 +62,9 @@ Merging to `main` opens the "Version packages" PR; merging that publishes.
 3. `live` (WebSocket hub) — merged, first release next
 4. Documentation site on `@voila.dev/docs`
 
-Third-party adapters (Stripe, Resend, Annuaire Entreprises, VIES…) live in their
-own repositories under [voila-voila-dev](https://github.com/voila-voila-dev) and
-implement the contracts defined here.
+Next in this repository: the UI packages (`@voila.dev/ui` and its companions),
+`@voila.dev/docs`, third-party adapters (Stripe, Resend, Annuaire Entreprises,
+VIES…) implementing the contracts defined here, and `trust` (KYC/KYB).
 
 ## License
 

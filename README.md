@@ -10,9 +10,9 @@ from production code and kept free of any one product's vocabulary.
 | [`@voila.dev/crypto`](./packages/crypto) | A secret box bound to its record, signed token kinds with no token table, token digests and secure random, on Web Crypto. |
 | [`@voila.dev/effect-ddd`](./packages/effect-ddd) | Use cases with a declared gate, a registry, a permission catalogue, and architecture tests that freeze your bounded-context boundaries. |
 | [`@voila.dev/env`](./packages/env) | `.env` files into `process.env` or an Effect `ConfigProvider`: several files, earlier wins, the real environment always wins. |
+| [`@voila.dev/outbox`](./packages/outbox) | Domain events written in the same transaction as the change, delivered at least once with retries, backoff and parking (in memory or on Postgres), and cron jobs. |
 
-More are on the way (an outbox and event bus over Postgres, an integration HTTP
-client, a WebSocket hub) — see the
+More are on the way (an integration HTTP client, a WebSocket hub) — see the
 [roadmap](#roadmap).
 
 ## Example

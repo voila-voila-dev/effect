@@ -10,10 +10,10 @@ from production code and kept free of any one product's vocabulary.
 | [`@voila.dev/crypto`](./packages/crypto) | A secret box bound to its record, signed token kinds with no token table, token digests and secure random, on Web Crypto. |
 | [`@voila.dev/effect-ddd`](./packages/effect-ddd) | Use cases with a declared gate, a registry, a permission catalogue, and architecture tests that freeze your bounded-context boundaries. |
 | [`@voila.dev/env`](./packages/env) | `.env` files into `process.env` or an Effect `ConfigProvider`: several files, earlier wins, the real environment always wins. |
+| [`@voila.dev/http`](./packages/http) | Outbound calls to third parties with typed timeouts, jittered retries, spans, bounded Schema decoding and a request log; an SSRF-guarded URL fetcher; Stripe, Svix, Twilio and SNS webhook checks. |
 | [`@voila.dev/outbox`](./packages/outbox) | Domain events written in the same transaction as the change, delivered at least once with retries, backoff and parking (in memory or on Postgres), and cron jobs. |
 
-More are on the way (an integration HTTP client, a WebSocket hub) — see the
-[roadmap](#roadmap).
+A WebSocket hub is on the way — see the [roadmap](#roadmap).
 
 ## Example
 
@@ -54,9 +54,10 @@ Merging to `main` opens the "Version packages" PR; merging that publishes.
 
 ## Roadmap
 
-1. `effect-ddd`, `env`, `biome-plugins` — **0.1**
-2. `outbox`, `http`, `crypto`, `cache-lock`, `live`
-3. Documentation site on `@voila.dev/docs`
+1. `effect-ddd`, `env` — **0.1** on npm
+2. `biome-plugins`, `crypto`, `cache-lock`, `http`, `outbox` — merged, first release next
+3. `live` (WebSocket hub)
+4. Documentation site on `@voila.dev/docs`
 
 Third-party adapters (Stripe, Resend, Annuaire Entreprises, VIES…) live in their
 own repositories under [voila-voila-dev](https://github.com/voila-voila-dev) and

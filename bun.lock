@@ -88,6 +88,22 @@
         "effect",
       ],
     },
+    "packages/http": {
+      "name": "@voila.dev/http",
+      "version": "0.0.0",
+      "dependencies": {
+        "@voila.dev/crypto": "workspace:*",
+      },
+      "devDependencies": {
+        "@types/bun": "catalog:",
+        "@voila.dev/effect-ddd": "workspace:*",
+        "effect": "catalog:",
+        "typescript": "catalog:",
+      },
+      "peerDependencies": {
+        "effect": "^4.0.0",
+      },
+    },
     "packages/outbox": {
       "name": "@voila.dev/outbox",
       "version": "0.0.0",
@@ -232,6 +248,8 @@
     "@voila.dev/env": ["@voila.dev/env@workspace:packages/env"],
 
     "@voila.dev/example-organizations": ["@voila.dev/example-organizations@workspace:examples/organizations"],
+
+    "@voila.dev/http": ["@voila.dev/http@workspace:packages/http"],
 
     "@voila.dev/outbox": ["@voila.dev/outbox@workspace:packages/outbox"],
 

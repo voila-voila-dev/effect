@@ -106,7 +106,7 @@
     },
     "packages/live": {
       "name": "@voila.dev/live",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "dependencies": {
         "@voila.dev/effect-ddd": "workspace:^",
       },

@@ -6,12 +6,13 @@ from production code and kept free of any one product's vocabulary.
 | Package | What it gives you |
 | --- | --- |
 | [`@voila.dev/biome-plugins`](./packages/biome-plugins) | Biome lint rules that keep an Effect codebase honest: schema-backed errors, seedable randomness, injected identifiers, validated construction, `runMain` entrypoints. |
+| [`@voila.dev/cache-lock`](./packages/cache-lock) | A key-value cache, a lease-based lock and a rate limiter as Effect services, in memory or on Redis, with failures the caller decides on. |
 | [`@voila.dev/crypto`](./packages/crypto) | A secret box bound to its record, signed token kinds with no token table, token digests and secure random, on Web Crypto. |
 | [`@voila.dev/effect-ddd`](./packages/effect-ddd) | Use cases with a declared gate, a registry, a permission catalogue, and architecture tests that freeze your bounded-context boundaries. |
 | [`@voila.dev/env`](./packages/env) | `.env` files into `process.env` or an Effect `ConfigProvider`: several files, earlier wins, the real environment always wins. |
 
 More are on the way (an outbox and event bus over Postgres, an integration HTTP
-client, cache/lock/rate-limit, a WebSocket hub) — see the
+client, a WebSocket hub) — see the
 [roadmap](#roadmap).
 
 ## Example

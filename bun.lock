@@ -35,6 +35,19 @@
         "@biomejs/biome": "^2.5.0",
       },
     },
+    "packages/cache-lock": {
+      "name": "@voila.dev/cache-lock",
+      "version": "0.0.0",
+      "devDependencies": {
+        "@types/bun": "catalog:",
+        "@voila.dev/effect-ddd": "workspace:*",
+        "effect": "catalog:",
+        "typescript": "catalog:",
+      },
+      "peerDependencies": {
+        "effect": "^4.0.0",
+      },
+    },
     "packages/crypto": {
       "name": "@voila.dev/crypto",
       "version": "0.0.0",
@@ -194,6 +207,8 @@
     "@typescript/typescript-win32-x64": ["@typescript/typescript-win32-x64@7.0.2", "", { "os": "win32", "cpu": "x64" }, "sha512-0BQ3HkAHHlKLSp1qRvf3SUhGpGsDuhB/jgFw75guyqbxJqEaS0Cw/VFO8i2nHglJUzQCRtMMR/IBAKE3ETMC4g=="],
 
     "@voila.dev/biome-plugins": ["@voila.dev/biome-plugins@workspace:packages/biome-plugins"],
+
+    "@voila.dev/cache-lock": ["@voila.dev/cache-lock@workspace:packages/cache-lock"],
 
     "@voila.dev/crypto": ["@voila.dev/crypto@workspace:packages/crypto"],
 

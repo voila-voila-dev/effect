@@ -1,8 +1,8 @@
 import { Duration, Effect, Layer } from "effect";
 import { RateLimiter as Limiter } from "effect/persistence";
-import { RateLimitedError } from "./rate-limited-error.ts";
-import { RateLimiter } from "./rate-limiter.ts";
-import { RateLimiterUnavailableError } from "./rate-limiter-unavailable-error.ts";
+import { RateLimitedError } from "../rate-limit/rate-limited-error.ts";
+import { RateLimiter } from "../rate-limit/rate-limiter.ts";
+import { RateLimiterUnavailableError } from "../rate-limit/rate-limiter-unavailable-error.ts";
 
 /**
  * `RateLimiter` over Effect's own limiter, translated to this package's two

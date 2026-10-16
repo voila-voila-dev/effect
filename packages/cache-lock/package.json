@@ -34,6 +34,11 @@
 			"@voila.dev/source": "./src/redis/index.ts",
 			"types": "./dist/redis/index.d.ts",
 			"default": "./dist/redis/index.js"
+		},
+		"./store": {
+			"@voila.dev/source": "./src/store/index.ts",
+			"types": "./dist/store/index.d.ts",
+			"default": "./dist/store/index.js"
 		}
 	},
 	"files": [

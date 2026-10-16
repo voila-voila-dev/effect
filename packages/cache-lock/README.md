@@ -13,7 +13,9 @@ and a Redis one for production — the code that uses them does not change.
   most, and a holder never releases a lock someone else took over.
 - **No Redis in the root entry.** The Redis implementations live in
   `@voila.dev/cache-lock/redis` and run on Effect's `Redis` service, so you
-  bring the client (Bun's built-in one, or any other).
+  bring the client (Bun's built-in one, or any other). The root entry does not
+  import `effect/persistence` either, so the contracts bundle in a React Native
+  app; the limiters built on it live in `@voila.dev/cache-lock/store`.
 
 ```sh
 bun add @voila.dev/cache-lock effect
@@ -72,13 +74,14 @@ yield* denyWhenUnavailable(limiter.consume({ key: `login:${email}`, limit: 5, wi
 ```
 
 Both leave `RateLimitedError` (with `retryAfterSeconds`) as the only failure.
-Counting is Effect's own `RateLimiter`; `rateLimiterFromStoreLayer` plugs this
-service onto any `RateLimiterStore`.
+Counting is Effect's own `RateLimiter`; `rateLimiterFromStoreLayer` (from
+`@voila.dev/cache-lock/store`) plugs this service onto any `RateLimiterStore`.
 
 ## Layers
 
 ```ts
-import { inMemoryKeyValueCacheLayer, inMemoryLockManagerLayer, inMemoryRateLimiterLayer } from "@voila.dev/cache-lock";
+import { inMemoryKeyValueCacheLayer, inMemoryLockManagerLayer } from "@voila.dev/cache-lock";
+import { inMemoryRateLimiterLayer } from "@voila.dev/cache-lock/store";
 import { redisKeyValueCacheLayer, redisLockManagerLayer, redisRateLimiterLayer } from "@voila.dev/cache-lock/redis";
 import { BunRedis } from "@effect/platform-bun";
 import { Layer } from "effect";

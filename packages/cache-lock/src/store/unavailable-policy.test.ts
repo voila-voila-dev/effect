@@ -1,15 +1,15 @@
 import { describe, expect, it } from "bun:test";
 import { Effect, Exit } from "effect";
+import {
+	allowWhenUnavailable,
+	denyWhenUnavailable,
+} from "../rate-limit/unavailable-policy.ts";
 import { inMemoryRateLimiterLayer } from "./in-memory-rate-limiter.ts";
 import {
 	failureOf,
 	runWith,
 	unreachableRateLimiterLayer,
 } from "./rate-limiter.test-helper.ts";
-import {
-	allowWhenUnavailable,
-	denyWhenUnavailable,
-} from "./unavailable-policy.ts";
 
 const rateLimit = { key: "k", limit: 1, windowSeconds: 900 };
 

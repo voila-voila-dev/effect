@@ -1,7 +1,7 @@
 import { Layer } from "effect";
 import { RateLimiter as Limiter, type Redis } from "effect/persistence";
 import type { RateLimiter } from "../rate-limit/rate-limiter.ts";
-import { rateLimiterFromStoreLayer } from "../rate-limit/rate-limiter-from-store.ts";
+import { rateLimiterFromStoreLayer } from "../store/rate-limiter-from-store.ts";
 
 export interface RedisRateLimiterOptions {
 	/** Put in front of every key. Defaults to `"rate-limit:"`. */

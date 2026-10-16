@@ -1,6 +1,6 @@
 import { Effect, Layer } from "effect";
 import { RateLimiter as Limiter } from "effect/persistence";
-import { RateLimiter } from "./rate-limiter.ts";
+import { RateLimiter } from "../rate-limit/rate-limiter.ts";
 import { rateLimiterFromStoreLayer } from "./rate-limiter-from-store.ts";
 
 const unreachable = new Limiter.RateLimiterError({

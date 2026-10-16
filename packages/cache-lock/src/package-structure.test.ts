@@ -1,4 +1,6 @@
 import { describe, expect, it } from "bun:test";
+import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
 import {
 	type ContextPair,
 	contextResolver,
@@ -18,6 +20,8 @@ const ALLOWED: ReadonlyArray<ContextPair> = [
 	["redis", "cache"],
 	["redis", "lock"],
 	["redis", "rate-limit"],
+	["redis", "store"],
+	["store", "rate-limit"],
 ];
 
 const root = import.meta.dirname;
@@ -44,6 +48,28 @@ describe("package structure", () => {
 	it("keeps the root entry free of Redis", () => {
 		expect(
 			describeEdges(edges.filter(({ target }) => target === "redis")),
+		).toStrictEqual([]);
+	});
+
+	// effect/persistence pulls Effect's SQL migrator, whose dynamic import
+	// Metro refuses: the root entry has to bundle in a React Native app.
+	it("keeps the root entry free of effect/persistence", () => {
+		const seen = new Set<string>();
+		const persistence: Array<string> = [];
+		const visit = (file: string): void => {
+			if (seen.has(file)) return;
+			seen.add(file);
+			for (const [, specifier] of readFileSync(file, "utf8").matchAll(
+				/from "([^"]+)"/gu,
+			)) {
+				if (specifier === undefined) continue;
+				if (specifier.startsWith("effect/persistence")) persistence.push(file);
+				if (specifier.startsWith(".")) visit(resolve(dirname(file), specifier));
+			}
+		};
+		visit(resolve(root, "index.ts"));
+		expect(
+			persistence.map((file) => file.slice(root.length + 1)),
 		).toStrictEqual([]);
 	});
 });

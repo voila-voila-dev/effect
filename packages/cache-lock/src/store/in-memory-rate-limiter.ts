@@ -1,6 +1,6 @@
 import { Layer } from "effect";
 import { RateLimiter as Limiter } from "effect/persistence";
-import type { RateLimiter } from "./rate-limiter.ts";
+import type { RateLimiter } from "../rate-limit/rate-limiter.ts";
 import { rateLimiterFromStoreLayer } from "./rate-limiter-from-store.ts";
 
 /**

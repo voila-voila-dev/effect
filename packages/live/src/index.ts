@@ -1,4 +1,7 @@
-export { makeInMemoryLiveBus } from "./bus/in-memory-live-bus.ts";
+export {
+	type InMemoryLiveBusOptions,
+	makeInMemoryLiveBus,
+} from "./bus/in-memory-live-bus.ts";
 export { LIVE_REPLAY_DEPTH, LiveLog } from "./bus/live-log.ts";
 export { LivePublishError } from "./bus/live-publish-error.ts";
 export { LivePublisher } from "./bus/live-publisher.ts";
@@ -19,6 +22,7 @@ export {
 	LIVE_BATCH_MILLISECONDS,
 	type LiveSocket,
 	LiveSocketHub,
+	type LiveSocketHubOptions,
 } from "./socket/live-socket-hub.ts";
 export {
 	openLiveSocket,

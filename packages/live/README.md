@@ -91,6 +91,8 @@ message: (socket, frame) => receiveLiveFrame({ hub, channel, socket, frame: Stri
 close: (socket) => hub.remove(socket),
 ```
 
+`new LiveSocketHub({ batchMilliseconds })` changes the batch delay; each
+message is serialized once, whatever the number of sockets it reaches.
 `openLiveSubscription` fails with `LiveChannelNotFoundError` or the gate's
 `AccessDeniedError`; answer 404 and 403. The server sends `{ "messages": [...] }`
 frames (`LiveFrame`); the page sends `{ "filter": ... }` and pings.
@@ -122,6 +124,9 @@ const LiveLayer = Layer.mergeAll(
 	}),
 ).pipe(Layer.provide(SharedRedisLayer));
 ```
+
+Both buses take `replayDepth` (1,000 by default): how many messages per
+channel a reconnecting page can catch up on.
 
 The reader blocks on `XREAD`, which holds its connection: `connect` opens one
 of its own, with the client's automatic reconnection off. After a drop the

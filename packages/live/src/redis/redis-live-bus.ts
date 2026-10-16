@@ -31,6 +31,8 @@ export const LIVE_READER_CLIENT_NAME = "live-reader";
 export interface RedisLiveOptions {
 	/** Put in front of every channel's stream key. Defaults to `"live:"`. */
 	readonly prefix?: string;
+	/** How many messages per channel the stream keeps for a reconnecting page. Defaults to {@link LIVE_REPLAY_DEPTH}. */
+	readonly replayDepth?: number;
 }
 
 /** A RESP3 read is a map of stream key to entries, or null when nothing came. */
@@ -57,12 +59,13 @@ export function liveStreamKey(
 export function xaddArguments(
 	key: string,
 	publication: LivePublication,
+	replayDepth: number = LIVE_REPLAY_DEPTH,
 ): ReadonlyArray<string> {
 	return [
 		key,
 		"MAXLEN",
 		"~",
-		String(LIVE_REPLAY_DEPTH),
+		String(replayDepth),
 		"*",
 		MESSAGE_FIELD,
 		encodePublication(publication),
@@ -109,6 +112,7 @@ export function makeRedisLivePublisher(
 					...xaddArguments(
 						liveStreamKey(publication.channel, options),
 						publication,
+						options.replayDepth,
 					),
 				)
 				.pipe(
@@ -137,7 +141,7 @@ export function makeRedisLiveLog(
 					`(${seq}`,
 					"+",
 					"COUNT",
-					String(LIVE_REPLAY_DEPTH),
+					String(options.replayDepth ?? LIVE_REPLAY_DEPTH),
 				)
 				.pipe(
 					Effect.map(messagesOfEntries),

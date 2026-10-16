@@ -30,8 +30,10 @@ function publication(subjectId: string, region: string): LivePublication {
 
 function setUp() {
 	const flushes: Array<() => void> = [];
-	const hub = new LiveSocketHub((flush) => {
-		flushes.push(flush);
+	const hub = new LiveSocketHub({
+		schedule: (flush) => {
+			flushes.push(flush);
+		},
 	});
 	const bus = makeInMemoryLiveBus(hub);
 	const frames: Array<ReadonlyArray<{ readonly subjectId: string }>> = [];

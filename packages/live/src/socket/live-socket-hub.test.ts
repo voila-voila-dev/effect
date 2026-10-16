@@ -66,7 +66,7 @@ function inRegion(region: string): LiveMatcher {
 
 function setUp() {
 	const clock = manualSchedule();
-	const hub = new LiveSocketHub(clock.schedule);
+	const hub = new LiveSocketHub({ schedule: clock.schedule });
 	const bus = makeInMemoryLiveBus(hub);
 	function publish(...publications: ReadonlyArray<LivePublication>) {
 		Effect.runSync(
@@ -126,6 +126,27 @@ describe("LiveSocketHub", () => {
 		hub.remove(page.socket);
 		clock.tick();
 		expect(page.frames).toEqual([]);
+	});
+
+	it("waits the batch delay it was given", () => {
+		const clock = manualSchedule();
+		const hub = new LiveSocketHub({
+			schedule: clock.schedule,
+			batchMilliseconds: 40,
+		});
+		hub.add(board, recordingSocket().socket, everything);
+		hub.deliver({ ...publication("o-1"), seq: "1" });
+		expect(clock.delays()).toEqual([40]);
+	});
+
+	it("moves a socket added again to its new channel", () => {
+		const { clock, hub, publish } = setUp();
+		const page = recordingSocket();
+		hub.add(board, page.socket, everything);
+		hub.add(other, page.socket, everything);
+		publish(publication("o-1"), publication("o-2", "35", other));
+		clock.tick();
+		expect(page.subjects()).toEqual(["o-2"]);
 	});
 
 	it("goes on when one socket throws", () => {

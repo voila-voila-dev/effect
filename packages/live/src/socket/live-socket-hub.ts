@@ -12,32 +12,49 @@ export const LIVE_BATCH_MILLISECONDS = 250;
 
 const encodeMessage = Schema.encodeSync(LiveMessage);
 
+/** A message as its JSON text: serialized once, whatever the number of sockets it reaches. */
+function serialize(message: LiveMessage): string {
+	return JSON.stringify(encodeMessage(message));
+}
+
+export interface LiveSocketHubOptions {
+	/** How long a message waits for others of its socket. Defaults to {@link LIVE_BATCH_MILLISECONDS}. */
+	readonly batchMilliseconds?: number;
+	/** Runs a flush later. Defaults to `setTimeout`; a test turns it by hand. */
+	readonly schedule?: (flush: () => void, milliseconds: number) => void;
+}
+
 interface Subscription {
 	readonly channel: string;
 	matcher: LiveMatcher;
-	pending: Array<unknown>;
+	pending: Array<string>;
 	flushScheduled: boolean;
 }
 
 /**
  * The open sockets of one process, per channel, each with the filter its page
- * sent. A delivered message waits at most {@link LIVE_BATCH_MILLISECONDS} and
+ * sent. A delivered message waits at most the batch delay (250 ms) and
  * leaves with the others of its socket in one `{ messages }` frame.
  */
 export class LiveSocketHub {
 	private readonly subscriptions = new Map<LiveSocket, Subscription>();
 	private readonly byChannel = new Map<string, Set<LiveSocket>>();
+	private readonly batchMilliseconds: number;
+	private readonly schedule: (flush: () => void, milliseconds: number) => void;
 
-	constructor(
-		private readonly schedule: (
-			flush: () => void,
-			milliseconds: number,
-		) => void = (flush, milliseconds) => {
-			setTimeout(flush, milliseconds);
-		},
-	) {}
+	constructor(options: LiveSocketHubOptions = {}) {
+		this.batchMilliseconds =
+			options.batchMilliseconds ?? LIVE_BATCH_MILLISECONDS;
+		this.schedule =
+			options.schedule ??
+			((flush, milliseconds) => {
+				setTimeout(flush, milliseconds);
+			});
+	}
 
+	/** A socket listens to one channel: adding it again moves it. */
 	add(channel: string, socket: LiveSocket, matcher: LiveMatcher): void {
+		this.remove(socket);
 		this.subscriptions.set(socket, {
 			channel,
 			matcher,
@@ -75,11 +92,12 @@ export class LiveSocketHub {
 		if (sockets === undefined) {
 			return;
 		}
-		const encoded = encodeMessage(message);
+		let serialized: string | undefined;
 		for (const socket of sockets) {
 			const subscription = this.subscriptions.get(socket);
 			if (subscription?.matcher(message) === true) {
-				this.enqueue(socket, subscription, encoded);
+				serialized ??= serialize(message);
+				this.enqueue(socket, subscription, serialized);
 			}
 		}
 	}
@@ -87,19 +105,16 @@ export class LiveSocketHub {
 	/** Sends a replay at once, ahead of the batch: the page asked for it on connect. */
 	sendNow(socket: LiveSocket, messages: ReadonlyArray<LiveMessage>): void {
 		if (messages.length > 0) {
-			send(
-				socket,
-				messages.map((message) => encodeMessage(message)),
-			);
+			send(socket, messages.map(serialize));
 		}
 	}
 
 	private enqueue(
 		socket: LiveSocket,
 		subscription: Subscription,
-		encoded: unknown,
+		serialized: string,
 	): void {
-		subscription.pending.push(encoded);
+		subscription.pending.push(serialized);
 		if (subscription.flushScheduled) {
 			return;
 		}
@@ -111,13 +126,14 @@ export class LiveSocketHub {
 			if (this.subscriptions.get(socket) === subscription) {
 				send(socket, batch);
 			}
-		}, LIVE_BATCH_MILLISECONDS);
+		}, this.batchMilliseconds);
 	}
 }
 
-function send(socket: LiveSocket, messages: ReadonlyArray<unknown>): void {
+/** A `LiveFrame`, assembled from messages already serialized. */
+function send(socket: LiveSocket, messages: ReadonlyArray<string>): void {
 	try {
-		socket.send(JSON.stringify({ messages }));
+		socket.send(`{"messages":[${messages.join(",")}]}`);
 	} catch {
 		// A socket can be closing between the lookup and the send; the next
 		// frame finds it gone. One dead socket never fails the others.

@@ -1,8 +1,0 @@
-name: 'Install Dependencies'
-description: 'Install project dependencies using Bun'
-runs:
-  using: 'composite'
-  steps:
-    - name: Install dependencies
-      shell: bash
-      run: bun install

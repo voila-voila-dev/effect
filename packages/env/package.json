@@ -3,6 +3,7 @@
 	"version": "0.1.1",
 	"description": "Load .env files into process.env or an Effect ConfigProvider: several files, earlier wins, the real environment always wins.",
 	"license": "MIT",
+	"author": "voila.dev",
 	"type": "module",
 	"sideEffects": false,
 	"repository": {
@@ -11,6 +12,9 @@
 		"directory": "packages/env"
 	},
 	"homepage": "https://github.com/voila-voila-dev/effect/tree/main/packages/env#readme",
+	"bugs": {
+		"url": "https://github.com/voila-voila-dev/effect/issues"
+	},
 	"keywords": [
 		"effect",
 		"effect-ts",

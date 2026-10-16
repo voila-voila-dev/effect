@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"description": "Secret box, signed tokens, token digests and secure random on Effect, over Web Crypto: the same in Bun, Node and Workers.",
 	"license": "MIT",
+	"author": "voila.dev",
 	"type": "module",
 	"sideEffects": false,
 	"repository": {
@@ -11,6 +12,9 @@
 		"directory": "packages/crypto"
 	},
 	"homepage": "https://github.com/voila-voila-dev/effect/tree/main/packages/crypto#readme",
+	"bugs": {
+		"url": "https://github.com/voila-voila-dev/effect/issues"
+	},
 	"keywords": [
 		"effect",
 		"effect-ts",

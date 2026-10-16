@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"description": "Biome GritQL lint rules for Effect codebases: schema-backed errors, seedable randomness, injected identifiers, validated construction, runMain entrypoints.",
 	"license": "MIT",
+	"author": "voila.dev",
 	"type": "module",
 	"repository": {
 		"type": "git",
@@ -10,6 +11,9 @@
 		"directory": "packages/biome-plugins"
 	},
 	"homepage": "https://github.com/voila-voila-dev/effect/tree/main/packages/biome-plugins#readme",
+	"bugs": {
+		"url": "https://github.com/voila-voila-dev/effect/issues"
+	},
 	"keywords": [
 		"effect",
 		"effect-ts",

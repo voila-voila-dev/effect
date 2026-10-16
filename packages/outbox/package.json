@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"description": "Domain events written in the same transaction as the change and delivered at least once, with retries, backoff and parking, plus cron jobs, on Effect.",
 	"license": "MIT",
+	"author": "voila.dev",
 	"type": "module",
 	"sideEffects": false,
 	"repository": {
@@ -11,6 +12,9 @@
 		"directory": "packages/outbox"
 	},
 	"homepage": "https://github.com/voila-voila-dev/effect/tree/main/packages/outbox#readme",
+	"bugs": {
+		"url": "https://github.com/voila-voila-dev/effect/issues"
+	},
 	"keywords": [
 		"effect",
 		"effect-ts",

@@ -3,6 +3,7 @@
 	"version": "0.1.1",
 	"description": "Use cases, gates and architecture tests for domain-driven, hexagonal applications on Effect.",
 	"license": "MIT",
+	"author": "voila.dev",
 	"type": "module",
 	"sideEffects": false,
 	"repository": {
@@ -11,6 +12,9 @@
 		"directory": "packages/effect-ddd"
 	},
 	"homepage": "https://github.com/voila-voila-dev/effect/tree/main/packages/effect-ddd#readme",
+	"bugs": {
+		"url": "https://github.com/voila-voila-dev/effect/issues"
+	},
 	"keywords": [
 		"effect",
 		"effect-ts",

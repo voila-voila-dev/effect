@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"description": "A key-value cache, a lease-based distributed lock and a rate limiter as Effect services, each with an in-memory and a Redis implementation.",
 	"license": "MIT",
+	"author": "voila.dev",
 	"type": "module",
 	"sideEffects": false,
 	"repository": {
@@ -11,6 +12,9 @@
 		"directory": "packages/cache-lock"
 	},
 	"homepage": "https://github.com/voila-voila-dev/effect/tree/main/packages/cache-lock#readme",
+	"bugs": {
+		"url": "https://github.com/voila-voila-dev/effect/issues"
+	},
 	"keywords": [
 		"effect",
 		"effect-ts",

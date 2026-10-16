@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"description": "Outbound HTTP for third-party integrations on Effect: timeouts, retries, spans, bounded reads, Schema decoding, a request log, and webhook signature checks.",
 	"license": "MIT",
+	"author": "voila.dev",
 	"type": "module",
 	"sideEffects": false,
 	"repository": {
@@ -11,6 +12,9 @@
 		"directory": "packages/http"
 	},
 	"homepage": "https://github.com/voila-voila-dev/effect/tree/main/packages/http#readme",
+	"bugs": {
+		"url": "https://github.com/voila-voila-dev/effect/issues"
+	},
 	"keywords": [
 		"effect",
 		"effect-ts",

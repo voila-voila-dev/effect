@@ -1,6 +1,6 @@
 {
 	"name": "@voila.dev/effect-ddd",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Use cases, gates and architecture tests for domain-driven, hexagonal applications on Effect.",
 	"license": "MIT",
 	"author": "voila.dev",

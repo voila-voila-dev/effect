@@ -14,6 +14,17 @@ export interface RedisLockManagerOptions {
 	readonly retryDelay?: Duration.Input;
 }
 
+/**
+ * Proves which holder owns the key. Unpredictable rather than merely unique, so
+ * no other process can guess it and release a lock it does not hold.
+ */
+function ownerToken(): string {
+	const bytes = crypto.getRandomValues(new Uint8Array(16));
+	return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join(
+		"",
+	);
+}
+
 // A holder whose lease already ran out must not delete the lock the next
 // holder now owns, so release compares the token before deleting.
 const releaseScript = Redis.script(
@@ -83,7 +94,7 @@ export function makeRedisLockManager(
 		withLock: (key, effect) =>
 			Effect.suspend(() => {
 				const storageKey = `${prefix}${key}`;
-				const token = crypto.randomUUID();
+				const token = ownerToken();
 				// Masked so an interruption landing between a successful acquire
 				// and the guarded effect still releases; the waiting itself stays
 				// interruptible. A release that fails is ignored: the lease frees

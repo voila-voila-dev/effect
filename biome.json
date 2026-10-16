@@ -23,7 +23,11 @@
 		},
 		{
 			"path": "./packages/biome-plugins/rules/no-random-uuid.grit",
-			"includes": ["**/packages/*/src/**", "!**/*.test.ts"]
+			"includes": [
+				"**/packages/*/src/**",
+				"!**/*.test.ts",
+				"!**/*.test-helper.ts"
+			]
 		},
 		{
 			"path": "./packages/biome-plugins/rules/no-schema-disable-checks.grit",

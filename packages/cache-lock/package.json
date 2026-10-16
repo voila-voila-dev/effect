@@ -8,12 +8,12 @@
 	"sideEffects": false,
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/voila-voila-dev/effect.git",
+		"url": "git+https://github.com/voila-voila-dev/platform.git",
 		"directory": "packages/cache-lock"
 	},
-	"homepage": "https://github.com/voila-voila-dev/effect/tree/main/packages/cache-lock#readme",
+	"homepage": "https://github.com/voila-voila-dev/platform/tree/main/packages/cache-lock#readme",
 	"bugs": {
-		"url": "https://github.com/voila-voila-dev/effect/issues"
+		"url": "https://github.com/voila-voila-dev/platform/issues"
 	},
 	"keywords": [
 		"effect",

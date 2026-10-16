@@ -1,0 +1,1081 @@
+{
+	"openapi": "3.1.0",
+	"info": {
+		"title": "Api",
+		"version": "0.0.1"
+	},
+	"paths": {
+		"/projects/list": {
+			"post": {
+				"tags": ["Projects"],
+				"operationId": "projects.list",
+				"parameters": [],
+				"security": [],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"items": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/ProjectEncoded"
+											}
+										},
+										"total": {
+											"anyOf": [
+												{
+													"type": "number"
+												},
+												{
+													"type": "string",
+													"enum": ["Infinity", "-Infinity", "NaN"]
+												}
+											]
+										},
+										"take": {
+											"type": "integer",
+											"minimum": 1,
+											"maximum": 100
+										},
+										"skip": {
+											"type": "integer"
+										},
+										"hasMore": {
+											"type": "boolean"
+										}
+									},
+									"required": ["items", "total", "take", "skip", "hasMore"],
+									"additionalProperties": false
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "AccessDeniedError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AccessDeniedErrorEncoded"
+								}
+							}
+						}
+					},
+					"429": {
+						"description": "RateLimitedError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RateLimitedErrorEncoded"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "DatabaseError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DatabaseErrorEncoded"
+								}
+							}
+						}
+					}
+				},
+				"description": "Public: no session is required, so the rate-limit budget is keyed on the caller's IP address.",
+				"summary": "Search the project catalog",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"filter": {
+										"type": "object",
+										"properties": {
+											"search": {
+												"anyOf": [
+													{
+														"type": "string",
+														"maxLength": 128
+													},
+													{
+														"type": "null"
+													}
+												]
+											},
+											"createdAtFrom": {
+												"anyOf": [
+													{
+														"type": "string"
+													},
+													{
+														"type": "null"
+													}
+												]
+											},
+											"createdAtTo": {
+												"anyOf": [
+													{
+														"type": "string"
+													},
+													{
+														"type": "null"
+													}
+												]
+											},
+											"sortBy": {
+												"anyOf": [
+													{
+														"type": "string",
+														"enum": ["createdAt", "slug"]
+													},
+													{
+														"type": "null"
+													}
+												]
+											},
+											"sortDirection": {
+												"anyOf": [
+													{
+														"type": "string",
+														"enum": ["asc", "desc"]
+													},
+													{
+														"type": "null"
+													}
+												]
+											}
+										},
+										"additionalProperties": false
+									},
+									"pagination": {
+										"type": "object",
+										"properties": {
+											"take": {
+												"type": "integer",
+												"minimum": 1,
+												"maximum": 100
+											},
+											"skip": {
+												"type": "integer"
+											}
+										},
+										"required": ["take", "skip"],
+										"additionalProperties": false
+									}
+								},
+								"required": ["filter", "pagination"],
+								"additionalProperties": false
+							}
+						}
+					},
+					"required": true
+				}
+			}
+		},
+		"/projects/get": {
+			"post": {
+				"tags": ["Projects"],
+				"operationId": "projects.get",
+				"parameters": [],
+				"security": [],
+				"responses": {
+					"200": {
+						"description": "Project",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProjectEncoded"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "AccessDeniedError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AccessDeniedErrorEncoded"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "ProjectNotFoundError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProjectNotFoundErrorEncoded"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "DatabaseError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DatabaseErrorEncoded"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Read one project",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string",
+										"pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+									}
+								},
+								"required": ["id"],
+								"additionalProperties": false
+							}
+						}
+					},
+					"required": true
+				}
+			}
+		},
+		"/projects/create": {
+			"post": {
+				"tags": ["Projects"],
+				"operationId": "projects.create",
+				"parameters": [
+					{
+						"name": "authorization",
+						"in": "header",
+						"schema": {
+							"type": "string"
+						},
+						"required": true
+					}
+				],
+				"security": [],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string",
+									"pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "SessionNotFoundError | AccountClosedError | SessionExpiredError | SessionUserNotFoundError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/SessionNotFoundErrorEncoded"
+										},
+										{
+											"$ref": "#/components/schemas/AccountClosedErrorEncoded"
+										},
+										{
+											"$ref": "#/components/schemas/SessionExpiredErrorEncoded"
+										},
+										{
+											"$ref": "#/components/schemas/SessionUserNotFoundErrorEncoded"
+										}
+									]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "AccessDeniedError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AccessDeniedErrorEncoded"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "ConcurrentModificationError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ConcurrentModificationErrorEncoded"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "DatabaseError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DatabaseErrorEncoded"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Add an project to the catalog with its per-country teams",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"slug": {
+										"type": "object",
+										"properties": {
+											"fr-FR": {
+												"type": "string",
+												"pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+											},
+											"en-US": {
+												"type": "string",
+												"pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+											}
+										},
+										"required": ["fr-FR", "en-US"],
+										"additionalProperties": false
+									},
+									"label": {
+										"type": "object",
+										"properties": {
+											"fr-FR": {
+												"type": "string",
+												"minLength": 1
+											},
+											"en-US": {
+												"type": "string",
+												"minLength": 1
+											}
+										},
+										"required": ["fr-FR", "en-US"],
+										"additionalProperties": false
+									},
+									"icon": {
+										"type": "string",
+										"minLength": 1
+									},
+									"labels": {
+										"type": "array",
+										"items": {
+											"type": "string",
+											"enum": [
+												"backend",
+												"design",
+												"frontend",
+												"infrastructure",
+												"marketing",
+												"mobile",
+												"research"
+											]
+										}
+									},
+									"teams": {
+										"type": "object",
+										"properties": {
+											"FR": {
+												"type": "array",
+												"items": {
+													"type": "object",
+													"properties": {
+														"slug": {
+															"type": "object",
+															"properties": {
+																"fr-FR": {
+																	"type": "string",
+																	"pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+																},
+																"en-US": {
+																	"type": "string",
+																	"pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+																}
+															},
+															"required": ["fr-FR", "en-US"],
+															"additionalProperties": false
+														},
+														"label": {
+															"type": "object",
+															"properties": {
+																"fr-FR": {
+																	"type": "string",
+																	"minLength": 1
+																},
+																"en-US": {
+																	"type": "string",
+																	"minLength": 1
+																}
+															},
+															"required": ["fr-FR", "en-US"],
+															"additionalProperties": false
+														},
+														"visibility": {
+															"type": "string",
+															"enum": ["public", "private", "internal"]
+														},
+														"order": {
+															"type": "integer",
+															"minimum": 0
+														}
+													},
+													"required": ["slug", "label", "visibility", "order"],
+													"additionalProperties": false
+												}
+											}
+										},
+										"required": ["FR"],
+										"additionalProperties": false
+									}
+								},
+								"required": ["slug", "label", "icon", "labels", "teams"],
+								"additionalProperties": false
+							}
+						}
+					},
+					"required": true
+				}
+			}
+		},
+		"/projects/update": {
+			"post": {
+				"tags": ["Projects"],
+				"operationId": "projects.update",
+				"parameters": [
+					{
+						"name": "authorization",
+						"in": "header",
+						"schema": {
+							"type": "string"
+						},
+						"required": true
+					}
+				],
+				"security": [],
+				"responses": {
+					"204": {
+						"description": "<No Content>"
+					},
+					"401": {
+						"description": "SessionNotFoundError | AccountClosedError | SessionExpiredError | SessionUserNotFoundError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/SessionNotFoundErrorEncoded"
+										},
+										{
+											"$ref": "#/components/schemas/AccountClosedErrorEncoded"
+										},
+										{
+											"$ref": "#/components/schemas/SessionExpiredErrorEncoded"
+										},
+										{
+											"$ref": "#/components/schemas/SessionUserNotFoundErrorEncoded"
+										}
+									]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "AccessDeniedError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AccessDeniedErrorEncoded"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "ProjectNotFoundError | TeamNotFoundError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ProjectNotFoundErrorEncoded"
+										},
+										{
+											"$ref": "#/components/schemas/TeamNotFoundErrorEncoded"
+										}
+									]
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "ConcurrentModificationError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ConcurrentModificationErrorEncoded"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "DatabaseError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DatabaseErrorEncoded"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Rewrite an project and its per-country teams",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string",
+										"pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+									},
+									"slug": {
+										"type": "object",
+										"properties": {
+											"fr-FR": {
+												"type": "string",
+												"pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+											},
+											"en-US": {
+												"type": "string",
+												"pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+											}
+										},
+										"required": ["fr-FR", "en-US"],
+										"additionalProperties": false
+									},
+									"label": {
+										"type": "object",
+										"properties": {
+											"fr-FR": {
+												"type": "string",
+												"minLength": 1
+											},
+											"en-US": {
+												"type": "string",
+												"minLength": 1
+											}
+										},
+										"required": ["fr-FR", "en-US"],
+										"additionalProperties": false
+									},
+									"icon": {
+										"type": "string",
+										"minLength": 1
+									},
+									"labels": {
+										"type": "array",
+										"items": {
+											"type": "string",
+											"enum": [
+												"backend",
+												"design",
+												"frontend",
+												"infrastructure",
+												"marketing",
+												"mobile",
+												"research"
+											]
+										}
+									},
+									"teams": {
+										"type": "object",
+										"properties": {
+											"FR": {
+												"type": "array",
+												"items": {
+													"type": "object",
+													"properties": {
+														"id": {
+															"anyOf": [
+																{
+																	"type": "object",
+																	"properties": {
+																		"_tag": {
+																			"type": "string",
+																			"enum": ["Some"]
+																		},
+																		"value": {
+																			"type": "string",
+																			"pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+																		}
+																	},
+																	"required": ["_tag", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"_tag": {
+																			"type": "string",
+																			"enum": ["None"]
+																		}
+																	},
+																	"required": ["_tag"],
+																	"additionalProperties": false
+																}
+															]
+														},
+														"slug": {
+															"type": "object",
+															"properties": {
+																"fr-FR": {
+																	"type": "string",
+																	"pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+																},
+																"en-US": {
+																	"type": "string",
+																	"pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+																}
+															},
+															"required": ["fr-FR", "en-US"],
+															"additionalProperties": false
+														},
+														"label": {
+															"type": "object",
+															"properties": {
+																"fr-FR": {
+																	"type": "string",
+																	"minLength": 1
+																},
+																"en-US": {
+																	"type": "string",
+																	"minLength": 1
+																}
+															},
+															"required": ["fr-FR", "en-US"],
+															"additionalProperties": false
+														},
+														"visibility": {
+															"type": "string",
+															"enum": ["public", "private", "internal"]
+														},
+														"order": {
+															"type": "integer",
+															"minimum": 0
+														}
+													},
+													"required": [
+														"id",
+														"slug",
+														"label",
+														"visibility",
+														"order"
+													],
+													"additionalProperties": false
+												}
+											}
+										},
+										"required": ["FR"],
+										"additionalProperties": false
+									}
+								},
+								"required": ["id", "slug", "label", "icon", "labels", "teams"],
+								"additionalProperties": false
+							}
+						}
+					},
+					"required": true
+				}
+			}
+		},
+		"/projects/delete": {
+			"post": {
+				"tags": ["Projects"],
+				"operationId": "projects.delete",
+				"parameters": [
+					{
+						"name": "authorization",
+						"in": "header",
+						"schema": {
+							"type": "string"
+						},
+						"required": true
+					}
+				],
+				"security": [],
+				"responses": {
+					"204": {
+						"description": "<No Content>"
+					},
+					"401": {
+						"description": "SessionNotFoundError | AccountClosedError | SessionExpiredError | SessionUserNotFoundError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/SessionNotFoundErrorEncoded"
+										},
+										{
+											"$ref": "#/components/schemas/AccountClosedErrorEncoded"
+										},
+										{
+											"$ref": "#/components/schemas/SessionExpiredErrorEncoded"
+										},
+										{
+											"$ref": "#/components/schemas/SessionUserNotFoundErrorEncoded"
+										}
+									]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "AccessDeniedError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AccessDeniedErrorEncoded"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "ProjectNotFoundError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProjectNotFoundErrorEncoded"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "ConcurrentModificationError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ConcurrentModificationErrorEncoded"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "DatabaseError",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DatabaseErrorEncoded"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Remove an project from the catalog",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string",
+										"pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+									}
+								},
+								"required": ["id"],
+								"additionalProperties": false
+							}
+						}
+					},
+					"required": true
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"TeamEncoded": {
+				"type": "object",
+				"properties": {
+					"_tag": {
+						"type": "string",
+						"enum": ["Team"]
+					},
+					"id": {
+						"type": "string",
+						"pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+					},
+					"slug": {
+						"type": "object",
+						"properties": {
+							"fr-FR": {
+								"type": "string",
+								"pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+							},
+							"en-US": {
+								"type": "string",
+								"pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+							}
+						},
+						"required": ["fr-FR", "en-US"],
+						"additionalProperties": false
+					},
+					"label": {
+						"type": "object",
+						"properties": {
+							"fr-FR": {
+								"type": "string",
+								"minLength": 1
+							},
+							"en-US": {
+								"type": "string",
+								"minLength": 1
+							}
+						},
+						"required": ["fr-FR", "en-US"],
+						"additionalProperties": false
+					},
+					"visibility": {
+						"type": "string",
+						"enum": ["public", "private", "internal"]
+					},
+					"order": {
+						"type": "integer",
+						"minimum": 0
+					}
+				},
+				"required": ["_tag", "id", "slug", "label", "visibility", "order"],
+				"additionalProperties": false
+			},
+			"ProjectEncoded": {
+				"type": "object",
+				"properties": {
+					"_tag": {
+						"type": "string",
+						"enum": ["Project"]
+					},
+					"id": {
+						"type": "string",
+						"pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+					},
+					"slug": {
+						"type": "object",
+						"properties": {
+							"fr-FR": {
+								"type": "string",
+								"pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+							},
+							"en-US": {
+								"type": "string",
+								"pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+							}
+						},
+						"required": ["fr-FR", "en-US"],
+						"additionalProperties": false
+					},
+					"label": {
+						"type": "object",
+						"properties": {
+							"fr-FR": {
+								"type": "string",
+								"minLength": 1
+							},
+							"en-US": {
+								"type": "string",
+								"minLength": 1
+							}
+						},
+						"required": ["fr-FR", "en-US"],
+						"additionalProperties": false
+					},
+					"icon": {
+						"type": "string",
+						"minLength": 1
+					},
+					"teams": {
+						"type": "object",
+						"properties": {
+							"FR": {
+								"type": "array",
+								"items": {
+									"$ref": "#/components/schemas/TeamEncoded"
+								}
+							}
+						},
+						"required": ["FR"],
+						"additionalProperties": false
+					},
+					"labels": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"enum": [
+								"backend",
+								"design",
+								"frontend",
+								"infrastructure",
+								"marketing",
+								"mobile",
+								"research"
+							]
+						}
+					}
+				},
+				"required": ["_tag", "id", "slug", "label", "icon", "teams", "labels"],
+				"additionalProperties": false
+			},
+			"DatabaseErrorEncoded": {
+				"type": "object",
+				"properties": {
+					"_tag": {
+						"type": "string",
+						"enum": ["DatabaseError"]
+					},
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": ["_tag", "message"],
+				"additionalProperties": false
+			},
+			"AccessDeniedErrorEncoded": {
+				"type": "object",
+				"properties": {
+					"_tag": {
+						"type": "string",
+						"enum": ["AccessDeniedError"]
+					}
+				},
+				"required": ["_tag"],
+				"additionalProperties": false
+			},
+			"RateLimitedErrorEncoded": {
+				"type": "object",
+				"properties": {
+					"_tag": {
+						"type": "string",
+						"enum": ["RateLimitedError"]
+					},
+					"retryAfterSeconds": {
+						"anyOf": [
+							{
+								"type": "number"
+							},
+							{
+								"type": "string",
+								"enum": ["Infinity", "-Infinity", "NaN"]
+							}
+						]
+					}
+				},
+				"required": ["_tag", "retryAfterSeconds"],
+				"additionalProperties": false
+			},
+			"ProjectNotFoundErrorEncoded": {
+				"type": "object",
+				"properties": {
+					"_tag": {
+						"type": "string",
+						"enum": ["ProjectNotFoundError"]
+					}
+				},
+				"required": ["_tag"],
+				"additionalProperties": false
+			},
+			"SessionNotFoundErrorEncoded": {
+				"type": "object",
+				"properties": {
+					"_tag": {
+						"type": "string",
+						"enum": ["SessionNotFoundError"]
+					}
+				},
+				"required": ["_tag"],
+				"additionalProperties": false
+			},
+			"AccountClosedErrorEncoded": {
+				"type": "object",
+				"properties": {
+					"_tag": {
+						"type": "string",
+						"enum": ["AccountClosedError"]
+					}
+				},
+				"required": ["_tag"],
+				"additionalProperties": false
+			},
+			"SessionExpiredErrorEncoded": {
+				"type": "object",
+				"properties": {
+					"_tag": {
+						"type": "string",
+						"enum": ["SessionExpiredError"]
+					}
+				},
+				"required": ["_tag"],
+				"additionalProperties": false
+			},
+			"SessionUserNotFoundErrorEncoded": {
+				"type": "object",
+				"properties": {
+					"_tag": {
+						"type": "string",
+						"enum": ["SessionUserNotFoundError"]
+					},
+					"userId": {
+						"type": "string"
+					}
+				},
+				"required": ["_tag", "userId"],
+				"additionalProperties": false
+			},
+			"ConcurrentModificationErrorEncoded": {
+				"type": "object",
+				"properties": {
+					"_tag": {
+						"type": "string",
+						"enum": ["ConcurrentModificationError"]
+					},
+					"entity": {
+						"type": "string"
+					},
+					"id": {
+						"type": "string"
+					}
+				},
+				"required": ["_tag", "entity", "id"],
+				"additionalProperties": false
+			},
+			"TeamNotFoundErrorEncoded": {
+				"type": "object",
+				"properties": {
+					"_tag": {
+						"type": "string",
+						"enum": ["TeamNotFoundError"]
+					}
+				},
+				"required": ["_tag"],
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"security": [],
+	"tags": [
+		{
+			"name": "Projects"
+		}
+	]
+}

@@ -1,0 +1,19 @@
+{
+	"countryCode": "LU",
+	"vatNumber": "20260743",
+	"requestDate": "2026-09-24T09:37:37.654Z",
+	"valid": true,
+	"requestIdentifier": "",
+	"name": "AMAZON EU SARL",
+	"address": "38, AVENUE JOHN F. KENNEDY\nL-1855  LUXEMBOURG",
+	"traderName": "---",
+	"traderStreet": "---",
+	"traderPostalCode": "---",
+	"traderCity": "---",
+	"traderCompanyType": "---",
+	"traderNameMatch": "NOT_PROCESSED",
+	"traderStreetMatch": "NOT_PROCESSED",
+	"traderPostalCodeMatch": "NOT_PROCESSED",
+	"traderCityMatch": "NOT_PROCESSED",
+	"traderCompanyTypeMatch": "NOT_PROCESSED"
+}

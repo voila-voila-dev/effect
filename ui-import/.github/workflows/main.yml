@@ -1,8 +1,8 @@
 name: Main
 
 # Everything that happens when `main` moves: the checks run, @voila.dev/ui and
-# @voila.dev/chart go to public npm, and both sites redeploy to their
-# production Cloudflare Workers.
+# @voila.dev/chart go to public npm, and the sites (the docs, Storybook and
+# the emoji data) redeploy to their production Cloudflare Workers.
 
 on:
   push:
@@ -123,6 +123,8 @@ jobs:
             label: storybook.ui.voila.dev
           - app: ui.voila.dev
             label: ui.voila.dev
+          - app: emoji.voila.dev
+            label: emoji.voila.dev
     steps:
       - name: Checkout
         uses: actions/checkout@v7

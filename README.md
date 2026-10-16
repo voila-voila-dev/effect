@@ -18,17 +18,6 @@ when it needs to.
 | [`@voila.dev/live`](./packages/live) | Live updates over WebSocket: channels with a gate and a filter, a batching socket hub, a replay log on Redis streams, and a reconnecting browser client. |
 | [`@voila.dev/outbox`](./packages/outbox) | Domain events written in the same transaction as the change, delivered at least once with retries, backoff and parking (in memory or on Postgres), and cron jobs. |
 
-## Providers
-
-Each one implements a contract you can replace (a `Context.Service`), calls
-out through [`@voila.dev/http`](./packages/http) and comes with an in-memory
-fake.
-
-| Package | What it gives you |
-| --- | --- |
-| [`@voila.dev/annuaire-entreprises`](./packages/annuaire-entreprises) | The French company directory: a SIRET to its company, directors and address, a name search, withheld identities flagged, outages typed apart from "not found". |
-| [`@voila.dev/vies`](./packages/vies) | EU VAT number checks against VIES, member-state outages told apart from refused input, national VAT formats and a parser for numbers as people type them. |
-
 ### Example
 
 [`examples/organizations`](./examples/organizations) is a small context written
@@ -48,6 +37,17 @@ export const RenameOrganizationUseCase = UseCase.make({
 		),
 });
 ```
+
+## Providers
+
+Each one implements a contract you can replace (a `Context.Service`), calls
+out through [`@voila.dev/http`](./packages/http) and comes with an in-memory
+fake.
+
+| Package | What it gives you |
+| --- | --- |
+| [`@voila.dev/annuaire-entreprises`](./packages/annuaire-entreprises) | The French company directory: a SIRET to its company, directors and address, a name search, withheld identities flagged, outages typed apart from "not found". |
+| [`@voila.dev/vies`](./packages/vies) | EU VAT number checks against VIES, member-state outages told apart from refused input, national VAT formats and a parser for numbers as people type them. |
 
 ## Development
 

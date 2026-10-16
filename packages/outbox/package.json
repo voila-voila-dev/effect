@@ -49,7 +49,7 @@
 	"scripts": {
 		"build": "rm -rf dist && tsc -p tsconfig.build.json",
 		"check-types": "tsc --noEmit",
-		"test": "bun test"
+		"test": "bun test --conditions=@voila.dev/source"
 	},
 	"dependencies": {
 		"@voila.dev/effect-ddd": "workspace:^"

@@ -1,6 +1,6 @@
 {
 	"name": "@voila.dev/live",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "Live updates over WebSocket on Effect: channels with a gate and a filter, a batching socket hub, a replay log on Redis streams, and a reconnecting browser client.",
 	"license": "MIT",
 	"author": "voila.dev",

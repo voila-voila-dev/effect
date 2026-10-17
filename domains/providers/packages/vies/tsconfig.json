@@ -1,7 +1,3 @@
 {
-	"extends": "../../../../tsconfig.base.json",
-	"compilerOptions": {
-		"customConditions": ["@voila.dev/source"]
-	},
-	"include": ["src"]
+	"extends": "@voila.dev/typescript-config/strict.json"
 }

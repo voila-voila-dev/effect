@@ -2,10 +2,13 @@
 	"name": "@voila.dev/typescript-config",
 	"version": "0.0.0",
 	"private": true,
-	"description": "Shared TypeScript base configurations for the @voila.dev/ui monorepo.",
+	"description": "Shared TypeScript configurations for the monorepo. A package extends `base.json`, adds `strict.json` (the Effect packages) and/or `react.json` (anything that renders), and its build stacks `build.json` (tsc emits the JS) or `declarations.json` (another tool emits the JS) on top.",
 	"files": [
 		"base.json",
+		"strict.json",
+		"react.json",
 		"scripts.json",
+		"declarations.json",
 		"build.json"
 	]
 }

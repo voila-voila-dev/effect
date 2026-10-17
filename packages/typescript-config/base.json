@@ -3,10 +3,11 @@
 	"display": "Base",
 	"compilerOptions": {
 		"lib": ["ESNext"],
-		"target": "ESNext",
+		"target": "ES2022",
 		"module": "ESNext",
 		"moduleDetection": "force",
 		"moduleResolution": "bundler",
+		"customConditions": ["@voila.dev/source"],
 		"allowImportingTsExtensions": true,
 		"resolveJsonModule": true,
 		"verbatimModuleSyntax": true,
@@ -19,5 +20,6 @@
 		"noImplicitOverride": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true
-	}
+	},
+	"include": ["${configDir}/src"]
 }

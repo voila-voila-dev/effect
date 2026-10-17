@@ -1,0 +1,65 @@
+{
+	"name": "@voila.dev/outbox",
+	"version": "0.1.1",
+	"description": "Domain events written in the same transaction as the change and delivered at least once, with retries, backoff and parking, plus cron jobs, on Effect.",
+	"license": "MIT",
+	"author": "voila.dev",
+	"type": "module",
+	"sideEffects": false,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/voila-voila-dev/platform.git",
+		"directory": "domains/effect/packages/outbox"
+	},
+	"homepage": "https://github.com/voila-voila-dev/platform/tree/main/domains/effect/packages/outbox#readme",
+	"bugs": {
+		"url": "https://github.com/voila-voila-dev/platform/issues"
+	},
+	"keywords": [
+		"effect",
+		"effect-ts",
+		"outbox",
+		"transactional-outbox",
+		"domain-events",
+		"event-bus",
+		"postgres",
+		"cron",
+		"jobs"
+	],
+	"exports": {
+		".": {
+			"@voila.dev/source": "./src/index.ts",
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		},
+		"./postgres": {
+			"@voila.dev/source": "./src/postgres/index.ts",
+			"types": "./dist/postgres/index.d.ts",
+			"default": "./dist/postgres/index.js"
+		},
+		"./migrations/*": "./migrations/*"
+	},
+	"files": [
+		"dist",
+		"src",
+		"migrations",
+		"!src/**/*.test.ts",
+		"!src/**/*.test-helper.ts"
+	],
+	"scripts": {
+		"build": "rm -rf dist && tsc -p tsconfig.build.json",
+		"check-types": "tsc --noEmit",
+		"test": "bun test --conditions=@voila.dev/source"
+	},
+	"dependencies": {
+		"@voila.dev/effect-ddd": "workspace:^"
+	},
+	"peerDependencies": {
+		"effect": "^4.0.0"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"typescript": "catalog:",
+		"effect": "catalog:"
+	}
+}

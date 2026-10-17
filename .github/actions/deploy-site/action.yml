@@ -5,7 +5,7 @@ description: >
   preview worker reached through its *.workers.dev URL.
 inputs:
   app:
-    description: 'Workspace directory under apps/, e.g. storybook.ui.voila.dev'
+    description: 'Workspace directory under domains/ui/apps/, e.g. storybook.ui.voila.dev'
     required: true
   worker-name:
     description: >
@@ -56,7 +56,7 @@ runs:
       if: inputs.worker-name != ''
       uses: ./.github/actions/generate-preview-wrangler-config
       with:
-        working-directory: apps/${{ inputs.app }}
+        working-directory: domains/ui/apps/${{ inputs.app }}
         worker-name: ${{ inputs.worker-name }}
 
     - name: Deploy
@@ -65,7 +65,7 @@ runs:
       with:
         cloudflare-api-token: ${{ inputs.cloudflare-api-token }}
         cloudflare-account-id: ${{ inputs.cloudflare-account-id }}
-        working-directory: apps/${{ inputs.app }}
+        working-directory: domains/ui/apps/${{ inputs.app }}
         command: >-
           deploy ${{ inputs.worker-name != '' && '--config wrangler.preview.json' || '' }}
 

@@ -1,0 +1,64 @@
+{
+	"name": "@voila.dev/cache-lock",
+	"version": "0.2.0",
+	"description": "A key-value cache, a lease-based distributed lock and a rate limiter as Effect services, each with an in-memory and a Redis implementation.",
+	"license": "MIT",
+	"author": "voila.dev",
+	"type": "module",
+	"sideEffects": false,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/voila-voila-dev/platform.git",
+		"directory": "domains/effect/packages/cache-lock"
+	},
+	"homepage": "https://github.com/voila-voila-dev/platform/tree/main/domains/effect/packages/cache-lock#readme",
+	"bugs": {
+		"url": "https://github.com/voila-voila-dev/platform/issues"
+	},
+	"keywords": [
+		"effect",
+		"effect-ts",
+		"cache",
+		"lock",
+		"distributed-lock",
+		"rate-limit",
+		"redis"
+	],
+	"exports": {
+		".": {
+			"@voila.dev/source": "./src/index.ts",
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		},
+		"./redis": {
+			"@voila.dev/source": "./src/redis/index.ts",
+			"types": "./dist/redis/index.d.ts",
+			"default": "./dist/redis/index.js"
+		},
+		"./store": {
+			"@voila.dev/source": "./src/store/index.ts",
+			"types": "./dist/store/index.d.ts",
+			"default": "./dist/store/index.js"
+		}
+	},
+	"files": [
+		"dist",
+		"src",
+		"!src/**/*.test.ts",
+		"!src/**/*.test-helper.ts"
+	],
+	"scripts": {
+		"build": "rm -rf dist && tsc -p tsconfig.build.json",
+		"check-types": "tsc --noEmit",
+		"test": "bun test --conditions=@voila.dev/source"
+	},
+	"peerDependencies": {
+		"effect": "^4.0.0"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@voila.dev/effect-ddd": "workspace:*",
+		"typescript": "catalog:",
+		"effect": "catalog:"
+	}
+}

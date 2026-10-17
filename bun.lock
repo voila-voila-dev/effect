@@ -14,7 +14,7 @@
         "typescript-editor-lsp": "npm:typescript@6.0.3",
       },
     },
-    "apps/emoji.voila.dev": {
+    "domains/ui/apps/emoji.voila.dev": {
       "name": "@voila.dev/emoji.voila.dev",
       "version": "0.0.0",
       "devDependencies": {
@@ -23,7 +23,7 @@
         "wrangler": "^4.130.0",
       },
     },
-    "apps/storybook.ui.voila.dev": {
+    "domains/ui/apps/storybook.ui.voila.dev": {
       "name": "@voila.dev/storybook.ui.voila.dev",
       "version": "0.0.0",
       "dependencies": {
@@ -55,7 +55,7 @@
         "wrangler": "^4.130.0",
       },
     },
-    "apps/ui.voila.dev": {
+    "domains/ui/apps/ui.voila.dev": {
       "name": "@voila.dev/ui.voila.dev",
       "version": "0.0.0",
       "dependencies": {
@@ -105,7 +105,7 @@
         "zod": "^4.6.1",
       },
     },
-    "examples/organizations": {
+    "domains/effect/examples/organizations": {
       "name": "@voila.dev/example-organizations",
       "dependencies": {
         "@voila.dev/effect-ddd": "workspace:*",
@@ -116,7 +116,7 @@
         "typescript": "catalog:",
       },
     },
-    "packages/annuaire-entreprises": {
+    "domains/providers/packages/annuaire-entreprises": {
       "name": "@voila.dev/annuaire-entreprises",
       "version": "0.0.0",
       "dependencies": {
@@ -144,7 +144,7 @@
         "@biomejs/biome": "^2.5.0",
       },
     },
-    "packages/cache-lock": {
+    "domains/effect/packages/cache-lock": {
       "name": "@voila.dev/cache-lock",
       "version": "0.2.0",
       "devDependencies": {
@@ -157,7 +157,7 @@
         "effect": "^4.0.0",
       },
     },
-    "packages/chart": {
+    "domains/ui/packages/chart": {
       "name": "@voila.dev/chart",
       "version": "6.0.134",
       "dependencies": {
@@ -200,7 +200,7 @@
         "react-dom",
       ],
     },
-    "packages/crypto": {
+    "domains/effect/packages/crypto": {
       "name": "@voila.dev/crypto",
       "version": "0.1.1",
       "devDependencies": {
@@ -213,7 +213,7 @@
         "effect": "^4.0.0",
       },
     },
-    "packages/docs": {
+    "domains/docs/packages/docs": {
       "name": "@voila.dev/docs",
       "version": "0.1.0",
       "dependencies": {
@@ -247,7 +247,7 @@
         "vite",
       ],
     },
-    "packages/effect-ddd": {
+    "domains/effect/packages/effect-ddd": {
       "name": "@voila.dev/effect-ddd",
       "version": "0.1.2",
       "devDependencies": {
@@ -259,7 +259,7 @@
         "effect": "^4.0.0",
       },
     },
-    "packages/email": {
+    "domains/email/packages/email": {
       "name": "@voila.dev/email",
       "version": "0.0.0",
       "devDependencies": {
@@ -272,7 +272,7 @@
         "effect": "^4.0.0",
       },
     },
-    "packages/env": {
+    "domains/effect/packages/env": {
       "name": "@voila.dev/env",
       "version": "0.1.2",
       "devDependencies": {
@@ -287,7 +287,7 @@
         "effect",
       ],
     },
-    "packages/http": {
+    "domains/effect/packages/http": {
       "name": "@voila.dev/http",
       "version": "0.1.1",
       "dependencies": {
@@ -303,7 +303,7 @@
         "effect": "^4.0.0",
       },
     },
-    "packages/live": {
+    "domains/effect/packages/live": {
       "name": "@voila.dev/live",
       "version": "0.1.0",
       "dependencies": {
@@ -318,7 +318,7 @@
         "effect": "^4.0.0",
       },
     },
-    "packages/motion": {
+    "domains/ui/packages/motion": {
       "name": "@voila.dev/motion",
       "version": "6.0.134",
       "devDependencies": {
@@ -344,7 +344,7 @@
         "react-dom",
       ],
     },
-    "packages/outbox": {
+    "domains/effect/packages/outbox": {
       "name": "@voila.dev/outbox",
       "version": "0.1.1",
       "dependencies": {
@@ -359,7 +359,7 @@
         "effect": "^4.0.0",
       },
     },
-    "packages/resend": {
+    "domains/providers/packages/resend": {
       "name": "@voila.dev/resend",
       "version": "0.0.0",
       "dependencies": {
@@ -377,7 +377,7 @@
         "effect": "^4.0.0",
       },
     },
-    "packages/stripe": {
+    "domains/providers/packages/stripe": {
       "name": "@voila.dev/stripe",
       "version": "0.0.0",
       "dependencies": {
@@ -397,7 +397,7 @@
       "name": "@voila.dev/typescript-config",
       "version": "0.0.0",
     },
-    "packages/ui": {
+    "domains/ui/packages/ui": {
       "name": "@voila.dev/ui",
       "version": "6.0.134",
       "dependencies": {
@@ -484,7 +484,7 @@
         "remark-gfm",
       ],
     },
-    "packages/ui-branding": {
+    "domains/ui/packages/ui-branding": {
       "name": "@voila.dev/ui-branding",
       "version": "0.0.0",
       "dependencies": {
@@ -501,7 +501,7 @@
         "tailwindcss": "catalog:tailwind",
       },
     },
-    "packages/ui-docs": {
+    "domains/docs/packages/ui-docs": {
       "name": "@voila.dev/ui-docs",
       "version": "0.1.0",
       "dependencies": {
@@ -530,7 +530,7 @@
         "tailwindcss": "^4.0.0",
       },
     },
-    "packages/vies": {
+    "domains/providers/packages/vies": {
       "name": "@voila.dev/vies",
       "version": "0.0.0",
       "dependencies": {
@@ -1384,53 +1384,53 @@
 
     "@vitest/utils": ["@vitest/utils@5.0.0", "", { "dependencies": { "@vitest/pretty-format": "5.0.0", "convert-source-map": "^2.0.0", "tinyrainbow": "^3.1.1" } }, "sha512-dO++xL3vDfvhTAVimfkuQUA3k+JClIF1i1vAkPqpcGAthRmeWnXmHB7YPViPvgCwviX8u7Y5W1u2N//AaQr3fw=="],
 
-    "@voila.dev/annuaire-entreprises": ["@voila.dev/annuaire-entreprises@workspace:packages/annuaire-entreprises"],
+    "@voila.dev/annuaire-entreprises": ["@voila.dev/annuaire-entreprises@workspace:domains/providers/packages/annuaire-entreprises"],
 
     "@voila.dev/biome-plugins": ["@voila.dev/biome-plugins@workspace:packages/biome-plugins"],
 
-    "@voila.dev/cache-lock": ["@voila.dev/cache-lock@workspace:packages/cache-lock"],
+    "@voila.dev/cache-lock": ["@voila.dev/cache-lock@workspace:domains/effect/packages/cache-lock"],
 
-    "@voila.dev/chart": ["@voila.dev/chart@workspace:packages/chart"],
+    "@voila.dev/chart": ["@voila.dev/chart@workspace:domains/ui/packages/chart"],
 
-    "@voila.dev/crypto": ["@voila.dev/crypto@workspace:packages/crypto"],
+    "@voila.dev/crypto": ["@voila.dev/crypto@workspace:domains/effect/packages/crypto"],
 
-    "@voila.dev/docs": ["@voila.dev/docs@workspace:packages/docs"],
+    "@voila.dev/docs": ["@voila.dev/docs@workspace:domains/docs/packages/docs"],
 
-    "@voila.dev/effect-ddd": ["@voila.dev/effect-ddd@workspace:packages/effect-ddd"],
+    "@voila.dev/effect-ddd": ["@voila.dev/effect-ddd@workspace:domains/effect/packages/effect-ddd"],
 
-    "@voila.dev/email": ["@voila.dev/email@workspace:packages/email"],
+    "@voila.dev/email": ["@voila.dev/email@workspace:domains/email/packages/email"],
 
-    "@voila.dev/emoji.voila.dev": ["@voila.dev/emoji.voila.dev@workspace:apps/emoji.voila.dev"],
+    "@voila.dev/emoji.voila.dev": ["@voila.dev/emoji.voila.dev@workspace:domains/ui/apps/emoji.voila.dev"],
 
-    "@voila.dev/env": ["@voila.dev/env@workspace:packages/env"],
+    "@voila.dev/env": ["@voila.dev/env@workspace:domains/effect/packages/env"],
 
-    "@voila.dev/example-organizations": ["@voila.dev/example-organizations@workspace:examples/organizations"],
+    "@voila.dev/example-organizations": ["@voila.dev/example-organizations@workspace:domains/effect/examples/organizations"],
 
-    "@voila.dev/http": ["@voila.dev/http@workspace:packages/http"],
+    "@voila.dev/http": ["@voila.dev/http@workspace:domains/effect/packages/http"],
 
-    "@voila.dev/live": ["@voila.dev/live@workspace:packages/live"],
+    "@voila.dev/live": ["@voila.dev/live@workspace:domains/effect/packages/live"],
 
-    "@voila.dev/motion": ["@voila.dev/motion@workspace:packages/motion"],
+    "@voila.dev/motion": ["@voila.dev/motion@workspace:domains/ui/packages/motion"],
 
-    "@voila.dev/outbox": ["@voila.dev/outbox@workspace:packages/outbox"],
+    "@voila.dev/outbox": ["@voila.dev/outbox@workspace:domains/effect/packages/outbox"],
 
-    "@voila.dev/resend": ["@voila.dev/resend@workspace:packages/resend"],
+    "@voila.dev/resend": ["@voila.dev/resend@workspace:domains/providers/packages/resend"],
 
-    "@voila.dev/storybook.ui.voila.dev": ["@voila.dev/storybook.ui.voila.dev@workspace:apps/storybook.ui.voila.dev"],
+    "@voila.dev/storybook.ui.voila.dev": ["@voila.dev/storybook.ui.voila.dev@workspace:domains/ui/apps/storybook.ui.voila.dev"],
 
-    "@voila.dev/stripe": ["@voila.dev/stripe@workspace:packages/stripe"],
+    "@voila.dev/stripe": ["@voila.dev/stripe@workspace:domains/providers/packages/stripe"],
 
     "@voila.dev/typescript-config": ["@voila.dev/typescript-config@workspace:packages/typescript-config"],
 
-    "@voila.dev/ui": ["@voila.dev/ui@workspace:packages/ui"],
+    "@voila.dev/ui": ["@voila.dev/ui@workspace:domains/ui/packages/ui"],
 
-    "@voila.dev/ui-branding": ["@voila.dev/ui-branding@workspace:packages/ui-branding"],
+    "@voila.dev/ui-branding": ["@voila.dev/ui-branding@workspace:domains/ui/packages/ui-branding"],
 
-    "@voila.dev/ui-docs": ["@voila.dev/ui-docs@workspace:packages/ui-docs"],
+    "@voila.dev/ui-docs": ["@voila.dev/ui-docs@workspace:domains/docs/packages/ui-docs"],
 
-    "@voila.dev/ui.voila.dev": ["@voila.dev/ui.voila.dev@workspace:apps/ui.voila.dev"],
+    "@voila.dev/ui.voila.dev": ["@voila.dev/ui.voila.dev@workspace:domains/ui/apps/ui.voila.dev"],
 
-    "@voila.dev/vies": ["@voila.dev/vies@workspace:packages/vies"],
+    "@voila.dev/vies": ["@voila.dev/vies@workspace:domains/providers/packages/vies"],
 
     "@webcontainer/env": ["@webcontainer/env@1.1.1", "", {}, "sha512-6aN99yL695Hi9SuIk1oC88l9o0gmxL1nGWWQ/kNy81HigJ0FoaoTXpytCj6ItzgyCEwA9kF1wixsTuv5cjsgng=="],
 

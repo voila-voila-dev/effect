@@ -38,6 +38,17 @@ export const RenameOrganizationUseCase = UseCase.make({
 });
 ```
 
+## Providers
+
+Each one implements a contract you can replace (a `Context.Service`), calls
+out through [`@voila.dev/http`](./packages/http) and comes with an in-memory
+fake.
+
+| Package | What it gives you |
+| --- | --- |
+| [`@voila.dev/annuaire-entreprises`](./packages/annuaire-entreprises) | The French company directory: a SIRET to its company, directors and address, a name search, withheld identities flagged, outages typed apart from "not found". |
+| [`@voila.dev/vies`](./packages/vies) | EU VAT number checks against VIES, member-state outages told apart from refused input, national VAT formats and a parser for numbers as people type them. |
+
 ## Development
 
 ```sh
@@ -61,10 +72,11 @@ Merging to `main` opens the "Version packages" PR; merging that publishes.
 2. `biome-plugins`, `crypto`, `cache-lock`, `http`, `outbox` — **0.1** on npm
 3. `live` (WebSocket hub) — merged, first release next
 4. Documentation site on `@voila.dev/docs`
+5. Providers: `annuaire-entreprises`, `vies` — merged, first release next;
+   then `resend` and `stripe`
 
-Next in this repository: the UI packages (`@voila.dev/ui` and its companions),
-`@voila.dev/docs`, third-party adapters (Stripe, Resend, Annuaire Entreprises,
-VIES…) implementing the contracts defined here, and `trust` (KYC/KYB).
+Next in this repository: the UI packages (`@voila.dev/ui` and its companions)
+and `trust` (KYC/KYB).
 
 ## License
 

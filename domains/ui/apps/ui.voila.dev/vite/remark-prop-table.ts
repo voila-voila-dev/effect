@@ -26,8 +26,8 @@ import type {
 import remarkParse from "remark-parse";
 import { unified } from "unified";
 import { visit } from "unist-util-visit";
-import type { DocsPropEntry, DocsPropsManifest } from "./docs-props.types";
-import { readPropsManifest } from "./props-extract";
+import type { DocsPropEntry, DocsPropsManifest } from "./docs-props.types.ts";
+import { readPropsManifest } from "./props-extract.ts";
 
 /**
  * The walk costs ~2.4s, and every page transform needs the same answer, so it

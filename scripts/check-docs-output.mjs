@@ -43,7 +43,7 @@ function listPages() {
  * page could have introduced 180 times over.
  */
 const STAGE =
-	/<div class="preview__stage[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/div>/g;
+	/<div class="docs-preview-stage"[^>]*>([\s\S]*?)<\/div>\s*<\/div>/g;
 
 const pages = listPages();
 if (pages.length < 190) {

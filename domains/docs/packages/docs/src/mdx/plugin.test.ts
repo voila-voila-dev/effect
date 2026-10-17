@@ -52,6 +52,32 @@ describe("docsMdx", () => {
 		expect(page?.code).toContain("{key: value}");
 	});
 
+	it("drops a page's imports from its ?meta, and keeps its exports", async () => {
+		const transform = transformOf(docsMdx());
+		const source =
+			'---\ntitle: Button\n---\n\nimport * as Example from "./examples/button";\n\n<Example.Default />\n\n## Usage\n';
+
+		const meta = await transform(source, "/site/button.mdx?meta");
+
+		expect(meta?.code).not.toContain("./examples/button");
+		expect(meta?.code).toContain("Button");
+		expect(meta?.code).toContain('"usage"');
+	});
+
+	it("compiles ?text to the page's prose, code listings left out", async () => {
+		const transform = transformOf(docsMdx());
+		const source =
+			'import { Note } from "./note";\n\n# Buttons\n\nA **button** starts an action.\n\n<Note>Use one per form.</Note>\n\n```ts\nconst hidden = true;\n```\n';
+
+		const text = await transform(source, "/site/button.mdx?text");
+
+		expect(text?.code).toContain(
+			'"Buttons A button starts an action. Use one per form."',
+		);
+		expect(text?.code).not.toContain("hidden");
+		expect(text?.code).not.toContain("./note");
+	});
+
 	it("leaves ?raw to Vite", async () => {
 		const transform = transformOf(docsMdx());
 

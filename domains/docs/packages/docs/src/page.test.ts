@@ -121,6 +121,38 @@ describe("docFrontmatter", () => {
 		).toBe("✖ only concerns developers pages\n  → at appliesTo.language");
 	});
 
+	it("validates a site's own fields beside the shared ones", () => {
+		const extended = docFrontmatter(
+			{ icons: ["book"], audiences: ["everyone"], stages: ["build"] },
+			{
+				extend: {
+					category: z.string().min(1).optional(),
+					sidebar: z.strictObject({ order: z.number().int() }).optional(),
+				},
+			},
+		);
+		const page = {
+			title: "Button",
+			description: "A button.",
+			audience: ["everyone"],
+			kind: "reference",
+		};
+
+		const parsed = extended.parse({
+			...page,
+			category: "actions",
+			sidebar: { order: 2 },
+		});
+		expect(parsed.category).toBe("actions");
+		expect(parsed.sidebar).toEqual({ order: 2 });
+		expect(
+			extended.safeParse({ ...page, sidebar: { order: "2" } }).success,
+		).toBe(false);
+		expect(extended.safeParse({ ...page, categroy: "actions" }).success).toBe(
+			false,
+		);
+	});
+
 	it("keeps an applicability a page declares rightly", () => {
 		const appliesTo = { country: ["FR"], language: ["other"] };
 

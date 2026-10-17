@@ -1,0 +1,108 @@
+/*
+ * The site's styles: @voila.dev/ui's tokens and default palette (the palette
+ * switch layers another theme's sheet over it), the docs frame on top, and
+ * what the frame reads mapped onto the kit's tokens.
+ */
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@voila.dev/ui/styles/tokens/colors.css";
+@import "@voila.dev/ui/styles/tokens/typography.css";
+@import "@voila.dev/ui/styles/tokens/animations.css";
+@import "@voila.dev/ui/styles/themes/default.css";
+@import "@voila.dev/ui/styles/landing.css";
+@import "@voila.dev/ui/styles/content-editor.css";
+@import "@voila.dev/ui-docs/styles/docs.css";
+
+/*
+ * Live previews render real components, so their classes must be generated.
+ * Each package declares its own sources, so these are package imports rather
+ * than paths into node_modules.
+ */
+@import "@voila.dev/ui/styles/sources.css";
+@import "@voila.dev/ui-branding/styles.css";
+@import "@voila.dev/ui-docs/styles/sources.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+	/* Code blocks, inline code and the wordmark all share it. */
+	--font-mono: "Intel One Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+	/* A component page's examples want more room than a guide's prose. */
+	--container-docs-guide: 48rem;
+}
+
+/*
+ * The docs' own tokens, on the kit's: whichever palette the reader picked
+ * colors the frame, the callouts and the chips too. Unlayered and on both
+ * selectors, so they follow a palette sheet's `:root` and `.dark` alike.
+ */
+:root,
+.dark {
+	--docs-canvas: var(--sidebar);
+	--docs-shot-tint: var(--primary);
+	--docs-info: var(--primary);
+	--docs-info-foreground: var(--primary-foreground);
+	--docs-success: var(--success);
+	--docs-success-foreground: var(--success-foreground);
+	--docs-warning: var(--warning);
+	--docs-warning-foreground: var(--warning-foreground);
+}
+
+@layer base {
+	* {
+		border-color: var(--border);
+	}
+	body {
+		background-color: var(--background);
+		color: var(--foreground);
+		font-family: var(--font-sans);
+		-webkit-font-smoothing: antialiased;
+	}
+}
+
+/* Scrollable regions of the kit that hide their scrollbar (combobox, command,
+ * filter panel), as `@voila.dev/ui/styles/globals.css` declares it. */
+@utility no-scrollbar {
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+/*
+ * Generated prop tables (`vite/remark-prop-table.ts`). Always Prop / Type /
+ * Default / description, so the columns get fixed proportions: under `auto`,
+ * one 20-member union claimed 60% of the table and the description column
+ * collapsed to a ribbon four lines tall.
+ *
+ * Only from `md` up. Narrower than that there is no width to divide: fixed
+ * columns broke `color` into "colo/r". On a phone the table keeps `auto`
+ * layout and scrolls inside its own frame.
+ */
+@media (width >= 48rem) {
+	.docs-prose table.prop-table {
+		table-layout: fixed;
+	}
+	.docs-prose .prop-table :is(th, td) {
+		overflow-wrap: anywhere;
+		white-space: normal;
+	}
+	/* A type like `ReactElement<unknown, string | JSXElementConstructor<any>>`
+	 * is one token wider than its column: let it break. */
+	.docs-prose .prop-table :is(code, code span) {
+		overflow-wrap: anywhere;
+		white-space: normal;
+	}
+	.docs-prose .prop-table :is(th, td):nth-child(1) {
+		width: 17%;
+	}
+	.docs-prose .prop-table :is(th, td):nth-child(2) {
+		width: 30%;
+	}
+	.docs-prose .prop-table :is(th, td):nth-child(3) {
+		width: 15%;
+	}
+	.docs-prose .prop-table :is(th, td):nth-child(4) {
+		width: 38%;
+	}
+}

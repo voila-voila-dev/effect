@@ -5,63 +5,61 @@ sidebar:
   order: 2
 ---
 
-import { Steps, Tabs, TabItem } from "@/components/docs/starlight";
-
 <Steps>
+<Step title="Install the core and the tokens.">
 
-1.  **Install the core and the tokens.**
+<CodeGroup>
 
-    <Tabs syncKey="pkg">
-    	<TabItem label="bun">
-    	```sh
-    	bun add @voila.dev/ui
-    	```
-    	</TabItem>
-    	<TabItem label="pnpm">
-    	```sh
-    	pnpm add @voila.dev/ui
-    	```
-    	</TabItem>
-    	<TabItem label="npm">
-    	```sh
-    	npm install @voila.dev/ui
-    	```
-    	</TabItem>
-    </Tabs>
+```sh title="bun"
+bun add @voila.dev/ui
+```
 
-    The peers are `react@19`, `react-dom@19` and `tailwindcss@4`. Your app almost
-    certainly has the first two already.
+```sh title="pnpm"
+pnpm add @voila.dev/ui
+```
 
-2.  **Import the stylesheet.**
+```sh title="npm"
+npm install @voila.dev/ui
+```
 
-    In the CSS entry point your app already loads:
+</CodeGroup>
 
-    ```css title="src/styles/globals.css"
-    @import "tailwindcss";
-    @import "@voila.dev/ui/styles/globals.css";
-    @import "@voila.dev/ui/styles/themes/default.css";
-    ```
+The peers are `react@19`, `react-dom@19` and `tailwindcss@4`. Your app almost
+certainly has the first two already.
 
-    The first import covers the token contract, the animation utilities, and —
-    this is the part people expect to have to configure — telling Tailwind to
-    scan the package. The package declares its own sources, so you never write a
-    path into `node_modules`, and every domain (chart, map, filter…) is covered
-    by the same import.
+</Step>
+<Step title="Import the stylesheet.">
 
-    The second picks the values. `default` is black and white; `indigo`,
-    `iris`, `sand`, `emerald` and `olive` also ship. Exactly one theme,
-    and it comes second — see [Theming](/start/theming).
+In the CSS entry point your app already loads:
 
-3.  **Render something.**
+```css title="src/styles/globals.css"
+@import "tailwindcss";
+@import "@voila.dev/ui/styles/globals.css";
+@import "@voila.dev/ui/styles/themes/default.css";
+```
 
-    ```tsx title="src/app.tsx"
-    import { Button } from "@voila.dev/ui/button";
+The first import covers the token contract, the animation utilities, and —
+this is the part people expect to have to configure — telling Tailwind to
+scan the package. The package declares its own sources, so you never write a
+path into `node_modules`, and every domain (chart, map, filter…) is covered
+by the same import.
 
-    export function App() {
-    	return <Button>Ship it</Button>;
-    }
-    ```
+The second picks the values. `default` is black and white; `indigo`,
+`iris`, `sand`, `emerald` and `olive` also ship. Exactly one theme,
+and it comes second — see [Theming](/start/theming).
 
+</Step>
+<Step title="Render something.">
+
+```tsx title="src/app.tsx"
+import { Button } from "@voila.dev/ui/button";
+
+export function App() {
+	return <Button>Ship it</Button>;
+}
+```
+
+</Step>
 </Steps>
 
 ## Import paths

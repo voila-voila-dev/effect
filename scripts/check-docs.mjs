@@ -17,7 +17,7 @@
  */
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { readPropsManifest } from "../domains/ui/apps/ui.voila.dev/src/lib/props-extract.ts";
+import { readPropsManifest } from "../domains/ui/apps/ui.voila.dev/vite/props-extract.ts";
 
 const repoRoot = path.join(import.meta.dirname, "..");
 const contentDir = path.join(
@@ -151,11 +151,36 @@ function moduleExports(file, seen = new Set()) {
 }
 
 /**
- * Names the MDX provider supplies to every page, so using them needs no import.
- * `PropTable` is expanded by the remark transform before React ever sees it;
- * `Preview` comes from `mdxComponents`.
+ * Names every page can use without an import. `PropTable` is expanded by the
+ * remark transform before React ever sees it; the rest are
+ * `@voila.dev/ui-docs`'s `mdxComponents`, which the site renders every page
+ * with.
  */
-const PROVIDED = new Set(["PropTable", "Preview"]);
+const mdxComponentsSource = readFileSync(
+	path.join(
+		repoRoot,
+		"domains/docs/packages/ui-docs/src/components/mdx/mdx-components.tsx",
+	),
+	"utf8",
+);
+const PROVIDED = new Set([
+	"PropTable",
+	// The keys of the `mdxComponents` object literal, read off the source so
+	// this script needs no React.
+	...(
+		mdxComponentsSource.match(
+			/export const mdxComponents = \{([^}]*)\}/,
+		)?.[1] ?? ""
+	)
+		.split(",")
+		.map((entry) => entry.split(":")[0].trim())
+		.filter((name) => /^[A-Z]/.test(name)),
+]);
+if (!PROVIDED.has("Preview")) {
+	throw new Error(
+		"could not read the names @voila.dev/ui-docs's mdxComponents provides",
+	);
+}
 
 for (const page of pages) {
 	// Fenced blocks and inline code show tags as examples, not as JSX.

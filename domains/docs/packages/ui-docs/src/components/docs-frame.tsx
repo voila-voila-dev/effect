@@ -2,7 +2,11 @@ import type { ReactNode } from "react";
 
 import { DocsHeader, type DocsHeaderSlots } from "./docs-header.tsx";
 import { DocsSidebar } from "./docs-sidebar.tsx";
-import { DocsThemeProvider, ThemeSwitcher } from "./docs-theme.tsx";
+import {
+	DocsThemeProvider,
+	type DocsThemeScope,
+	ThemeSwitcher,
+} from "./docs-theme.tsx";
 import { ReaderContextAddress } from "./reader-context.tsx";
 import {
 	DocsSearchProvider,
@@ -19,17 +23,20 @@ import {
  */
 export function DocsFrame({
 	themeStorageKey,
+	themeScope = "docs",
 	loadSearchIndex,
 	children,
 	...header
 }: DocsHeaderSlots & {
 	themeStorageKey: string;
+	/** `site` when the host's other pages follow the reader's theme too: leaving the docs then keeps it. */
+	themeScope?: DocsThemeScope;
 	/** The search index, loaded the first time the reader opens the palette. */
 	loadSearchIndex: LoadSearchIndex;
 	children: ReactNode;
 }) {
 	return (
-		<DocsThemeProvider storageKey={themeStorageKey}>
+		<DocsThemeProvider storageKey={themeStorageKey} scope={themeScope}>
 			<DocsSearchProvider loadIndex={loadSearchIndex}>
 				<ReaderContextAddress />
 				<div className="docs-frame min-h-dvh bg-docs-canvas">

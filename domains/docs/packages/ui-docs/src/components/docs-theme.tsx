@@ -51,21 +51,33 @@ const ThemeContext = createContext<{
 	setTheme: (theme: DocsTheme) => void;
 }>({ theme: undefined, setTheme: () => undefined });
 
-/** Holds the reader's theme while they are in the docs, and hands the page back light when they leave. */
+/**
+ * Where the reader's theme applies: only inside the docs (`docs`, the page is
+ * handed back light when they leave), or on the whole host (`site`, for a site
+ * whose other pages follow the same theme).
+ */
+export type DocsThemeScope = "docs" | "site";
+
+/** Holds the reader's theme while they are in the docs, and hands the page back light when they leave, unless the theme is the whole site's. */
 export function DocsThemeProvider({
 	storageKey,
+	scope = "docs",
 	children,
 }: {
 	/** The localStorage key `themeScript` reads too. */
 	storageKey: string;
+	scope?: DocsThemeScope;
 	children: ReactNode;
 }) {
 	const [theme, setTheme] = useState<DocsTheme>();
 
 	useLayoutEffect(() => {
 		setTheme(storedTheme(storageKey));
+		if (scope === "site") {
+			return;
+		}
 		return () => document.documentElement.classList.remove("dark");
-	}, [storageKey]);
+	}, [storageKey, scope]);
 
 	useLayoutEffect(() => {
 		if (theme) {

@@ -11,6 +11,7 @@ import { H2, H3 } from "./heading.tsx";
 import { useInsideLink } from "./inside-link.tsx";
 import { OnlyFor } from "./only-for.tsx";
 import { PathSteps } from "./path-steps.tsx";
+import { Preview } from "./preview.tsx";
 import { Screenshot } from "./screenshot.tsx";
 import { Step, Steps } from "./steps.tsx";
 import { CodeGroup, Tab, Tabs } from "./tabs.tsx";
@@ -51,6 +52,7 @@ export const mdxComponents = {
 	Note,
 	OnlyFor,
 	PathSteps,
+	Preview,
 	Screenshot,
 	Step,
 	Steps,

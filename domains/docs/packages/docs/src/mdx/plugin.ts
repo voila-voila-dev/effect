@@ -10,6 +10,7 @@ import type { Plugin } from "vite";
 import { routeMdxQueries } from "./mdx-queries.ts";
 import { rehypeExportHeadings } from "./rehype-export-headings.ts";
 import { rehypeExportSteps } from "./rehype-export-steps.ts";
+import { rehypeExportText } from "./rehype-export-text.ts";
 import { rehypeKeepExports } from "./rehype-keep-exports.ts";
 import { shikiCodeMeta } from "./shiki-code-meta.ts";
 
@@ -25,11 +26,14 @@ type PluggableList = NonNullable<
 	NonNullable<Parameters<typeof mdx>[0]>["remarkPlugins"]
 >;
 
-/** What a site adds to the pipeline: its own remark plugins, run after the built-in ones on the page and on its `?meta`. */
+/** What a site adds to the pipeline: its own remark plugins, run after the built-in ones on the page, its `?meta` and its `?text`. */
 export interface DocsMdxOptions {
 	/** Run after frontmatter, GFM and smart quotes, before the headings get their ids. */
 	remarkPlugins?: PluggableList;
 }
+
+/** How much of a page's prose `?text` keeps: enough to find a page by what it says, little enough for an index of hundreds of pages. */
+const TEXT_LENGTH = 8000;
 
 const builtInRemarkPlugins = [
 	remarkFrontmatter,
@@ -42,7 +46,10 @@ const builtInRemarkPlugins = [
  * The Vite plugin that compiles `.mdx` pages: frontmatter, GFM, smart quotes,
  * an id on every heading (exported as `headings`), the first `<Steps>` exported as `steps`, and code fences highlighted
  * at build time in a light and a dark theme. `page.mdx?meta` compiles the
- * same page down to its `frontmatter`, `headings` and `steps` exports. A
+ * same page down to its `frontmatter`, `headings` and `steps` exports (its
+ * imports dropped, so listing the pages loads none of what they import), and
+ * `page.mdx?text` down to `text`, its prose without code listings, for a
+ * search index. A
  * `.md` file goes through the same pipeline as plain Markdown (no JSX), so a
  * site can publish a README as a page.
  */
@@ -78,6 +85,10 @@ export function docsMdx(options: DocsMdxOptions = {}): Plugin {
 					rehypeExportSteps,
 					rehypeKeepExports,
 				],
+			}),
+			text: mdxPlugin({
+				remarkPlugins,
+				rehypePlugins: [[rehypeExportText, { maxLength: TEXT_LENGTH }]],
 			}),
 		}),
 	};

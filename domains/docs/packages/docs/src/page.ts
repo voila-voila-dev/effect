@@ -42,12 +42,35 @@ function requiredMessage(what: string) {
 		issue.input === undefined ? `${what} is required` : undefined;
 }
 
+/** The shared fields the cross-field checks read, whatever a site's extension adds. */
+interface CheckedFields {
+	sources: ReadonlyArray<unknown>;
+	lastVerified?: string | undefined;
+	appliesTo?: Record<string, Array<string>> | undefined;
+	audience?: ReadonlyArray<string> | undefined;
+}
+
+/** What a site adds to the frontmatter on top of the shared fields. */
+export interface DocFrontmatterOptions<Extension extends z.ZodRawShape> {
+	/**
+	 * The site's own fields (`{ category: z.string().optional() }`), validated
+	 * with the rest: the schema stays strict, so a key neither declares is
+	 * still a typo. A field of the same name replaces the shared one.
+	 */
+	extend?: Extension;
+}
+
 /** The frontmatter every docs page declares. `paths` is never written: it is computed from the path registry. */
 export function docFrontmatter<
 	IconName extends string,
 	Audience extends string,
 	Stage extends string,
->(vocabulary: DocVocabulary<IconName, Audience, Stage>) {
+	// biome-ignore lint/complexity/noBannedTypes: no extension adds no field.
+	Extension extends z.ZodRawShape = {},
+>(
+	vocabulary: DocVocabulary<IconName, Audience, Stage>,
+	options: DocFrontmatterOptions<Extension> = {},
+) {
 	return z
 		.strictObject({
 			title: z.string().min(1),
@@ -73,12 +96,11 @@ export function docFrontmatter<
 			appliesTo: z.record(z.string(), z.array(z.string()).min(1)).optional(),
 			/** The same page written for another context: its siblings, listed under "this guide for another context". */
 			variants: z.array(slug).default([]),
+			...(options.extend ?? ({} as Extension)),
 		})
 		.check((context) => {
-			if (
-				context.value.sources.length > 0 &&
-				context.value.lastVerified === undefined
-			) {
+			const { sources, lastVerified } = context.value as CheckedFields;
+			if (sources.length > 0 && lastVerified === undefined) {
 				context.issues.push({
 					code: "custom",
 					input: context.value,
@@ -90,11 +112,11 @@ export function docFrontmatter<
 		})
 		.check((context) => {
 			const dimensions = vocabulary.dimensions ?? {};
-			const { appliesTo, audience } = context.value;
+			const { appliesTo, audience } = context.value as CheckedFields;
 			for (const problem of applicabilityProblems({
 				dimensions,
 				appliesTo: appliesTo ?? {},
-				audiences: audience,
+				audiences: audience ?? [],
 			})) {
 				context.issues.push({
 					code: "custom",

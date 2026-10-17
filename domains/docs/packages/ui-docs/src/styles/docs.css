@@ -98,14 +98,16 @@
 
 /* The docs' typography, in one place. `docs-prose` styles the text elements
  * wherever they sit (a callout, a step, a tab); `docs-flow` spaces a column of
- * blocks. Both live in the components layer so a utility on an element wins. */
+ * blocks. Both live in the components layer so a utility on an element wins.
+ * Inside a `not-prose` element (a live example) the prose rules stay out, so
+ * the components shown there look as they do in an app. */
 @layer components {
 	.docs-prose {
 		color: color-mix(in oklch, var(--foreground) 78%, transparent);
 		font-size: var(--text-docs-base);
 		line-height: 1.75rem;
 
-		:where(a) {
+		:where(a):not(:where(.not-prose *)) {
 			color: var(--foreground);
 			font-weight: 500;
 			text-decoration: underline;
@@ -119,55 +121,55 @@
 			transition: text-decoration-color 150ms;
 		}
 
-		:where(a):hover {
+		:where(a):not(:where(.not-prose *)):hover {
 			text-decoration-color: var(--foreground);
 		}
 
-		:where(strong) {
+		:where(strong):not(:where(.not-prose *)) {
 			color: var(--foreground);
 			font-weight: 600;
 		}
 
-		:where(h2, h3) {
+		:where(h2, h3):not(:where(.not-prose *)) {
 			color: var(--foreground);
 			font-family: var(--font-heading);
 			font-weight: 600;
 			letter-spacing: -0.01em;
 		}
 
-		:where(h2) {
+		:where(h2):not(:where(.not-prose *)) {
 			font-size: 1.5rem;
 			line-height: 2rem;
 		}
 
-		:where(h3) {
+		:where(h3):not(:where(.not-prose *)) {
 			font-size: 1.25rem;
 			line-height: 1.75rem;
 		}
 
-		:where(ul) {
+		:where(ul):not(:where(.not-prose *)) {
 			list-style: disc;
 			padding-left: 1.5rem;
 		}
 
-		:where(ol) {
+		:where(ol):not(:where(.not-prose *)) {
 			list-style: decimal;
 			padding-left: 1.5rem;
 		}
 
-		:where(li) {
+		:where(li):not(:where(.not-prose *)) {
 			padding-left: 0.25rem;
 		}
 
-		:where(li + li) {
+		:where(li + li):not(:where(.not-prose *)) {
 			margin-top: 0.5rem;
 		}
 
-		:where(li)::marker {
+		:where(li):not(:where(.not-prose *))::marker {
 			color: color-mix(in oklch, var(--foreground) 45%, transparent);
 		}
 
-		:where(:not(pre) > code) {
+		:where(:not(pre) > code):not(:where(.not-prose *)) {
 			background-color: color-mix(in oklch, var(--foreground) 6%, transparent);
 			border-radius: 0.375rem;
 			color: var(--foreground);
@@ -176,7 +178,7 @@
 			padding: 0.125rem 0.375rem;
 		}
 
-		:where(kbd) {
+		:where(kbd):not(:where(.not-prose *)) {
 			border: 1px solid var(--border);
 			border-bottom-width: 2px;
 			border-radius: 0.375rem;
@@ -186,23 +188,23 @@
 			padding: 0.0625rem 0.375rem;
 		}
 
-		:where(hr) {
+		:where(hr):not(:where(.not-prose *)) {
 			border-color: var(--border);
 		}
 
-		:where(blockquote) {
+		:where(blockquote):not(:where(.not-prose *)) {
 			border-left: 2px solid var(--border);
 			padding-left: 1rem;
 		}
 
-		:where(table) {
+		:where(table):not(:where(.not-prose *)) {
 			font-size: var(--text-docs-sm);
 			line-height: 1.5rem;
 			text-align: left;
 			width: 100%;
 		}
 
-		:where(th) {
+		:where(th):not(:where(.not-prose *)) {
 			background-color: color-mix(in oklch, var(--foreground) 3%, transparent);
 			color: var(--foreground);
 			font-weight: 600;
@@ -210,7 +212,7 @@
 			white-space: nowrap;
 		}
 
-		:where(td) {
+		:where(td):not(:where(.not-prose *)) {
 			border-top: 1px solid var(--border);
 			padding: 0.625rem 1rem;
 			vertical-align: top;
@@ -270,6 +272,59 @@
 
 	.docs-flow > :where(hr) {
 		margin-block: 3rem;
+	}
+
+	/* A live example (`<Preview>`): the components on a faint grid, in the
+	 * app's own type size rather than the article's. */
+	.docs-preview {
+		background-color: var(--background);
+		background-image:
+			linear-gradient(
+				to right,
+				color-mix(in oklch, var(--border) 45%, transparent) 1px,
+				transparent 1px
+			),
+			linear-gradient(
+				to bottom,
+				color-mix(in oklch, var(--border) 45%, transparent) 1px,
+				transparent 1px
+			);
+		background-size: 1.5rem 1.5rem;
+		border: 1px solid var(--border);
+		border-radius: 1rem;
+		color: var(--foreground);
+		font-size: 0.875rem;
+		line-height: 1.25rem;
+		padding: 1.75rem;
+	}
+
+	.docs-preview-label {
+		color: var(--muted-foreground);
+		font-size: 0.75rem;
+		letter-spacing: 0.04em;
+		margin-bottom: 0.75rem;
+		text-transform: uppercase;
+	}
+
+	.docs-preview-stage {
+		align-items: center;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.docs-preview-stage[data-layout="stack"] {
+		align-items: stretch;
+		flex-direction: column;
+	}
+
+	.docs-preview-stage[data-layout="center"] {
+		justify-content: center;
+	}
+
+	.docs-preview-scroll .docs-preview-stage {
+		flex-wrap: nowrap;
+		overflow-x: auto;
 	}
 }
 

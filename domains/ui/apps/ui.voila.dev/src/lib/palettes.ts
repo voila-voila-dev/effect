@@ -103,3 +103,16 @@ export function applyPalette(id: string): void {
 	link.href = href;
 	document.head.append(link);
 }
+
+/**
+ * Runs in the head before the first paint: injects the stored palette's
+ * stylesheet, so a hard reload never flashes the default one. It lands at the
+ * end of the head, after the site's stylesheet, so its tokens win at the same
+ * specificity. The hrefs are build-time constants and the stored id is only
+ * an object key, so nothing here interpolates untrusted input. An id that no
+ * longer ships (a palette retired since the reader chose it) falls back to
+ * the default.
+ */
+export function palettesScript(): string {
+	return `try{var h=${JSON.stringify(PALETTE_HREFS)},p=localStorage.getItem(${JSON.stringify(PALETTE_STORAGE_KEY)});if(p&&(p==="default"||h[p])){document.documentElement.dataset.palette=p;if(h[p]){var l=document.createElement("link");l.id=${JSON.stringify(PALETTE_LINK_ID)};l.rel="stylesheet";l.href=h[p];document.head.appendChild(l)}}}catch(e){}`;
+}

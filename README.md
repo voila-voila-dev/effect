@@ -13,6 +13,7 @@ when it needs to.
 | [`@voila.dev/cache-lock`](./packages/cache-lock) | A key-value cache, a lease-based lock and a rate limiter as Effect services, in memory or on Redis, with failures the caller decides on. |
 | [`@voila.dev/crypto`](./packages/crypto) | A secret box bound to its record, signed token kinds with no token table, token digests and secure random, on Web Crypto. |
 | [`@voila.dev/effect-ddd`](./packages/effect-ddd) | Use cases with a declared gate, a registry, a permission catalogue, and architecture tests that freeze your bounded-context boundaries. |
+| [`@voila.dev/email`](./packages/email) | One `EmailSender` contract for any mail provider, the message it takes, and in-memory and console senders for tests and local development. |
 | [`@voila.dev/env`](./packages/env) | `.env` files into `process.env` or an Effect `ConfigProvider`: several files, earlier wins, the real environment always wins. |
 | [`@voila.dev/http`](./packages/http) | Outbound calls to third parties with typed timeouts, jittered retries, spans, bounded Schema decoding and a request log; an SSRF-guarded URL fetcher; Stripe, Svix, Twilio and SNS webhook checks. |
 | [`@voila.dev/live`](./packages/live) | Live updates over WebSocket: channels with a gate and a filter, a batching socket hub, a replay log on Redis streams, and a reconnecting browser client. |
@@ -52,6 +53,19 @@ export const RenameOrganizationUseCase = UseCase.make({
 });
 ```
 
+## Providers
+
+Each one implements a contract you can replace (a `Context.Service`), calls
+out through [`@voila.dev/http`](./packages/http) and comes with an in-memory
+fake.
+
+| Package | What it gives you |
+| --- | --- |
+| [`@voila.dev/annuaire-entreprises`](./packages/annuaire-entreprises) | The French company directory: a SIRET to its company, directors and address, a name search, withheld identities flagged, outages typed apart from "not found". |
+| [`@voila.dev/resend`](./packages/resend) | An `EmailSender` on Resend (rate-limit aware, batched), the receiving API with SPF/DKIM/DMARC verdicts and attachments, and the webhook event schema. |
+| [`@voila.dev/stripe`](./packages/stripe) | A light Stripe REST client: pinned API version, retries only when safe, errors that say whether Stripe created anything, card declines apart from incidents, field readers and the webhook event schema. |
+| [`@voila.dev/vies`](./packages/vies) | EU VAT number checks against VIES, member-state outages told apart from refused input, national VAT formats and a parser for numbers as people type them. |
+
 ## Development
 
 ```sh
@@ -75,9 +89,12 @@ Merging to `main` opens the "Version packages" PR; merging that publishes.
 2. `biome-plugins`, `crypto`, `cache-lock`, `http`, `outbox` — **0.1** on npm
 3. `live` (WebSocket hub) — merged, first release next
 4. Documentation site on `@voila.dev/docs`
+5. Providers: `annuaire-entreprises`, `vies`, `email` + `resend`, `stripe` —
+   merged, first release next
+6. UI: `ui`, `chart` and `motion` moved in from `voila-voila-dev/ui`; their
+   docs site next moves onto `@voila.dev/docs`
 
-Next in this repository: `@voila.dev/docs`, third-party adapters (Stripe, Resend, Annuaire Entreprises,
-VIES…) implementing the contracts defined here, and `trust` (KYC/KYB).
+Next in this repository: `trust` (KYC/KYB).
 
 ## License
 

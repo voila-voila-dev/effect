@@ -1,0 +1,76 @@
+{
+	"results": [
+		{
+			"siren": "441164340",
+			"nom_complet": "SASP STADE DE REIMS",
+			"nom_raison_sociale": "SASP STADE DE REIMS",
+			"statut_diffusion": "O",
+			"nature_juridique": "5599",
+			"etat_administratif": "A",
+			"activite_principale": "93.12Z",
+			"dirigeants": [],
+			"siege": {
+				"siret": "44116434000032",
+				"adresse": "53 ROUTE DE LA NEUVILLETTE 51450 BETHENY",
+				"code_postal": "51450",
+				"libelle_commune": "BETHENY"
+			},
+			"matching_etablissements": [
+				{
+					"siret": "44116434000032",
+					"adresse": "53 ROUTE DE LA NEUVILLETTE 51450 BETHENY",
+					"code_postal": "51450",
+					"libelle_commune": "BETHENY"
+				}
+			]
+		},
+		{
+			"siren": "390128452",
+			"nom_complet": "ASSOCIATION STADE DE REIMS",
+			"nom_raison_sociale": "ASSOCIATION STADE DE REIMS",
+			"statut_diffusion": "O",
+			"nature_juridique": "9220",
+			"etat_administratif": "A",
+			"activite_principale": "93.12Z",
+			"dirigeants": [],
+			"siege": {
+				"siret": "39012845200054",
+				"adresse": "53 ROUTE DE LA NEUVILLETTE 51450 BETHENY",
+				"code_postal": "51450",
+				"libelle_commune": "BETHENY"
+			},
+			"matching_etablissements": [
+				{
+					"siret": "39012845200054",
+					"adresse": "53 ROUTE DE LA NEUVILLETTE 51450 BETHENY",
+					"code_postal": "51450",
+					"libelle_commune": "BETHENY"
+				}
+			]
+		},
+		{
+			"siren": "215104217",
+			"nom_complet": "COMMUNE DE REIMS",
+			"nom_raison_sociale": "COMMUNE DE REIMS",
+			"statut_diffusion": "O",
+			"nature_juridique": "7210",
+			"etat_administratif": "A",
+			"activite_principale": "84.11Z",
+			"dirigeants": [],
+			"siege": {
+				"siret": "21510421700017",
+				"adresse": "9 PLACE DE L'HOTEL DE VILLE 51100 REIMS",
+				"code_postal": "51100",
+				"libelle_commune": "REIMS"
+			},
+			"matching_etablissements": [
+				{
+					"siret": "21510421701791",
+					"adresse": "ROUTE DE LA NEUVILLETTE 51450 BETHENY",
+					"code_postal": "51450",
+					"libelle_commune": "BETHENY"
+				}
+			]
+		}
+	]
+}

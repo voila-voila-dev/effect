@@ -36,7 +36,7 @@ bun add @voila.dev/docs
 | `links`, `graph` | `internalLinksIn` (the site links of an MDX source) and `checkDocsGraph`: dead links, pages more than two clicks from their landing, orphans, `lastVerified` past 150 days (warn) or 180 days (fail), path pages that are not of kind `path` |
 | `search`, `search-index` | The accent- and typo-tolerant matcher with the site's synonym groups, and the builders of its entries (a page carries its audience and stage as chips) |
 | `api-reference/*` | An OpenAPI 3 document parsed (`model`, `openapi-document`, `schema-node`), its navigation groups, request examples (JSON, cURL, `fetch`), a Markdown export and the example tokenizer |
-| `mdx/plugin` | `docsMdx()`, the Vite plugin that compiles the `.mdx` pages: frontmatter, GFM, an id on every heading exported as `headings`, Shiki in a light and a dark theme |
+| `mdx/plugin` | `docsMdx(options?)`, the Vite plugin that compiles the `.mdx` pages (and `.md` files, as plain Markdown): frontmatter, GFM, an id on every heading exported as `headings`, Shiki in a light and a dark theme; `page.mdx?meta` keeps only the exports. `options.remarkPlugins` run after the built-in ones, on the page and on its `?meta` |
 
 A consumer imports a module by path (`@voila.dev/docs/navigation`), passes
 its own docs root and labels, and adds `docsMdx()` to its Vite plugins:
@@ -45,6 +45,14 @@ its own docs root and labels, and adds `docsMdx()` to its Vite plugins:
 import { docsMdx } from "@voila.dev/docs/mdx/plugin";
 
 export default defineConfig({ plugins: [docsMdx(), react()] });
+```
+
+A site that publishes Markdown it does not own (a package's README) adds its
+own remark plugins, to drop the title its page header already shows or to
+rewrite relative links:
+
+```ts
+docsMdx({ remarkPlugins: [remarkReadmeLinks] });
 ```
 
 Every module but `mdx/*` bundles in a browser: the compilers stay behind the

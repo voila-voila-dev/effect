@@ -17,16 +17,19 @@ domains/
                            suppression list, received mail and reply routing
   providers/packages/      one adapter per third party: resend, stripe,
                            annuaire-entreprises, vies
-  docs/packages/           docs (framework-free) and ui-docs (its React layer)
+  docs/
+    packages/              docs (framework-free) and ui-docs (its React layer)
+    apps/                  docs.voila.dev, the packages' READMEs as a site
+    templates/             docs-site, a whole docs site to clone
   ui/
     packages/              ui, chart, motion, ui-branding
     apps/                  ui.voila.dev, storybook.ui.voila.dev, emoji.voila.dev
 ```
 
-A new domain is a `domains/<name>/` folder with `packages/`, and `apps/` or
-`examples/` when it has some; the root workspaces pick them up. The npm names
-do not follow the folders: a package keeps its `@voila.dev/*` name wherever it
-lives.
+A new domain is a `domains/<name>/` folder with `packages/`, and `apps/`,
+`examples/` or `templates/` when it has some; the root workspaces pick them up.
+The npm names do not follow the folders: a package keeps its `@voila.dev/*`
+name wherever it lives.
 
 Inside a package:
 

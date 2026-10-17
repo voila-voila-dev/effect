@@ -21,6 +21,9 @@ bun add @voila.dev/ui-docs @voila.dev/docs @phosphor-icons/react react react-dom
 | `components/mdx/*` | `mdxComponents`: callouts, cards, steps, tabs, code groups, accordions, anchored headings, tables, `AudienceIndex` (an audience landing's countries, paths with the contexts they are written for, planned paths and list), `PathSteps` (a path page's steps), `CodeValue` (a value the host's code holds) and `OnlyFor` (a passage for some contexts: every variant labelled until the reader answers) |
 | `components/api/*` | `ApiOverviewPage` and `ApiOperationPage` |
 | `lib/theme-script`, `lib/messages`, `lib/country-flag` | `themeScript(storageKey)` for the head; the `DocsMessages` type; `countryFlag(code)`, an ISO country code's emoji flag |
+| `lib/english-messages` | `englishMessages`, every `DocsMessages` word in plain English, for a site written in English to spread and override (`{ ...englishMessages, title: "Handbook" }`) |
+| `lib/lazy-content` | `lazyContent(load)`: a page's compiled body as a lazy `Content` component and a `preloadContent` a route's loader awaits, so a prerendered page hydrates without swapping its body for the Suspense fallback |
+| `styles/sources.css` | The `@source` lines Tailwind needs to generate the components' utilities, relative to the installed package |
 | `styles/docs.css` | The frame's tokens (`bg-docs-canvas`, `text-docs-sm`, `text-docs-base`), the page's column widths (`docs-guide` 40rem, `docs-api` 38rem, `docs-toc` 16.5rem, `docs-examples` 30rem), Shiki's two themes, `docs-prose` and `docs-flow` |
 
 A consumer wires it once:
@@ -28,8 +31,10 @@ A consumer wires it once:
 ```css
 @import "tailwindcss";
 @import "@voila.dev/ui-docs/styles/docs.css";
-@source "../node_modules/@voila.dev/ui-docs/dist";
+@import "@voila.dev/ui-docs/styles/sources.css";
 ```
+
+(`@source "../node_modules/@voila.dev/ui-docs/dist"` works as well.)
 
 ```tsx
 <DocsProvider Link={RouterLink} navigate={navigate} messages={messages}
@@ -60,3 +65,10 @@ The components read the usual tokens a Tailwind theme declares
 which a host redefines after it to use its brand: `--docs-canvas`,
 `--docs-shot-tint`, `--docs-info`, `--docs-success`, `--docs-warning`,
 `--docs-caution` (each with a `-foreground`) and `--docs-bezel`.
+
+## Starting a site
+
+[`domains/docs/templates/docs-site`](https://github.com/voila-voila-dev/platform/tree/main/domains/docs/templates/docs-site)
+is a whole site on these two packages (TanStack Start, prerendered, deployed
+as static assets to Cloudflare Workers) to clone: one `docs.config.ts`, MDX
+pages, a navigation file and a test that keeps the links sound.

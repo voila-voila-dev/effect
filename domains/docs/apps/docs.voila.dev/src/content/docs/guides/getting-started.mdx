@@ -1,0 +1,49 @@
+---
+title: Getting started
+description: Install a package, and how they fit together.
+icon: rocket
+audience: [everyone]
+kind: guide
+stage: start
+prerequisites: [index]
+next: [packages/effect-ddd, packages/env]
+---
+
+## Install
+
+Every package is on npm. The backend packages share one peer: `effect`, at
+version 4.
+
+```sh
+bun add @voila.dev/effect-ddd @voila.dev/env effect
+```
+
+Import a module by its path when the package has several
+(`@voila.dev/docs/navigation`), or from the package itself when it exports
+one entry point.
+
+## How they fit
+
+- **A contract and its adapters.** A provider package (email, payments,
+  company data) implements a `Context.Service` you can replace, calls out
+  through [`@voila.dev/http`](/packages/http) and ships an in-memory fake for
+  your tests.
+- **No product vocabulary.** The packages serve any B2B backend: your
+  domain's words live in your code, never in theirs.
+- **Tested boundaries.** [`@voila.dev/effect-ddd`](/packages/effect-ddd)
+  turns the dependencies between your bounded contexts into a test, and
+  [`@voila.dev/biome-plugins`](/packages/biome-plugins) adds the lint rules.
+
+## Work on the platform
+
+```sh
+git clone https://github.com/voila-voila-dev/platform
+cd platform
+bun install
+bun run ci && bun run check-types && bun run test && bun run build
+```
+
+The packages resolve each other through their sources (the
+`@voila.dev/source` export condition), so nothing needs building while you
+work. A change to a published package comes with a changeset
+(`bun run changeset`).

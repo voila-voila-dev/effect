@@ -14,6 +14,33 @@
         "typescript-editor-lsp": "npm:typescript@6.0.3",
       },
     },
+    "domains/docs/apps/docs.voila.dev": {
+      "name": "@voila.dev/docs.voila.dev",
+      "version": "0.0.0",
+      "dependencies": {
+        "@phosphor-icons/react": "catalog:react",
+        "@tanstack/react-router": "^1.170.34",
+        "@tanstack/react-start": "^1.168.51",
+        "@voila.dev/docs": "workspace:^",
+        "@voila.dev/ui-docs": "workspace:^",
+        "react": "catalog:react",
+        "react-dom": "catalog:react",
+        "zod": "^4.6.5",
+      },
+      "devDependencies": {
+        "@tailwindcss/vite": "catalog:tailwind",
+        "@types/bun": "catalog:",
+        "@types/mdast": "^4.0.4",
+        "@types/react": "^19.3.0",
+        "@types/react-dom": "^19.3.0",
+        "@vitejs/plugin-react": "^6.1.1",
+        "@voila.dev/typescript-config": "workspace:*",
+        "tailwindcss": "catalog:tailwind",
+        "typescript": "catalog:",
+        "vite": "catalog:",
+        "wrangler": "^4.130.0",
+      },
+    },
     "domains/docs/packages/docs": {
       "name": "@voila.dev/docs",
       "version": "0.1.0",
@@ -37,6 +64,7 @@
       "devDependencies": {
         "@mdx-js/mdx": "^3.1.1",
         "@types/bun": "catalog:",
+        "@types/mdast": "^4.0.4",
         "@voila.dev/effect-ddd": "workspace:^",
         "@voila.dev/typescript-config": "workspace:*",
         "typescript": "catalog:",
@@ -77,6 +105,31 @@
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "tailwindcss": "^4.0.0",
+      },
+    },
+    "domains/docs/templates/docs-site": {
+      "name": "@voila.dev/docs-site-template",
+      "version": "0.0.0",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "@tanstack/react-router": "^1.170.34",
+        "@tanstack/react-start": "^1.168.51",
+        "@voila.dev/docs": "workspace:^",
+        "@voila.dev/ui-docs": "workspace:^",
+        "react": "^19.3.0",
+        "react-dom": "^19.3.0",
+        "zod": "^4.6.5",
+      },
+      "devDependencies": {
+        "@tailwindcss/vite": "^4.3.3",
+        "@types/bun": "^1.4.3",
+        "@types/react": "^19.3.0",
+        "@types/react-dom": "^19.3.0",
+        "@vitejs/plugin-react": "^6.1.1",
+        "tailwindcss": "^4.3.3",
+        "typescript": "^7.0.2",
+        "vite": "^8.2.2",
+        "wrangler": "^4.130.0",
       },
     },
     "domains/effect/examples/organizations": {
@@ -1415,6 +1468,10 @@
     "@voila.dev/crypto": ["@voila.dev/crypto@workspace:domains/effect/packages/crypto"],
 
     "@voila.dev/docs": ["@voila.dev/docs@workspace:domains/docs/packages/docs"],
+
+    "@voila.dev/docs-site-template": ["@voila.dev/docs-site-template@workspace:domains/docs/templates/docs-site"],
+
+    "@voila.dev/docs.voila.dev": ["@voila.dev/docs.voila.dev@workspace:domains/docs/apps/docs.voila.dev"],
 
     "@voila.dev/effect-ddd": ["@voila.dev/effect-ddd@workspace:domains/effect/packages/effect-ddd"],
 

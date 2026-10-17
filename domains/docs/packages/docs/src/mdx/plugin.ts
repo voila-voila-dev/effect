@@ -21,7 +21,17 @@ function mdxPlugin(options: Parameters<typeof mdx>[0]): Plugin {
 	return mdx(options) as Plugin;
 }
 
-const remarkPlugins = [
+type PluggableList = NonNullable<
+	NonNullable<Parameters<typeof mdx>[0]>["remarkPlugins"]
+>;
+
+/** What a site adds to the pipeline: its own remark plugins, run after the built-in ones on the page and on its `?meta`. */
+export interface DocsMdxOptions {
+	/** Run after frontmatter, GFM and smart quotes, before the headings get their ids. */
+	remarkPlugins?: PluggableList;
+}
+
+const builtInRemarkPlugins = [
 	remarkFrontmatter,
 	remarkMdxFrontmatter,
 	remarkGfm,
@@ -32,9 +42,15 @@ const remarkPlugins = [
  * The Vite plugin that compiles `.mdx` pages: frontmatter, GFM, smart quotes,
  * an id on every heading (exported as `headings`), the first `<Steps>` exported as `steps`, and code fences highlighted
  * at build time in a light and a dark theme. `page.mdx?meta` compiles the
- * same page down to its `frontmatter`, `headings` and `steps` exports.
+ * same page down to its `frontmatter`, `headings` and `steps` exports. A
+ * `.md` file goes through the same pipeline as plain Markdown (no JSX), so a
+ * site can publish a README as a page.
  */
-export function docsMdx(): Plugin {
+export function docsMdx(options: DocsMdxOptions = {}): Plugin {
+	const remarkPlugins = [
+		...builtInRemarkPlugins,
+		...(options.remarkPlugins ?? []),
+	];
 	return {
 		enforce: "pre",
 		...routeMdxQueries({

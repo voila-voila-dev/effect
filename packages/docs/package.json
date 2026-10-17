@@ -72,6 +72,6 @@
 		"@types/bun": "catalog:",
 		"@voila.dev/effect-ddd": "workspace:^",
 		"typescript": "catalog:",
-		"vite": "8.3.4"
+		"vite": "catalog:"
 	}
 }

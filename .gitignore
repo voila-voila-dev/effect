@@ -1,4 +1,41 @@
 node_modules
 dist
 *.tsbuildinfo
+tsbuildinfo.json
 .DS_Store
+*.pem
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage
+# Vitest browser mode: failure screenshots
+.vitest/
+
+# Site build outputs (apps/*)
+.output/
+storybook-static/
+
+# Wrangler local state/cache and generated preview configs
+.wrangler/
+wrangler.preview.json
+wrangler.preview-env.json
+
+# Local dev file storage
+.storage/
+
+# Playwright CLI sessions (snapshots, screenshots, logs)
+.playwright-cli/
+
+# Manual QA artifacts (screenshots, videos) — not for the repo
+qa-artifacts/
+.fallow/
+
+# Claude Code local state, including git worktrees. Untracked, and a worktree
+# here holds a second biome.json that "biome ci" reads as a nested root config.
+.claude/

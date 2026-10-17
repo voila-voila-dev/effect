@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "#/button/components/button.tsx";
 import { FilterForm } from "#/filter/components/filter-form.tsx";
+import { useFilterSettings } from "#/filter/hooks/use-filter-settings.ts";
 import { countActiveFilters } from "#/filter/lib/filter-values.ts";
 import type {
 	FilterDefinition,
@@ -22,12 +23,13 @@ interface Props {
 	/** Called once, on apply, with the committed record. */
 	onValuesChange: (values: FilterValues) => void;
 	/**
-	 * Every string the overlay shows, including the apply and clear buttons.
-	 * `Filter.Root` supplies it; standalone, pass `defaultFilterLabels`.
+	 * Overrides for the strings the overlay shows, including the apply and
+	 * clear buttons, merged over the surrounding filter root's (English
+	 * defaults at the outermost level).
 	 */
-	labels: FilterLabels;
-	/** BCP 47 tag used to format the numbers, money and dates in the fields. */
-	locale: string;
+	labels?: Partial<FilterLabels>;
+	/** BCP 47 tag used to format the numbers, money and dates; inherited when omitted. */
+	locale?: string;
 	/** Free-text search, kept beside the filters when the list has one. */
 	searchValue?: string;
 	/** Called on every keystroke — search is not part of the apply-on-commit draft. */
@@ -46,11 +48,12 @@ export function FilterPanel({
 	definitions,
 	values,
 	onValuesChange,
-	labels,
-	locale,
+	labels: labelOverrides,
+	locale: localeOverride,
 	searchValue,
 	onSearchChange,
 }: Props) {
+	const { labels, locale } = useFilterSettings(labelOverrides, localeOverride);
 	const [draft, setDraft] = useState<FilterValues>(values);
 	const [draftSearch, setDraftSearch] = useState(searchValue ?? "");
 

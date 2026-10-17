@@ -2,7 +2,6 @@ import { useId } from "react";
 import { FilterFieldFrame } from "#/filter/components/fields/filter-field-frame.tsx";
 import { NumberField } from "#/filter/components/fields/number-field.tsx";
 import type {
-	FilterLabels,
 	NumberFilterDefinition,
 	NumberFilterValue,
 } from "#/filter/types.ts";
@@ -11,16 +10,10 @@ interface Props {
 	definition: NumberFilterDefinition;
 	value: NumberFilterValue | undefined;
 	onValueChange: (value: NumberFilterValue) => void;
-	labels: FilterLabels;
 }
 
 /** A single numeric value. */
-export function NumberFilterField({
-	definition,
-	value,
-	onValueChange,
-	labels,
-}: Props) {
+export function NumberFilterField({ definition, value, onValueChange }: Props) {
 	const controlId = useId();
 	const raw = value === undefined ? "" : String(value.number);
 
@@ -29,7 +22,6 @@ export function NumberFilterField({
 			label={definition.label}
 			description={definition.description}
 			controlId={controlId}
-			labels={labels}
 			onClear={
 				raw === ""
 					? undefined

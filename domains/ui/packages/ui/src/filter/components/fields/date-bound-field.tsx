@@ -1,4 +1,5 @@
 import { DatePicker } from "#/date-picker/components/date-picker.tsx";
+import { useFilterLocale } from "#/filter/hooks/use-filter-locale.ts";
 import { useIsMobile } from "#/hooks/use-mobile.ts";
 import { NativeDatePickerDate } from "#/native-date-picker/components/native-date-picker-date.tsx";
 
@@ -22,7 +23,6 @@ interface Props {
 	placeholder: string;
 	min?: string;
 	max?: string;
-	locale: string;
 }
 
 /**
@@ -36,8 +36,8 @@ export function DateBoundField({
 	placeholder,
 	min,
 	max,
-	locale,
 }: Props) {
+	const locale = useFilterLocale();
 	const isMobile = useIsMobile();
 
 	if (isMobile) {
@@ -61,7 +61,9 @@ export function DateBoundField({
 	return (
 		<DatePicker.Root
 			id={id}
-			className="w-full"
+			// `min-w-0` over the trigger's built-in `min-w-48`: two bounds share a
+			// rail-width row, and 2 × 12rem cannot — the labels truncate instead.
+			className="w-full min-w-0"
 			locale={locale}
 			placeholder={placeholder}
 			aria-label={placeholder}

@@ -1,0 +1,34 @@
+{
+	"name": "@voila.dev/docs-site-template",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "NODE_OPTIONS=--conditions=@voila.dev/source vite dev --port 4010",
+		"build": "NODE_OPTIONS=--conditions=@voila.dev/source vite build && bun --conditions=@voila.dev/source vite/check-prerendered.ts",
+		"preview": "wrangler dev",
+		"check-types": "tsc --noEmit",
+		"test": "bun test --conditions=@voila.dev/source"
+	},
+	"dependencies": {
+		"@phosphor-icons/react": "^2.1.10",
+		"@tanstack/react-router": "^1.170.34",
+		"@tanstack/react-start": "^1.168.51",
+		"@voila.dev/docs": "workspace:^",
+		"@voila.dev/ui-docs": "workspace:^",
+		"react": "^19.3.0",
+		"react-dom": "^19.3.0",
+		"zod": "^4.6.5"
+	},
+	"devDependencies": {
+		"@tailwindcss/vite": "^4.3.3",
+		"@types/bun": "^1.4.3",
+		"@types/react": "^19.3.0",
+		"@types/react-dom": "^19.3.0",
+		"@vitejs/plugin-react": "^6.1.1",
+		"tailwindcss": "^4.3.3",
+		"typescript": "^7.0.2",
+		"vite": "^8.2.2",
+		"wrangler": "^4.130.0"
+	}
+}

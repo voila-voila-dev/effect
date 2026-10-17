@@ -1,0 +1,5 @@
+/* The files Tailwind scans for the docs' utilities, relative to this sheet so
+ * the import works wherever the package is installed. Import it after
+ * Tailwind: `@import "@voila.dev/ui-docs/styles/sources.css";`. */
+@source "../components";
+@source "../lib";

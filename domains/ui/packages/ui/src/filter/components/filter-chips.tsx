@@ -1,6 +1,7 @@
 import { XIcon } from "@phosphor-icons/react";
 import type * as React from "react";
 import { Chip } from "#/chip/components/chip.tsx";
+import { useFilterSettings } from "#/filter/hooks/use-filter-settings.ts";
 import {
 	clearFilterValue,
 	describeFilterValue,
@@ -23,12 +24,12 @@ interface Props extends React.ComponentProps<"div"> {
 	/** Called with the record minus the removed filter, as the chip is dismissed. */
 	onValuesChange: (values: FilterValues) => void;
 	/**
-	 * Every string the chips show. `Filter.Root` supplies it; standalone, pass
-	 * `defaultFilterLabels` or your own.
+	 * Overrides for the strings the chips show, merged over the surrounding
+	 * filter root's (English defaults at the outermost level).
 	 */
-	labels: FilterLabels;
-	/** BCP 47 tag used to format the numbers, money and dates inside the chips. */
-	locale: string;
+	labels?: Partial<FilterLabels>;
+	/** BCP 47 tag used to format the numbers, money and dates; inherited when omitted. */
+	locale?: string;
 	/** Opens the editor, usually scrolled to the clicked filter. */
 	onChipClick?: (key: string) => void;
 }
@@ -42,12 +43,13 @@ export function FilterChips({
 	definitions,
 	values,
 	onValuesChange,
-	labels,
-	locale,
+	labels: labelOverrides,
+	locale: localeOverride,
 	onChipClick,
 	className,
 	...props
 }: Props) {
+	const { labels, locale } = useFilterSettings(labelOverrides, localeOverride);
 	const entries = Object.entries(values);
 	if (entries.length === 0) {
 		return null;

@@ -1,16 +1,19 @@
 import { useId, useState } from "react";
 import { FilterFieldFrame } from "#/filter/components/fields/filter-field-frame.tsx";
+import { FilterFieldInput } from "#/filter/components/fields/filter-field-input.tsx";
 import { FilterOperatorToggle } from "#/filter/components/fields/filter-operator-toggle.tsx";
+import { FoldToggle } from "#/filter/components/fields/fold-toggle.tsx";
 import { OptionToggle } from "#/filter/components/fields/option-toggle.tsx";
+import { useFilterLabels } from "#/filter/hooks/use-filter-labels.ts";
+import { foldOptions } from "#/filter/lib/fold-options.ts";
 import type {
-	FilterLabels,
 	SelectFilterDefinition,
 	SelectFilterValue,
 } from "#/filter/types.ts";
-import { Input } from "#/input/components/input.tsx";
 
 /** Past this many options the list gets its own search box. */
 const SEARCHABLE_FROM = 8;
+
 function toggleValue(
 	values: ReadonlyArray<string>,
 	value: string,
@@ -26,37 +29,34 @@ interface Props {
 	definition: SelectFilterDefinition;
 	value: SelectFilterValue | undefined;
 	onValueChange: (value: SelectFilterValue) => void;
-	labels: FilterLabels;
 }
 
-/** Single or multiple choice among a known set, optionally inverted. */
-export function SelectFilterField({
-	definition,
-	value,
-	onValueChange,
-	labels,
-}: Props) {
+/**
+ * Single or multiple choice among a known set, optionally inverted. Options
+ * marked `secondary` wait behind a "more" toggle until asked for.
+ */
+export function SelectFilterField({ definition, value, onValueChange }: Props) {
+	const labels = useFilterLabels();
 	const searchId = useId();
 	const [query, setQuery] = useState("");
+	const [expanded, setExpanded] = useState(false);
 	const selected = value?.values ?? [];
 	const excluded = value?.excluded ?? false;
 	const multiple = definition.multiple ?? false;
 
 	const searchable = definition.options.length >= SEARCHABLE_FROM;
-	const normalizedQuery = query.trim().toLowerCase();
-	const visibleOptions =
-		normalizedQuery === ""
-			? definition.options
-			: definition.options.filter((option) =>
-					option.label.toLowerCase().includes(normalizedQuery),
-				);
+	const fold = foldOptions(
+		definition.options,
+		selected,
+		query.trim().toLowerCase(),
+		expanded,
+	);
 
 	return (
 		<FilterFieldFrame
 			label={definition.label}
 			description={definition.description}
 			controlId={searchable ? searchId : undefined}
-			labels={labels}
 			operator={
 				definition.allowExclusion === true ? (
 					<FilterOperatorToggle
@@ -69,7 +69,6 @@ export function SelectFilterField({
 								excluded: next,
 							})
 						}
-						labels={labels}
 					/>
 				) : undefined
 			}
@@ -80,7 +79,7 @@ export function SelectFilterField({
 			}
 		>
 			{searchable && (
-				<Input
+				<FilterFieldInput
 					id={searchId}
 					value={query}
 					placeholder={labels.optionSearchPlaceholder}
@@ -94,7 +93,7 @@ export function SelectFilterField({
 				aria-label={definition.label}
 				className="flex flex-wrap gap-2"
 			>
-				{visibleOptions.map((option) => (
+				{fold.visible.map((option) => (
 					<OptionToggle
 						key={option.value}
 						option={option}
@@ -109,6 +108,13 @@ export function SelectFilterField({
 					/>
 				))}
 			</div>
+			{fold.foldable && (
+				<FoldToggle
+					expanded={expanded}
+					foldedCount={fold.foldedCount}
+					onToggle={() => setExpanded((current) => !current)}
+				/>
+			)}
 		</FilterFieldFrame>
 	);
 }

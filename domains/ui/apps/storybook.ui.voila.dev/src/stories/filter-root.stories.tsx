@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import {
 	defaultFilterLabels,
+	type EntityFilterOption,
 	Filter,
 	type FilterDefinition,
 	type FilterValues,
@@ -50,6 +51,21 @@ const searchTowns = async (
 	return TOWNS.filter((town) => town.label.toLowerCase().includes(normalized));
 };
 
+const CUSTOMERS: ReadonlyArray<EntityFilterOption> = [
+	{ id: "cus_acme", label: "Acme Corporation" },
+	{ id: "cus_globex", label: "Globex" },
+	{ id: "cus_initech", label: "Initech" },
+];
+
+const searchCustomers = async (
+	query: string,
+): Promise<ReadonlyArray<EntityFilterOption>> => {
+	const normalized = query.trim().toLowerCase();
+	return CUSTOMERS.filter((customer) =>
+		customer.label.toLowerCase().includes(normalized),
+	);
+};
+
 const definitions: ReadonlyArray<FilterDefinition> = [
 	{
 		kind: "text",
@@ -96,7 +112,24 @@ const definitions: ReadonlyArray<FilterDefinition> = [
 		searchPlaces: searchTowns,
 		defaultKm: 30,
 	},
-	{ kind: "dateRange", key: "sentAt", label: "Sent" },
+	{
+		kind: "entity",
+		key: "customer",
+		label: "Customer",
+		description: "Looked up as you type — try “ac” or “gl”.",
+		multiple: true,
+		allowExclusion: true,
+		searchOptions: searchCustomers,
+	},
+	{
+		kind: "dateRange",
+		key: "sentAt",
+		label: "Sent",
+		presets: [
+			{ label: "Since 2026", from: "2026-01-01" },
+			{ label: "Until 2025", to: "2025-12-31" },
+		],
+	},
 	{
 		kind: "moneyRange",
 		key: "price",
@@ -142,18 +175,25 @@ const frenchLabels = {
 	to: "Au",
 	min: "Min",
 	max: "Max",
-	any: "Peu importe",
 	remove: "Retirer",
+	close: "Fermer",
+	filterSearchPlaceholder: "Rechercher un filtre…",
+	noFilterFound: "Aucun filtre ne correspond.",
+	entityNoResults: "Aucun résultat.",
 	resultCount: (count: number) => `${count} résultats`,
 	selectedCount: (count: number) => `${count} sélectionnés`,
+	moreOptions: (count: number) => `${count} de plus…`,
+	lessOptions: "Afficher moins",
 };
 
 function FilterRootFixture({
 	labels,
 	locale,
+	mode,
 }: {
 	labels?: Partial<typeof defaultFilterLabels>;
 	locale?: string;
+	mode?: "apply" | "live";
 }) {
 	const [values, setValues] = useState<FilterValues>({
 		status: { kind: "select", values: ["failed"], excluded: false },
@@ -163,6 +203,7 @@ function FilterRootFixture({
 	return (
 		<div className="flex max-w-3xl flex-col gap-6">
 			<Filter.Root
+				mode={mode}
 				definitions={definitions}
 				values={values}
 				onValuesChange={setValues}
@@ -198,6 +239,48 @@ export const Default: Story = {
 
 export const French: Story = {
 	render: () => <FilterRootFixture labels={frenchLabels} locale="fr-FR" />,
+};
+
+/** `mode="live"`: a real search input, and a side sheet that applies as you go. */
+export const Live: Story = {
+	render: () => <FilterRootFixture mode="live" />,
+};
+
+/** The bar's button toggles a rail docked beside the list (a drawer on mobile). */
+export const Docked: Story = {
+	render: function DockedStory() {
+		const [values, setValues] = useState<FilterValues>({});
+		const [search, setSearch] = useState("");
+		const [open, setOpen] = useState(true);
+		return (
+			<div className="flex flex-col gap-4">
+				<Filter.Root
+					mode="live"
+					definitions={definitions}
+					values={values}
+					onValuesChange={setValues}
+					searchValue={search}
+					onSearchChange={setSearch}
+					resultCount={42}
+					open={open}
+					onOpenChange={setOpen}
+					panelRenderedElsewhere
+				/>
+				<div className="flex gap-4">
+					<pre className="min-w-0 flex-1 overflow-x-auto rounded-lg bg-muted p-3 text-xs">
+						{JSON.stringify({ search, values }, null, 2)}
+					</pre>
+					<Filter.Dock
+						open={open}
+						onOpenChange={setOpen}
+						definitions={definitions}
+						values={values}
+						onValuesChange={setValues}
+					/>
+				</div>
+			</div>
+		);
+	},
 };
 
 /** The editor on its own, for a screen that shows filters inline. */

@@ -1,6 +1,7 @@
 import type * as React from "react";
 import { Fragment } from "react";
 import { FilterField } from "#/filter/components/filter-field.tsx";
+import { FilterProvider } from "#/filter/components/filter-provider.tsx";
 import { setFilterValue } from "#/filter/lib/filter-values.ts";
 import type {
 	FilterDefinition,
@@ -22,18 +23,21 @@ interface Props extends React.ComponentProps<"div"> {
 	 */
 	onValuesChange: (values: FilterValues) => void;
 	/**
-	 * Every string the editor shows. `Filter.Root` supplies it; standalone, pass
-	 * `defaultFilterLabels` or your own.
+	 * Overrides for the strings the editor shows, merged over the surrounding
+	 * filter root's (English defaults at the outermost level), so a partial is
+	 * enough.
 	 */
-	labels: FilterLabels;
-	/** BCP 47 tag used to format the numbers, money and dates in the fields. */
-	locale: string;
+	labels?: Partial<FilterLabels>;
+	/** BCP 47 tag used to format the numbers, money and dates; inherited when omitted. */
+	locale?: string;
 }
 
 /**
  * The editor: every declared filter, in declaration order, separated so a long
  * panel stays scannable. It edits a whole `FilterValues` record — clearing a
- * field removes its key, so the record never carries empty filters.
+ * field removes its key, so the record never carries empty filters. Standalone
+ * it is a settings screen's form; inside a filter root it inherits the root's
+ * copy.
  */
 export function FilterForm({
 	definitions,
@@ -45,25 +49,25 @@ export function FilterForm({
 	...props
 }: Props) {
 	return (
-		<div
-			data-slot="filter-form"
-			className={cn("flex flex-col gap-5", className)}
-			{...props}
-		>
-			{definitions.map((definition, index) => (
-				<Fragment key={definition.key}>
-					{index > 0 && <Separator />}
-					<FilterField
-						definition={definition}
-						value={values[definition.key]}
-						locale={locale}
-						labels={labels}
-						onValueChange={(value) =>
-							onValuesChange(setFilterValue(values, definition.key, value))
-						}
-					/>
-				</Fragment>
-			))}
-		</div>
+		<FilterProvider labels={labels} locale={locale}>
+			<div
+				data-slot="filter-form"
+				className={cn("flex flex-col gap-5", className)}
+				{...props}
+			>
+				{definitions.map((definition, index) => (
+					<Fragment key={definition.key}>
+						{index > 0 && <Separator />}
+						<FilterField
+							definition={definition}
+							value={values[definition.key]}
+							onValueChange={(value) =>
+								onValuesChange(setFilterValue(values, definition.key, value))
+							}
+						/>
+					</Fragment>
+				))}
+			</div>
+		</FilterProvider>
 	);
 }

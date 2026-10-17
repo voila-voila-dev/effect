@@ -1,0 +1,33 @@
+---
+title: Deploying
+description: Prerender every page to static files and serve them from a Cloudflare Worker.
+icon: lightning
+audience: [everyone]
+kind: guide
+stage: operate
+prerequisites: [guides/writing-pages]
+---
+
+`bun run build` prerenders every page the home links to, directly or not, to
+`dist/client`, with a `sitemap.xml` and a `404.html`. Nothing runs on the
+server: the Worker serves files.
+
+## Deploy
+
+```sh
+bun run build
+bunx wrangler deploy
+```
+
+`wrangler.jsonc` names the Worker. Uncomment its `routes` to serve the site
+on your own domain.
+
+## Check before you ship
+
+```sh
+bun run check-types
+bun run test
+```
+
+The test reads every page: a dead link, a page the sidebar forgets or a page
+nothing links to fails it.

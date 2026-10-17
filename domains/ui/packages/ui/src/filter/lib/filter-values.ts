@@ -1,6 +1,7 @@
 import type {
 	BooleanFilterValue,
 	DateRangeFilterValue,
+	EntityFilterValue,
 	FilterDefinition,
 	FilterLabels,
 	FilterValue,
@@ -31,6 +32,8 @@ export function isFilterValueEmpty(value: FilterValue): boolean {
 			return value.from === undefined && value.to === undefined;
 		case "geoRadius":
 			return false;
+		case "entity":
+			return value.entities.length === 0;
 		case "boolean":
 			return false;
 	}
@@ -156,6 +159,20 @@ function describeSelect(
 	return `${definition.label} ${operatorOf(value.excluded, context)} ${rendered}`;
 }
 
+function describeEntity(
+	value: EntityFilterValue,
+	context: DescribeContext,
+): string {
+	const { definition, labels } = context;
+	// Same collapse rule as `select`; labels travel in the value itself, so a
+	// shared URL renders names without a lookup.
+	const rendered =
+		value.entities.length > 2
+			? labels.selectedCount(value.entities.length)
+			: value.entities.map((entity) => entity.label).join(", ");
+	return `${definition.label} ${operatorOf(value.excluded, context)} ${rendered}`;
+}
+
 function describeBoolean(
 	value: BooleanFilterValue,
 	{ definition }: DescribeContext,
@@ -211,6 +228,8 @@ export function describeFilterValue({
 			return labelled(describeDateRange(value, context));
 		case "geoRadius":
 			return labelled(labels.around(value.place.label, value.radiusKm));
+		case "entity":
+			return describeEntity(value, context);
 		case "boolean":
 			return labelled(describeBoolean(value, context));
 	}

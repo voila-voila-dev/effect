@@ -3,7 +3,8 @@
 Building blocks for B2B products, extracted from production code and kept free
 of any one product's vocabulary. Everything lives in this repository and is
 published as `@voila.dev/*`; a package moves to a repository of its own only
-when it needs to.
+when it needs to. Each package's documentation is at
+[docs.voila.dev](https://docs.voila.dev), built from its README.
 
 ## Backend on [Effect](https://effect.website) 4
 
@@ -53,6 +54,21 @@ export const RenameOrganizationUseCase = UseCase.make({
 });
 ```
 
+## Documentation sites
+
+| Package | What it gives you |
+| --- | --- |
+| [`@voila.dev/docs`](./domains/docs/packages/docs) | The framework-free half of a docs site: a navigation registry, a typo-tolerant search, reader contexts, a link graph check, an OpenAPI reference model and an MDX pipeline for Vite. |
+| [`@voila.dev/ui-docs`](./domains/docs/packages/ui-docs) | The React layer on top: frame, sidebar, outline, search palette, MDX components and API reference pages, on Tailwind CSS 4 and Base UI. |
+
+[`domains/docs/templates/docs-site`](./domains/docs/templates/docs-site) is a
+whole site on the two to clone: TanStack Start, every page prerendered and
+served by a Cloudflare Worker, one `docs.config.ts` to edit, MDX pages and a
+test that fails on a dead link. [docs.voila.dev](https://docs.voila.dev)
+([`domains/docs/apps/docs.voila.dev`](./domains/docs/apps/docs.voila.dev)) is
+made from it; `bun run --filter @voila.dev/docs.voila.dev dev` starts it
+locally.
+
 ## Providers
 
 Each one implements a contract you can replace (a `Context.Service`), calls
@@ -88,7 +104,9 @@ Merging to `main` opens the "Version packages" PR; merging that publishes.
 1. `effect-ddd`, `env` — **0.1** on npm
 2. `biome-plugins`, `crypto`, `cache-lock`, `http`, `outbox` — **0.1** on npm
 3. `live` (WebSocket hub) — merged, first release next
-4. Documentation site on `@voila.dev/docs`
+4. Documentation site on `@voila.dev/docs`: the docs site template
+   (`domains/docs/templates/docs-site`) and [docs.voila.dev](https://docs.voila.dev), built
+   from the packages' READMEs — merged
 5. Providers: `annuaire-entreprises`, `vies`, `email` + `resend`, `stripe` —
    merged, first release next
 6. UI: `ui`, `chart` and `motion` moved in from `voila-voila-dev/ui`; their

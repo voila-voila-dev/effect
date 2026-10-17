@@ -1,6 +1,6 @@
 ---
 title: "Filter.Root"
-description: "The whole filtering surface of a list: trigger, editor, chips and result count."
+description: "The whole filtering surface of a list: search, trigger, editor, chips and result count."
 sidebar:
   order: 1
 ---
@@ -27,22 +27,67 @@ const [values, setValues] = useState<FilterValues>({});
 `FilterValues` never holds an empty filter, so `Object.keys(values).length` is
 the active count and the record round-trips to a query string unchanged.
 
+## Two ways to commit
+
+The default, `mode="apply"`, puts a search-shaped trigger in the bar and opens a
+dialog whose edits are a draft: nothing reaches `onValuesChange` until Apply,
+and dismissing discards. Pick it when every change costs a request you would
+rather not make twice.
+
+`mode="live"` puts a real search input in the bar beside a "Filters" button,
+and the side sheet behind it applies each change as it happens — a tap at
+once, typing after a 300 ms pause — so the sheet can stay open while the rows
+shift behind it. Pick it for an admin list, where narrowing and reading
+alternate.
+
+<Preview layout="stack">
+	<Example.Live />
+</Preview>
+
+```tsx
+<Filter.Root
+	mode="live"
+	definitions={definitions}
+	values={values}
+	onValuesChange={setValues}
+	searchValue={search}
+	onSearchChange={setSearch}
+	resultCount={total}
+/>;
+```
+
+For a rail beside the list instead of an overlay, keep the bar and render
+[Filter.Dock](/ui-filter/filter-dock) yourself, with `panelRenderedElsewhere`.
+
 ## API
 
 ### Filter.Root
 
 <PropTable of="Filter.Root" />
 
-`onValuesChange` fires on apply and on chip removal, never on a keystroke inside
-the editor, so it is safe to use directly as a fetch key. `onSearchChange` is
-the opposite — it fires per keystroke, so debounce that one yourself.
+`onValuesChange` fires on apply (or, live, once the edit settles) and on chip
+removal, never on a keystroke inside the editor, so it is safe to use directly
+as a fetch key. `onSearchChange` fires per keystroke in live mode, so debounce
+that one yourself.
+
+`hideChips` drops the chips row for filters that are standing preferences
+rather than ad-hoc facets; `open` and `onOpenChange` let an empty state's
+"adjust your filters" button open the same editor.
 
 ### Filter.Panel
 
 <PropTable of="Filter.Panel" />
 
-The overlay `Filter.Root` opens, exposed for the case where you want Root's
+The dialog `mode="apply"` opens, exposed for the case where you want its
 draft-then-apply behaviour behind a trigger of your own. Pair it with
 [Filter.Trigger](/ui-filter/filter-trigger), or with any button you like — it
 only needs `open` and `onOpenChange`. For the editor with no overlay and no
 commit step, use [Filter.Form](/ui-filter/filter-form).
+
+### Filter.Sheet
+
+<PropTable of="Filter.Sheet" />
+
+The side sheet (a bottom drawer on mobile) `mode="live"` opens. Edits apply as
+they happen, so its footer has Close rather than Apply. From six filters on, a
+search box at the top finds one by name, accent- and case-blind.

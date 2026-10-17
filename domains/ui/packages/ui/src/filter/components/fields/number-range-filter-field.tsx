@@ -3,8 +3,8 @@ import { FilterFieldFrame } from "#/filter/components/fields/filter-field-frame.
 import { FilterRangeRow } from "#/filter/components/fields/filter-range-row.tsx";
 import { NumberField } from "#/filter/components/fields/number-field.tsx";
 import { parseBound } from "#/filter/components/fields/number-filter-field.tsx";
+import { useFilterLabels } from "#/filter/hooks/use-filter-labels.ts";
 import type {
-	FilterLabels,
 	NumberRangeFilterDefinition,
 	NumberRangeFilterValue,
 } from "#/filter/types.ts";
@@ -16,7 +16,6 @@ interface Props {
 	definition: NumberRangeFilterDefinition;
 	value: NumberRangeFilterValue | undefined;
 	onValueChange: (value: NumberRangeFilterValue) => void;
-	labels: FilterLabels;
 }
 
 /** A lower and an upper bound, either of which may be left open. */
@@ -24,8 +23,8 @@ export function NumberRangeFilterField({
 	definition,
 	value,
 	onValueChange,
-	labels,
 }: Props) {
+	const labels = useFilterLabels();
 	const controlId = useId();
 	const isEmpty = value?.min === undefined && value?.max === undefined;
 
@@ -34,7 +33,6 @@ export function NumberRangeFilterField({
 			label={definition.label}
 			description={definition.description}
 			controlId={controlId}
-			labels={labels}
 			onClear={
 				isEmpty ? undefined : () => onValueChange({ kind: "numberRange" })
 			}

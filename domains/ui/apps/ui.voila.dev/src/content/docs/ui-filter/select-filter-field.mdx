@@ -21,6 +21,12 @@ const definition: FilterDefinition = {
 	options: [
 		{ value: "sent", label: "Sent" },
 		{ value: "failed", label: "Failed" },
+		{ value: "deferred", label: "Deferred", secondary: true },
 	],
 };
 ```
+
+From eight options on, the list grows its own search box. Options marked
+`secondary` wait behind a "N more…" toggle so a long tail of rarely picked
+choices doesn't drown the shortlist; a selected or search-matched one always
+shows.

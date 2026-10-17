@@ -8,7 +8,8 @@
 			"packages/*",
 			"domains/*/packages/*",
 			"domains/*/apps/*",
-			"domains/*/examples/*"
+			"domains/*/examples/*",
+			"domains/*/templates/*"
 		],
 		"catalog": {
 			"effect": "4.0.2",

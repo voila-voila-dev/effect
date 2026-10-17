@@ -1,0 +1,83 @@
+---
+title: voila.dev platform
+sidebarTitle: Introduction
+description: Building blocks for B2B products, extracted from production code and kept free of any one product's vocabulary.
+icon: compass
+audience: [everyone]
+kind: explanation
+stage: start
+next: [guides/getting-started, guides/docs-site]
+---
+
+Every package here is published as `@voila.dev/*` and lives in one
+repository. The backend packages run on [Effect](https://effect.website) 4;
+the UI ones on React 19 and Tailwind CSS 4. Each page below is the package's
+own README, so it says what npm says.
+
+## Backend on Effect
+
+<CardGroup cols={2}>
+  <Card title="effect-ddd" icon="code" href="/packages/effect-ddd">
+    Use cases with a declared gate, a registry, a permission catalogue, and architecture tests.
+  </Card>
+  <Card title="outbox" icon="code" href="/packages/outbox">
+    Domain events written with the change, delivered at least once; cron jobs.
+  </Card>
+  <Card title="live" icon="code" href="/packages/live">
+    Live updates over WebSocket: gated channels, a batching hub, a replay log.
+  </Card>
+  <Card title="http" icon="code" href="/packages/http">
+    Outbound calls with typed timeouts, retries, spans and webhook checks.
+  </Card>
+  <Card title="env" icon="code" href="/packages/env">
+    `.env` files into `process.env` or an Effect `ConfigProvider`.
+  </Card>
+  <Card title="crypto" icon="code" href="/packages/crypto">
+    A secret box, signed tokens, token digests and secure random.
+  </Card>
+  <Card title="cache-lock" icon="code" href="/packages/cache-lock">
+    A cache, a lease-based lock and a rate limiter, in memory or on Redis.
+  </Card>
+  <Card title="biome-plugins" icon="code" href="/packages/biome-plugins">
+    Lint rules that keep an Effect codebase honest.
+  </Card>
+</CardGroup>
+
+## Providers
+
+<CardGroup cols={2}>
+  <Card title="email" icon="plug" href="/packages/email">
+    One `EmailSender` contract, with in-memory and console senders.
+  </Card>
+  <Card title="resend" icon="plug" href="/packages/resend">
+    An `EmailSender` on Resend, receiving and webhooks.
+  </Card>
+  <Card title="stripe" icon="plug" href="/packages/stripe">
+    A light Stripe REST client with safe retries and typed declines.
+  </Card>
+  <Card title="annuaire-entreprises" icon="plug" href="/packages/annuaire-entreprises">
+    The French company directory: a SIRET to its company.
+  </Card>
+  <Card title="vies" icon="plug" href="/packages/vies">
+    EU VAT number checks against VIES, outages typed apart.
+  </Card>
+</CardGroup>
+
+## Documentation
+
+<CardGroup cols={2}>
+  <Card title="docs" icon="book" href="/packages/docs">
+    Navigation, search, link checks, OpenAPI and MDX for a docs site.
+  </Card>
+  <Card title="ui-docs" icon="book" href="/packages/ui-docs">
+    The React layer: frame, sidebar, search palette, MDX components.
+  </Card>
+</CardGroup>
+
+This site is built on both, from the [docs site template](/guides/docs-site).
+
+## UI
+
+The components (`@voila.dev/ui`), the charts (`@voila.dev/chart`) and the
+animations (`@voila.dev/motion`) have their own documentation, with live
+examples, at [ui.voila.dev](https://ui.voila.dev).

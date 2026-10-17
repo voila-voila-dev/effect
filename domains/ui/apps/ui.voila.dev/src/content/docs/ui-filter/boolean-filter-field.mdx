@@ -12,5 +12,14 @@ import * as Example from "@/examples/ui-filter/boolean-filter-field";
 </Preview>
 
 ```tsx
-const definition: FilterDefinition = { kind: "boolean", key: "opened", label: "Opened" };
+const definition: FilterDefinition = {
+	kind: "boolean",
+	key: "opened",
+	label: "Opened",
+	trueLabel: "Opened",
+	falseLabel: "Not opened",
+};
 ```
+
+Two option pills, the same control as a single-choice select. "Any" is the
+empty selection: tap the active pill again, or Clear, to unset the filter.

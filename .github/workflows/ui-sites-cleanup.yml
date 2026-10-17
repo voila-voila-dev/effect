@@ -1,4 +1,4 @@
-name: UI sites cleanup
+name: Sites cleanup
 
 # Tears down the per-PR preview workers when the PR closes. One job per app,
 # mirroring the preview matrix in ui-sites.yml; each updates the same
@@ -28,6 +28,12 @@ jobs:
           - app: ui.voila.dev
             worker: ui-voila-dev
             label: Docs
+          - app: docs.voila.dev
+            worker: docs-voila-dev
+            label: Platform docs
+          - app: docs-site-template
+            worker: docs-site-template
+            label: Docs site template
     steps:
       - name: Checkout
         uses: actions/checkout@v7

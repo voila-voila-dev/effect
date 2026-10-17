@@ -2,7 +2,7 @@ import { XIcon } from "@phosphor-icons/react";
 import type * as React from "react";
 import type { ReactNode } from "react";
 import { Button } from "#/button/components/button.tsx";
-import type { FilterLabels } from "#/filter/types.ts";
+import { useFilterLabels } from "#/filter/hooks/use-filter-labels.ts";
 import { cn } from "#/lib/utils.ts";
 
 interface Props extends React.ComponentProps<"div"> {
@@ -18,7 +18,6 @@ interface Props extends React.ComponentProps<"div"> {
 	operator?: ReactNode;
 	/** Omitted while the field is empty — nothing to clear. */
 	onClear?: () => void;
-	labels: FilterLabels;
 	children: ReactNode;
 }
 
@@ -33,11 +32,11 @@ export function FilterFieldFrame({
 	controlId,
 	operator,
 	onClear,
-	labels,
 	children,
 	className,
 	...props
 }: Props) {
+	const labels = useFilterLabels();
 	return (
 		<div
 			data-slot="filter-field"

@@ -1,4 +1,4 @@
 {
-	"extends": "@voila.dev/typescript-config/base.json",
+	"extends": "@voila.dev/typescript-config/strict.json",
 	"include": ["rules/*.ts"]
 }

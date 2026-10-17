@@ -9,18 +9,17 @@
 		"moduleResolution": "bundler",
 		"customConditions": ["@voila.dev/source"],
 		"allowImportingTsExtensions": true,
-		"rewriteRelativeImportExtensions": true,
+		"resolveJsonModule": true,
 		"verbatimModuleSyntax": true,
 		"noEmit": true,
+		"incremental": true,
+		"tsBuildInfoFile": "${configDir}/node_modules/.cache/tsbuildinfo.json",
 		"strict": true,
-		"exactOptionalPropertyTypes": true,
-		"noUncheckedIndexedAccess": true,
 		"skipLibCheck": true,
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitOverride": true,
 		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"types": ["bun"]
+		"noUnusedParameters": true
 	},
 	"include": ["${configDir}/src"]
 }

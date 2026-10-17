@@ -73,6 +73,6 @@
 		"@voila.dev/effect-ddd": "workspace:^",
 		"@voila.dev/typescript-config": "workspace:*",
 		"typescript": "catalog:",
-		"vite": "8.3.4"
+		"vite": "catalog:"
 	}
 }

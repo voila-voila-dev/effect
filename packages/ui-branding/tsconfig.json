@@ -1,0 +1,4 @@
+{
+	"extends": "@voila.dev/typescript-config/react.json",
+	"include": ["**/*.ts", "**/*.tsx"]
+}

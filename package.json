@@ -7,6 +7,7 @@
 		"packages": [
 			"packages/*",
 			"providers/*",
+			"apps/*",
 			"examples/*"
 		],
 		"catalog": {
@@ -14,7 +15,25 @@
 			"@effect/platform-bun": "4.0.2",
 			"typescript": "7.0.2",
 			"@types/bun": "1.4.3",
-			"@biomejs/biome": "2.5.15"
+			"@types/node": "25.8.0",
+			"@biomejs/biome": "2.5.15",
+			"vite": "8.2.2",
+			"vitest": "5.0.0"
+		},
+		"catalogs": {
+			"react": {
+				"react": "19.3.0",
+				"react-dom": "19.3.0",
+				"@phosphor-icons/react": "2.1.10"
+			},
+			"tailwind": {
+				"tailwindcss": "4.3.3",
+				"@tailwindcss/vite": "4.3.3",
+				"@tailwindcss/typography": "0.5.20"
+			},
+			"maplibre": {
+				"maplibre-gl": "6.9.0"
+			}
 		}
 	},
 	"overrides": {
@@ -27,15 +46,24 @@
 		"check-types": "bun run --filter '*' check-types",
 		"test": "bun run --filter '*' test",
 		"build": "bun run --filter './packages/*' --filter './providers/*' build",
+		"check-docs": "bun scripts/check-docs.mjs",
+		"check-labels": "bun scripts/check-editor-labels.mjs",
+		"install-browsers": "cd packages/ui && bunx playwright install --with-deps chromium",
+		"docs:dev": "bun run --filter @voila.dev/ui.voila.dev dev",
+		"docs:build": "bun run --filter @voila.dev/ui.voila.dev build",
+		"storybook:dev": "bun run --filter @voila.dev/storybook.ui.voila.dev dev",
+		"storybook:build": "bun run --filter @voila.dev/storybook.ui.voila.dev build",
 		"changeset": "changeset",
 		"version-packages": "changeset version && bun install",
-		"release": "bun run build && bun scripts/publish.ts"
+		"release": "bun run build && bun scripts/publish-manifests.mjs && bun scripts/publish.ts"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",
 		"@changesets/cli": "^2.29.7",
 		"@types/bun": "catalog:",
 		"@types/node": "24",
-		"typescript": "catalog:"
+		"esbuild": "^0.28.2",
+		"typescript": "catalog:",
+		"typescript-editor-lsp": "npm:typescript@6.0.3"
 	}
 }

@@ -1,0 +1,87 @@
+{
+	"formatter": "language_server",
+	"format_on_save": "on",
+	"languages": {
+		"JavaScript": {
+			"formatter": [
+				{
+					"code_actions": {
+						"source.fixAll.biome": true,
+						"source.organizeImports.biome": true
+					}
+				},
+				{ "language_server": { "name": "biome" } }
+			]
+		},
+		"TypeScript": {
+			"formatter": [
+				{
+					"code_actions": {
+						"source.fixAll.biome": true,
+						"source.organizeImports.biome": true
+					}
+				},
+				{ "language_server": { "name": "biome" } }
+			]
+		},
+		"TSX": {
+			"formatter": [
+				{
+					"code_actions": {
+						"source.fixAll.biome": true,
+						"source.organizeImports.biome": true
+					}
+				},
+				{ "language_server": { "name": "biome" } }
+			]
+		},
+		"JSON": {
+			"formatter": [
+				{
+					"code_actions": {
+						"source.fixAll.biome": true
+					}
+				},
+				{ "language_server": { "name": "biome" } }
+			]
+		},
+		"JSONC": {
+			"formatter": [
+				{
+					"code_actions": {
+						"source.fixAll.biome": true
+					}
+				},
+				{ "language_server": { "name": "biome" } }
+			]
+		},
+		"CSS": {
+			"formatter": [{ "language_server": { "name": "biome" } }]
+		}
+	},
+	"lsp": {
+		"biome": {
+			"settings": {
+				"require_config_file": true
+			}
+		},
+		"vtsls": {
+			"settings": {
+				"typescript": {
+					"tsdk": "node_modules/typescript-editor-lsp/lib"
+				}
+			}
+		},
+		"vscode-css-language-server": {
+			"settings": {
+				"css": {
+					"lint": {
+						// Tailwind v4 at-rules (@theme, @utility, @source, @custom-variant,
+						// @plugin) are unknown to the plain CSS server.
+						"unknownAtRules": "ignore"
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,103 @@
+name: UI sites
+
+# The UI sites (the docs at ui.voila.dev, Storybook and the emoji data) on
+# Cloudflare Workers: on main they redeploy to their production workers; on a
+# pull request the docs and Storybook get a per-PR preview worker, torn down
+# by ui-sites-cleanup.yml. Lint, type-check and tests run in checks.yml.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/**'
+      - 'packages/chart/**'
+      - 'packages/motion/**'
+      - 'packages/ui/**'
+      - 'packages/ui-branding/**'
+      - 'scripts/check-docs-output.mjs'
+      - '.github/actions/**'
+      - '.github/workflows/ui-sites.yml'
+      - 'bun.lock'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'apps/**'
+      - 'packages/chart/**'
+      - 'packages/motion/**'
+      - 'packages/ui/**'
+      - 'packages/ui-branding/**'
+      - 'scripts/check-docs-output.mjs'
+      - '.github/actions/**'
+      - '.github/workflows/ui-sites.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ui-sites-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy ${{ matrix.app }}
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [storybook.ui.voila.dev, ui.voila.dev, emoji.voila.dev]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build and deploy
+        uses: ./.github/actions/deploy-site
+        with:
+          app: ${{ matrix.app }}
+          cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cloudflare-account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+  preview:
+    name: Preview (${{ matrix.label }})
+    # Forks cannot read the Cloudflare secrets; skip rather than fail red.
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      pull-requests: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - app: storybook.ui.voila.dev
+            worker: storybook-ui-voila-dev
+            label: Storybook
+          - app: ui.voila.dev
+            worker: ui-voila-dev
+            label: Docs
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build and deploy the preview worker
+        id: deploy
+        uses: ./.github/actions/deploy-site
+        with:
+          app: ${{ matrix.app }}
+          worker-name: ${{ matrix.worker }}-pr-${{ github.event.pull_request.number }}
+          cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cloudflare-account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Post the preview link
+        uses: voila-voila-dev/.github/actions/sticky-pr-comment@81236edbf9d9298d770ddaeb6df370f0c5f87778 # main
+        with:
+          id: ${{ matrix.app }}_preview
+          body: |
+            **${{ matrix.label }} preview** :rocket:
+
+            ${{ steps.deploy.outputs.url }}
+
+            Deployed from `${{ github.event.pull_request.head.sha }}`.

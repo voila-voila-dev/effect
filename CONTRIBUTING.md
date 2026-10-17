@@ -12,9 +12,11 @@
   `gate-combinators.test.ts`. Shared fixtures are `*.test-helper.ts`; neither
   is built nor published.
 - **One TypeScript config.** A package's `tsconfig.json` extends
-  `@voila.dev/typescript-config/base.json` (`react.json` when it renders
-  React), and its `tsconfig.build.json` stacks `build.json` on top of it. A
-  compiler option belongs in the shared config, not in one package.
+  `@voila.dev/typescript-config`: `strict.json` for the Effect packages,
+  `react.json` for anything that renders, both for a package that is both. Its
+  `tsconfig.build.json` stacks `build.json` on top (tsc emits the JavaScript)
+  or `declarations.json` (esbuild emits it, tsc only the types). A compiler
+  option belongs in the shared config, not in one package.
 - **`index.ts` only re-exports.** The public API is what the package `index.ts`
   lists, nothing else.
 

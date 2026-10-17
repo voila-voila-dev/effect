@@ -1,7 +1,7 @@
 {
-	"name": "@voila.dev/vies",
+	"name": "@voila.dev/resend",
 	"version": "0.0.0",
-	"description": "EU VAT numbers on Effect: VIES checks with typed outages and refusals, the national formats of every member state, a parser for numbers as people type them, and an in-memory fake.",
+	"description": "Resend on Effect: an EmailSender for @voila.dev/email with batching and 429 backoff, the receiving API (body, SPF/DKIM/DMARC verdicts, attachments), the webhook event schema, and in-memory fakes.",
 	"license": "MIT",
 	"author": "voila.dev",
 	"type": "module",
@@ -9,23 +9,21 @@
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/voila-voila-dev/platform.git",
-		"directory": "packages/vies"
+		"directory": "providers/resend"
 	},
-	"homepage": "https://github.com/voila-voila-dev/platform/tree/main/packages/vies#readme",
+	"homepage": "https://github.com/voila-voila-dev/platform/tree/main/providers/resend#readme",
 	"bugs": {
 		"url": "https://github.com/voila-voila-dev/platform/issues"
 	},
 	"keywords": [
 		"effect",
 		"effect-ts",
-		"vies",
-		"vat",
-		"vat-number",
-		"tva",
-		"eu",
-		"kyb",
-		"b2b",
-		"invoicing"
+		"resend",
+		"email",
+		"transactional-email",
+		"inbound-email",
+		"webhooks",
+		"svix"
 	],
 	"exports": {
 		".": {
@@ -38,8 +36,7 @@
 		"dist",
 		"src",
 		"!src/**/*.test.ts",
-		"!src/**/*.test-helper.ts",
-		"!src/**/fixtures"
+		"!src/**/*.test-helper.ts"
 	],
 	"scripts": {
 		"build": "rm -rf dist && tsc -p tsconfig.build.json",
@@ -47,6 +44,8 @@
 		"test": "bun test --conditions=@voila.dev/source"
 	},
 	"dependencies": {
+		"@voila.dev/crypto": "workspace:^",
+		"@voila.dev/email": "workspace:^",
 		"@voila.dev/http": "workspace:^"
 	},
 	"peerDependencies": {

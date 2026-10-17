@@ -13,8 +13,13 @@ import { $ } from "bun";
 const root = join(import.meta.dirname, "..");
 const out = join(root, "node_modules", ".packed");
 
-for (const directory of readdirSync(join(root, "packages"))) {
-	const packageDirectory = join(root, "packages", directory);
+const packageDirectories = ["packages", "providers"].flatMap((group) =>
+	readdirSync(join(root, group)).map((directory) =>
+		join(root, group, directory),
+	),
+);
+
+for (const packageDirectory of packageDirectories) {
 	const manifest = JSON.parse(
 		readFileSync(join(packageDirectory, "package.json"), "utf8"),
 	) as { name: string; version: string; private?: boolean };

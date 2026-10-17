@@ -15,16 +15,21 @@
 	"plugins": [
 		{
 			"path": "./packages/biome-plugins/rules/no-data-tagged-error.grit",
-			"includes": ["**/packages/*/src/**"]
+			"includes": ["**/packages/*/src/**", "**/providers/*/src/**"]
 		},
 		{
 			"path": "./packages/biome-plugins/rules/no-math-random.grit",
-			"includes": ["**/packages/*/src/**", "!**/*.test.ts"]
+			"includes": [
+				"**/packages/*/src/**",
+				"**/providers/*/src/**",
+				"!**/*.test.ts"
+			]
 		},
 		{
 			"path": "./packages/biome-plugins/rules/no-random-uuid.grit",
 			"includes": [
 				"**/packages/*/src/**",
+				"**/providers/*/src/**",
 				"!**/*.test.ts",
 				"!**/*.test-helper.ts"
 			]
@@ -33,6 +38,7 @@
 			"path": "./packages/biome-plugins/rules/no-schema-disable-checks.grit",
 			"includes": [
 				"**/packages/*/src/**",
+				"**/providers/*/src/**",
 				"!**/*.test.ts",
 				"!**/*.test-helper.ts"
 			]

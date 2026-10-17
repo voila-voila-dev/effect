@@ -6,6 +6,7 @@
 	"workspaces": {
 		"packages": [
 			"packages/*",
+			"providers/*",
 			"examples/*"
 		],
 		"catalog": {
@@ -25,7 +26,7 @@
 		"lint": "biome lint --write",
 		"check-types": "bun run --filter '*' check-types",
 		"test": "bun run --filter '*' test",
-		"build": "bun run --filter './packages/*' build",
+		"build": "bun run --filter './packages/*' --filter './providers/*' build",
 		"changeset": "changeset",
 		"version-packages": "changeset version && bun install",
 		"release": "bun run build && bun scripts/publish.ts"

@@ -9,9 +9,9 @@
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/voila-voila-dev/platform.git",
-		"directory": "packages/stripe"
+		"directory": "providers/stripe"
 	},
-	"homepage": "https://github.com/voila-voila-dev/platform/tree/main/packages/stripe#readme",
+	"homepage": "https://github.com/voila-voila-dev/platform/tree/main/providers/stripe#readme",
 	"bugs": {
 		"url": "https://github.com/voila-voila-dev/platform/issues"
 	},

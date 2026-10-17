@@ -1,7 +1,7 @@
 {
-	"name": "@voila.dev/annuaire-entreprises",
+	"name": "@voila.dev/vies",
 	"version": "0.0.0",
-	"description": "The French company directory (Annuaire des Entreprises) on Effect: a SIRET to its company, directors and address, a name search, typed outages, and an in-memory fake.",
+	"description": "EU VAT numbers on Effect: VIES checks with typed outages and refusals, the national formats of every member state, a parser for numbers as people type them, and an in-memory fake.",
 	"license": "MIT",
 	"author": "voila.dev",
 	"type": "module",
@@ -9,23 +9,23 @@
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/voila-voila-dev/platform.git",
-		"directory": "packages/annuaire-entreprises"
+		"directory": "providers/vies"
 	},
-	"homepage": "https://github.com/voila-voila-dev/platform/tree/main/packages/annuaire-entreprises#readme",
+	"homepage": "https://github.com/voila-voila-dev/platform/tree/main/providers/vies#readme",
 	"bugs": {
 		"url": "https://github.com/voila-voila-dev/platform/issues"
 	},
 	"keywords": [
 		"effect",
 		"effect-ts",
-		"siret",
-		"siren",
-		"insee",
-		"sirene",
-		"annuaire-entreprises",
-		"recherche-entreprises",
+		"vies",
+		"vat",
+		"vat-number",
+		"tva",
+		"eu",
 		"kyb",
-		"france"
+		"b2b",
+		"invoicing"
 	],
 	"exports": {
 		".": {

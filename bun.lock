@@ -23,22 +23,6 @@
         "typescript": "catalog:",
       },
     },
-    "packages/annuaire-entreprises": {
-      "name": "@voila.dev/annuaire-entreprises",
-      "version": "0.0.0",
-      "dependencies": {
-        "@voila.dev/http": "workspace:^",
-      },
-      "devDependencies": {
-        "@types/bun": "catalog:",
-        "@voila.dev/effect-ddd": "workspace:*",
-        "effect": "catalog:",
-        "typescript": "catalog:",
-      },
-      "peerDependencies": {
-        "effect": "^4.0.0",
-      },
-    },
     "packages/biome-plugins": {
       "name": "@voila.dev/biome-plugins",
       "version": "0.1.1",
@@ -197,24 +181,6 @@
         "effect": "^4.0.0",
       },
     },
-    "packages/resend": {
-      "name": "@voila.dev/resend",
-      "version": "0.0.0",
-      "dependencies": {
-        "@voila.dev/crypto": "workspace:^",
-        "@voila.dev/email": "workspace:^",
-        "@voila.dev/http": "workspace:^",
-      },
-      "devDependencies": {
-        "@types/bun": "catalog:",
-        "@voila.dev/effect-ddd": "workspace:*",
-        "effect": "catalog:",
-        "typescript": "catalog:",
-      },
-      "peerDependencies": {
-        "effect": "^4.0.0",
-      },
-    },
     "packages/script-kit": {
       "name": "@voila.dev/script-kit",
       "version": "0.0.0",
@@ -230,22 +196,6 @@
       },
       "peerDependencies": {
         "@effect/platform-bun": "^4.0.0",
-        "effect": "^4.0.0",
-      },
-    },
-    "packages/stripe": {
-      "name": "@voila.dev/stripe",
-      "version": "0.0.0",
-      "dependencies": {
-        "@voila.dev/http": "workspace:^",
-      },
-      "devDependencies": {
-        "@types/bun": "catalog:",
-        "@voila.dev/effect-ddd": "workspace:*",
-        "effect": "catalog:",
-        "typescript": "catalog:",
-      },
-      "peerDependencies": {
         "effect": "^4.0.0",
       },
     },
@@ -278,7 +228,57 @@
         "tailwindcss": "^4.0.0",
       },
     },
-    "packages/vies": {
+    "providers/annuaire-entreprises": {
+      "name": "@voila.dev/annuaire-entreprises",
+      "version": "0.0.0",
+      "dependencies": {
+        "@voila.dev/http": "workspace:^",
+      },
+      "devDependencies": {
+        "@types/bun": "catalog:",
+        "@voila.dev/effect-ddd": "workspace:*",
+        "effect": "catalog:",
+        "typescript": "catalog:",
+      },
+      "peerDependencies": {
+        "effect": "^4.0.0",
+      },
+    },
+    "providers/resend": {
+      "name": "@voila.dev/resend",
+      "version": "0.0.0",
+      "dependencies": {
+        "@voila.dev/crypto": "workspace:^",
+        "@voila.dev/email": "workspace:^",
+        "@voila.dev/http": "workspace:^",
+      },
+      "devDependencies": {
+        "@types/bun": "catalog:",
+        "@voila.dev/effect-ddd": "workspace:*",
+        "effect": "catalog:",
+        "typescript": "catalog:",
+      },
+      "peerDependencies": {
+        "effect": "^4.0.0",
+      },
+    },
+    "providers/stripe": {
+      "name": "@voila.dev/stripe",
+      "version": "0.0.0",
+      "dependencies": {
+        "@voila.dev/http": "workspace:^",
+      },
+      "devDependencies": {
+        "@types/bun": "catalog:",
+        "@voila.dev/effect-ddd": "workspace:*",
+        "effect": "catalog:",
+        "typescript": "catalog:",
+      },
+      "peerDependencies": {
+        "effect": "^4.0.0",
+      },
+    },
+    "providers/vies": {
       "name": "@voila.dev/vies",
       "version": "0.0.0",
       "dependencies": {
@@ -584,7 +584,7 @@
 
     "@ungap/structured-clone": ["@ungap/structured-clone@1.4.0", "", {}, "sha512-1mEZtMKPM09vDmQt5y7YvmN2+DFTP7Tg0EWXdic8/C6VRnpb33e4ghisCIE3WZjsE2N8mf+QV1Zqh7ZFYLWInQ=="],
 
-    "@voila.dev/annuaire-entreprises": ["@voila.dev/annuaire-entreprises@workspace:packages/annuaire-entreprises"],
+    "@voila.dev/annuaire-entreprises": ["@voila.dev/annuaire-entreprises@workspace:providers/annuaire-entreprises"],
 
     "@voila.dev/biome-plugins": ["@voila.dev/biome-plugins@workspace:packages/biome-plugins"],
 
@@ -608,15 +608,15 @@
 
     "@voila.dev/outbox": ["@voila.dev/outbox@workspace:packages/outbox"],
 
-    "@voila.dev/resend": ["@voila.dev/resend@workspace:packages/resend"],
+    "@voila.dev/resend": ["@voila.dev/resend@workspace:providers/resend"],
 
     "@voila.dev/script-kit": ["@voila.dev/script-kit@workspace:packages/script-kit"],
 
-    "@voila.dev/stripe": ["@voila.dev/stripe@workspace:packages/stripe"],
+    "@voila.dev/stripe": ["@voila.dev/stripe@workspace:providers/stripe"],
 
     "@voila.dev/ui-docs": ["@voila.dev/ui-docs@workspace:packages/ui-docs"],
 
-    "@voila.dev/vies": ["@voila.dev/vies@workspace:packages/vies"],
+    "@voila.dev/vies": ["@voila.dev/vies@workspace:providers/vies"],
 
     "acorn": ["acorn@8.19.0", "", { "bin": { "acorn": "bin/acorn" } }, "sha512-oJlA3XiRm7Cyk6qFD2Jn8ak9B7jSy0qy00ADO3+8dpT0LSjFihQYv4C02LFCSYJV3Q37xYwwRy5m+IpIiUzqWw=="],
 

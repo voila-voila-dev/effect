@@ -1,10 +1,7 @@
 import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
 import type * as React from "react";
 import { Button } from "#/button/components/button.tsx";
-import {
-	PAGINATION_ELLIPSIS,
-	usePagination,
-} from "#/data-table/hooks/use-pagination.ts";
+import { PAGINATION_ELLIPSIS, usePagination } from "#/hooks/use-pagination.ts";
 import { cn } from "#/lib/utils.ts";
 import { Pagination } from "#/pagination/components/pagination.tsx";
 

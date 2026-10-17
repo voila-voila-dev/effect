@@ -34,6 +34,40 @@ import * as Example from "@/examples/ui-landing/site-header";
 `MobileToggle` and `MobileMenu` share their open state through the root, so the
 two lists are declared separately but only one is ever visible.
 
+## The mobile menu
+
+Below the breakpoint the menu is a full-screen overlay under the bar: its list
+scrolls on its own, `MobileActions` pins its buttons to the bottom (clear of the
+home indicator), and following a `MobileNavItem` closes it. While it is open the
+page behind is frozen through `useScrollLock` — import
+`@voila.dev/ui/styles/landing.css` once, which turns the flag into
+`overflow: hidden` and releases it past the breakpoint on its own.
+
+`collapseBelow="xl"` keeps the burger until `xl`, for a header with more links
+and buttons than a tablet can hold:
+
+```tsx
+<SiteHeader.Root collapseBelow="xl">…</SiteHeader.Root>
+```
+
+`open`/`onOpenChange` control the menu, so it can be mutually exclusive with
+another full-screen surface such as a cart drawer — which can lock the page with
+the same hook:
+
+```tsx
+const [cartOpen, setCartOpen] = useState(false);
+const [menuOpen, setMenuOpen] = useState(false);
+useScrollLock(cartOpen);
+
+<SiteHeader.Root
+	open={menuOpen}
+	onOpenChange={(next) => {
+		setMenuOpen(next);
+		if (next) setCartOpen(false);
+	}}
+>
+```
+
 ## API
 
 ### SiteHeader.Root

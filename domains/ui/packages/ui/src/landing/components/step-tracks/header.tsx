@@ -7,7 +7,7 @@ export function StepTracksHeader({ className, ...props }: Props) {
 	return (
 		<div
 			data-slot="step-tracks-header"
-			className={cn("mb-8 flex items-center gap-4", className)}
+			className={cn("mb-6 flex items-center gap-4 md:mb-8", className)}
 			{...props}
 		/>
 	);

@@ -38,7 +38,7 @@ export function ComparisonSectionRoot({
 				{...props}
 			>
 				<Container>
-					<div className="grid items-center gap-12 lg:grid-cols-2">
+					<div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
 						{children}
 					</div>
 				</Container>

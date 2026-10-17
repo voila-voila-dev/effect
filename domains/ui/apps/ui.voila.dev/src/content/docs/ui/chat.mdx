@@ -62,6 +62,34 @@ self-scrolling anatomy, kept for the screens still on it. Its bubble is
 `Chat.ConversationItem` is the list-of-threads row, with `unreadCount` capped at
 "99+".
 
+## Widgets
+
+A widget is the thing a message is about, standing under its bubble with one way
+to act on it — a document to download, a record to open, a payment to confirm.
+The kit knows none of them: compose the parts, and the action stretches whatever
+it wraps to the widget's full width. It is sized like a bubble.
+
+<Preview layout="stack">
+	<Example.Widget />
+</Preview>
+
+```tsx
+<Chat.Widget>
+	<Chat.WidgetHeader>
+		<Chat.WidgetIcon><FileTextIcon /></Chat.WidgetIcon>
+		<Chat.WidgetHeading>
+			<Chat.WidgetTitle>INV-2026-00004</Chat.WidgetTitle>
+			<Chat.WidgetDetail>Issued Apr 14, 2026</Chat.WidgetDetail>
+		</Chat.WidgetHeading>
+	</Chat.WidgetHeader>
+	<Chat.WidgetAction>
+		<Button variant="outline" size="sm">Download</Button>
+	</Chat.WidgetAction>
+</Chat.Widget>
+```
+
+`Chat.WidgetIcon` is decorative (`aria-hidden`): the title names the thing.
+
 ## API
 
 ### Chat.Avatar
@@ -191,3 +219,31 @@ self-scrolling anatomy, kept for the screens still on it. Its bubble is
 ### Chat.Viewport
 
 <PropTable of="Chat.Viewport" />
+
+### Chat.Widget
+
+<PropTable of="Chat.Widget" />
+
+### Chat.WidgetAction
+
+<PropTable of="Chat.WidgetAction" />
+
+### Chat.WidgetDetail
+
+<PropTable of="Chat.WidgetDetail" />
+
+### Chat.WidgetHeader
+
+<PropTable of="Chat.WidgetHeader" />
+
+### Chat.WidgetHeading
+
+<PropTable of="Chat.WidgetHeading" />
+
+### Chat.WidgetIcon
+
+<PropTable of="Chat.WidgetIcon" />
+
+### Chat.WidgetTitle
+
+<PropTable of="Chat.WidgetTitle" />

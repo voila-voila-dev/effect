@@ -43,7 +43,7 @@ export const toneSolidClass: Record<Tone, string> = {
 	primary: "bg-primary text-primary-foreground",
 	brand: "bg-brand text-brand-foreground",
 	highlight: "bg-highlight text-highlight-foreground",
-	destructive: "bg-destructive text-white",
+	destructive: "bg-destructive text-destructive-foreground",
 	muted: "bg-muted text-muted-foreground",
 };
 

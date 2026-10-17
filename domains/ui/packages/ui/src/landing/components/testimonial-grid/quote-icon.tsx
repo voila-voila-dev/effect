@@ -8,7 +8,7 @@ export function TestimonialQuoteIcon({ className, ...props }: Props) {
 	return (
 		<QuotesIcon
 			data-slot="testimonial-quote-icon"
-			className={cn("mb-4 h-8 w-8 text-primary/30", className)}
+			className={cn("mb-3 size-6 text-primary/30 md:mb-4 md:size-8", className)}
 			{...props}
 		/>
 	);

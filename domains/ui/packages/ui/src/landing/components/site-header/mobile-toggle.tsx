@@ -1,6 +1,7 @@
 import { ListIcon, XIcon } from "@phosphor-icons/react";
 import { useContext } from "react";
 import { SiteHeaderContext } from "#/landing/components/site-header/context/site-header-context.ts";
+import { collapseBreakpoints } from "#/landing/components/site-header/lib/collapse-breakpoints.ts";
 import { cn } from "#/lib/utils.ts";
 
 interface Props extends React.ComponentProps<"button"> {
@@ -8,7 +9,7 @@ interface Props extends React.ComponentProps<"button"> {
 }
 
 export function SiteHeaderMobileToggle({ className, ...props }: Props) {
-	const { open, toggle } = useContext(SiteHeaderContext);
+	const { collapseBelow, open, toggle } = useContext(SiteHeaderContext);
 
 	return (
 		<button
@@ -17,12 +18,13 @@ export function SiteHeaderMobileToggle({ className, ...props }: Props) {
 			aria-expanded={open}
 			onClick={toggle}
 			className={cn(
-				"flex h-10 w-10 items-center justify-center rounded-md hover:bg-accent md:hidden",
+				"flex size-11 items-center justify-center rounded-md hover:bg-accent",
+				collapseBreakpoints[collapseBelow].mobileOnly,
 				className,
 			)}
 			{...props}
 		>
-			{open ? <XIcon className="h-6 w-6" /> : <ListIcon className="h-6 w-6" />}
+			{open ? <XIcon className="size-6" /> : <ListIcon className="size-6" />}
 		</button>
 	);
 }

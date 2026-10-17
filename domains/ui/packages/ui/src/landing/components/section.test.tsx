@@ -14,7 +14,7 @@ describe("Section", () => {
 		const screen = render(<Section>Band</Section>);
 		const section = screen.container.querySelector("section");
 		expect(section).not.toBeNull();
-		expect(section?.classList.contains("py-16")).toBe(true);
+		expect(section?.classList.contains("py-10")).toBe(true);
 		expect(section?.classList.contains("bg-background")).toBe(true);
 	});
 
@@ -25,7 +25,7 @@ describe("Section", () => {
 			</Section>,
 		);
 		const section = screen.container.querySelector("section");
-		expect(section?.classList.contains("py-24")).toBe(true);
+		expect(section?.classList.contains("py-14")).toBe(true);
 		expect(section?.classList.contains("bg-muted")).toBe(true);
 	});
 

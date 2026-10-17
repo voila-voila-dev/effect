@@ -1,5 +1,7 @@
 import {
 	CopySimpleIcon,
+	DownloadSimpleIcon,
+	FileTextIcon,
 	PaperclipIcon,
 	PencilSimpleIcon,
 	TrashIcon,
@@ -1117,6 +1119,36 @@ export const ReactionOnLastMessage: Story = {
 					</Chat.Bubble>
 				</Chat.MessageGroup>
 			</Chat.MessageList>
+		</div>
+	),
+};
+
+/** A widget under a bubble: the document the message is about, with one action. */
+export const Widget: Story = {
+	render: () => (
+		<div className="flex w-full max-w-xl flex-col items-start gap-2">
+			<Chat.MessageBubble variant="other">
+				Here is the invoice for the April milestone.
+			</Chat.MessageBubble>
+			<Chat.Widget>
+				<Chat.WidgetHeader>
+					<Chat.WidgetIcon>
+						<FileTextIcon />
+					</Chat.WidgetIcon>
+					<Chat.WidgetHeading>
+						<Chat.WidgetTitle>INV-2026-00004</Chat.WidgetTitle>
+						<Chat.WidgetDetail>
+							Issued Apr 14, 2026 · $1,840.00
+						</Chat.WidgetDetail>
+					</Chat.WidgetHeading>
+				</Chat.WidgetHeader>
+				<Chat.WidgetAction>
+					<Button variant="outline" size="sm">
+						<DownloadSimpleIcon />
+						Download
+					</Button>
+				</Chat.WidgetAction>
+			</Chat.Widget>
 		</div>
 	),
 };

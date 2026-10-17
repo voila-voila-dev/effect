@@ -12,7 +12,7 @@ export function StepTracksBody({ className, ...props }: Props) {
 		<div
 			data-slot="step-tracks-step-body"
 			className={cn(
-				"flex-1 rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:shadow-md",
+				"flex-1 rounded-2xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow-md md:p-6",
 				toneHoverBorderClass[tone],
 				className,
 			)}

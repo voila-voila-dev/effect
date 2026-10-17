@@ -7,7 +7,7 @@ export function StepTracksStep({ className, ...props }: Props) {
 	return (
 		<div
 			data-slot="step-tracks-step"
-			className={cn("animate-fade-up relative flex gap-5", className)}
+			className={cn("animate-fade-up relative flex gap-4 md:gap-5", className)}
 			{...props}
 		/>
 	);

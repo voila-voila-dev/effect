@@ -80,7 +80,7 @@ export const docsSections: DocsSectionConfig[] = [
 		showcase: {
 			order: 10,
 			blurb:
-				"…and the 85 components underneath it all. One convention, the floor everything else stands on.",
+				"…and the 88 components underneath it all. One convention, the floor everything else stands on.",
 		},
 	},
 	{

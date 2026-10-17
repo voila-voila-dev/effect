@@ -83,4 +83,37 @@ describe("ComparisonSection", () => {
 			items[1]?.querySelector("svg")?.classList.contains("text-success"),
 		).toBe(true);
 	});
+
+	it("builds both panels from copy with BeforeAfter, staggering the second", () => {
+		const screen = render(
+			<ComparisonSection.Root tone="brand">
+				<ComparisonSection.Content>
+					<ComparisonSection.BeforeAfter
+						withoutTitle="The old way"
+						withoutItems={["Spreadsheets", "Email threads"]}
+						withTitle="With Acme"
+						withItems={["One workspace"]}
+					/>
+				</ComparisonSection.Content>
+			</ComparisonSection.Root>,
+		);
+
+		const panels = screen.container.querySelectorAll(
+			"[data-slot=comparison-panel]",
+		);
+		expect(panels.length).toBe(2);
+		expect(panels[0]?.textContent).toContain("Email threads");
+		expect((panels[1] as HTMLElement | undefined)?.style.animationDelay).toBe(
+			"0.3s",
+		);
+		const items = screen.container.querySelectorAll(
+			"[data-slot=comparison-panel-item]",
+		);
+		expect((items[1] as HTMLElement | undefined)?.style.animationDelay).toBe(
+			"0.08s",
+		);
+		expect((items[2] as HTMLElement | undefined)?.style.animationDelay).toBe(
+			"0.3s",
+		);
+	});
 });

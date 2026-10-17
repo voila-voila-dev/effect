@@ -35,7 +35,7 @@ export function CtaBannerRoot({
 				<div
 					data-slot="cta-banner"
 					className={cn(
-						"relative overflow-hidden rounded-3xl px-6 py-12 text-center text-primary-foreground shadow-xl sm:px-12 sm:py-16",
+						"relative overflow-hidden rounded-3xl px-6 py-10 text-center text-primary-foreground shadow-xl sm:px-12 sm:py-16",
 						brandGradientClass,
 					)}
 				>

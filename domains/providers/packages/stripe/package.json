@@ -1,6 +1,6 @@
 {
 	"name": "@voila.dev/stripe",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "A light Stripe REST client on Effect: a pinned API version, nested form encoding, retries only when safe, Stripe's errors read (created nothing? card declined?), field readers, the webhook event schema and a scripted fake.",
 	"license": "MIT",
 	"author": "voila.dev",

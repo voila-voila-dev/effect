@@ -1,6 +1,6 @@
 {
 	"name": "@voila.dev/email",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "Email on Effect, as a domain: an EmailSender contract any provider implements, an outbox that retries every send until it settles, the log of what each message became from the provider webhooks, a suppression list fed by bounces and complaints, and the use cases around them.",
 	"license": "MIT",
 	"author": "voila.dev",

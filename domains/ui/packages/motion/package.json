@@ -1,6 +1,6 @@
 {
 	"name": "@voila.dev/motion",
-	"version": "6.0.134",
+	"version": "6.0.135",
 	"type": "module",
 	"description": "Springs played by the browser, values on one frame loop, exits React waits for.",
 	"license": "MIT",

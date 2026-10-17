@@ -1,6 +1,6 @@
 {
 	"name": "@voila.dev/resend",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "Resend on Effect: an EmailSender for @voila.dev/email with batching and 429 backoff, the receiving API (body, SPF/DKIM/DMARC verdicts, attachments), the webhook event schema, and in-memory fakes.",
 	"license": "MIT",
 	"author": "voila.dev",

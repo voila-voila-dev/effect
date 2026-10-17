@@ -1,6 +1,6 @@
 {
 	"name": "@voila.dev/docs",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Framework-free building blocks of a documentation site: a navigation registry, a typo-tolerant search, reader contexts, a link graph check, an OpenAPI reference model and an MDX pipeline for Vite.",
 	"license": "MIT",
 	"author": "voila.dev",

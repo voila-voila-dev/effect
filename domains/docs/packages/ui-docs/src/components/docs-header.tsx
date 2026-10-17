@@ -52,11 +52,13 @@ export function DocsHeader({
 	return (
 		<header className="fixed inset-x-0 top-0 z-40 bg-docs-canvas">
 			<div className="flex h-14 items-center px-4 lg:px-7">
-				<div className="lg:w-[calc(var(--docs-rail)-1.75rem)]">{brand}</div>
-				<div className="hidden pl-3 lg:block">
+				<div className="shrink-0 lg:w-[calc(var(--docs-rail)-1.75rem)]">
+					{brand}
+				</div>
+				<div className="hidden min-w-0 pl-3 lg:block">
 					<DocsTabs />
 				</div>
-				<div className="ml-auto hidden items-center gap-2 lg:flex">
+				<div className="ml-auto hidden shrink-0 items-center gap-2 pl-6 lg:flex">
 					{actions}
 				</div>
 				<div className="ml-auto flex items-center gap-1 lg:hidden">

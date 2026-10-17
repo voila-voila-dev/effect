@@ -31,7 +31,7 @@ export function MobileNavigationDrawer({
 					</div>
 					{navigation.tabs.length > 1 ? (
 						<div className="border-border border-b px-6 pb-4">
-							<DocsTabs onNavigate={() => onOpenChange(false)} />
+							<DocsTabs onNavigate={() => onOpenChange(false)} wrap />
 						</div>
 					) : null}
 					<div className="flex-1 overflow-y-auto px-2 pt-4 pb-6">

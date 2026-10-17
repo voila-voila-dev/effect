@@ -37,7 +37,10 @@ export const docsNavigation = [
 					"packages/cache-lock",
 				],
 			},
-			{ label: "Tooling", pages: ["packages/biome-plugins"] },
+			{
+				label: "Tooling",
+				pages: ["packages/biome-plugins", "packages/script-kit"],
+			},
 		],
 	},
 	{

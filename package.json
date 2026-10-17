@@ -13,6 +13,7 @@
 		],
 		"catalog": {
 			"effect": "4.0.2",
+			"@effect/platform-bun": "4.0.2",
 			"typescript": "7.0.2",
 			"@types/bun": "1.4.3",
 			"@types/node": "25.8.0",
@@ -35,6 +36,9 @@
 				"maplibre-gl": "6.9.0"
 			}
 		}
+	},
+	"overrides": {
+		"@effect/platform-node-shared": "4.0.2"
 	},
 	"scripts": {
 		"ci": "biome ci",

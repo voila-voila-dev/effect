@@ -1,0 +1,63 @@
+---
+title: "Article readers"
+description: "Content-editor readers set for a long-form article."
+sidebar:
+  order: 25
+---
+
+import * as Example from "@/examples/ui-landing/article-readers";
+
+<Preview layout="stack">
+	<Example.Default />
+</Preview>
+
+```ts
+import { contentToHtml, createContentReaders } from "@voila.dev/ui/content-editor/reader";
+import { withArticleReaders } from "@voila.dev/ui/landing";
+
+const READERS = withArticleReaders(createContentReaders(), {
+	figure: {
+		srcSet: (src) => `${src}?w=480 480w, ${src}?w=960 960w`,
+		sizes: "(min-width: 768px) 40rem, 100vw",
+	},
+});
+
+<ProseArticle dangerouslySetInnerHTML={{ __html: contentToHtml(post.body, { features: READERS }) }} />
+```
+
+`withArticleReaders` takes the readers you already render stored content with
+(see [Server-side rendering](/ui-content-editor/server-side-rendering)) and sets
+them for reading inside a [ProseArticle](/ui-landing/prose-article):
+
+- `h2` and `h3` get a `#` link to themselves, shown when the heading is hovered
+  or the link is focused (`.article-anchor`).
+- A table gets a frame that scrolls sideways on a phone instead of folding every
+  figure, fades the edge it can still scroll towards, and takes keyboard focus
+  as a named region (`.article-table`).
+- An image becomes a lazy, captioned `<figure>` with `width`/`height` and an
+  optional `srcset`, wrapped in a zoom button unless it already links somewhere.
+
+The classes are styled by `@voila.dev/ui/styles/landing.css`, which also ships
+`.article-progress`: render an empty `<div className="article-progress" />` once
+and the page scroll drives a reading-progress bar, with no script.
+
+## Your own blocks
+
+`features` appends your own readers — a callout, a chart, an embed. One whose
+`key` matches a base reader replaces it:
+
+```ts
+withArticleReaders(createContentReaders(), {
+	headingAnchor: "Lien vers cette section",
+	tableRegion: "Tableau défilant",
+	features: [{ key: "callout", nodes: [myCalloutNode] }],
+});
+```
+
+## Zooming images
+
+The zoom button carries `ARTICLE_ZOOM_ATTRIBUTE` (`data-article-zoom`) and does
+nothing on its own: the site decides how an image opens full screen, with one
+delegated click listener on the article. Without it the image still reads as an
+image. `articleFigureNode(options)` is the figure reader alone, for a reader set
+of your own.

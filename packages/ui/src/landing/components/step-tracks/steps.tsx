@@ -21,7 +21,7 @@ export function StepTracksSteps({ className, children, ...props }: Props) {
 					toneConnectorLineClass[tone],
 				)}
 			/>
-			<div className="grid gap-6">{children}</div>
+			<div className="grid gap-4 md:gap-6">{children}</div>
 		</div>
 	);
 }

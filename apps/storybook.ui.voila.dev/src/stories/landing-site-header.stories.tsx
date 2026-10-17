@@ -16,9 +16,9 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function HeaderExample() {
+function HeaderExample({ collapseBelow }: { collapseBelow?: "md" | "xl" }) {
 	return (
-		<SiteHeader.Root>
+		<SiteHeader.Root collapseBelow={collapseBelow}>
 			<SiteHeader.Bar>
 				<SiteHeader.Brand href="/" aria-label="acme.dev">
 					<BrandLogo />
@@ -71,6 +71,22 @@ export const Default: Story = {
 			<HeaderExample />
 			<div className="p-8 text-sm text-muted-foreground">
 				Page content — the header stays pinned to the top with a backdrop blur.
+			</div>
+		</div>
+	),
+};
+
+/**
+ * The burger menu stays until `xl`, for a header with more than a tablet can
+ * hold. Open it: the page behind is frozen until it closes or the viewport
+ * passes `xl`.
+ */
+export const CollapseBelowXl: Story = {
+	render: () => (
+		<div className="min-h-[150vh]">
+			<HeaderExample collapseBelow="xl" />
+			<div className="p-8 text-sm text-muted-foreground">
+				Resize between `md` and `xl`: the burger is still there.
 			</div>
 		</div>
 	),

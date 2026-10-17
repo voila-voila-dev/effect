@@ -13,8 +13,8 @@ export const sectionIntroVariants = cva({
 		},
 		/** Gap between the intro and the section body beneath it. */
 		spacing: {
-			md: "mb-12",
-			lg: "mb-16",
+			md: "mb-8 md:mb-12",
+			lg: "mb-10 md:mb-16",
 		},
 	},
 	defaultVariants: {

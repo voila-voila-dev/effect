@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from "#/lib/cva.ts";
 
 export const landingHeroLayoutVariants = cva({
-	base: "grid items-center gap-12",
+	base: "grid items-center gap-10 lg:gap-12",
 	variants: {
 		/**
 		 * `split` sets the copy beside the media; `centered` stacks and centres

@@ -12,7 +12,7 @@ export function TestimonialGridRoot({ className, ...props }: Props) {
 	return (
 		<div
 			data-slot="testimonial-grid"
-			className={cn("grid gap-6 md:grid-cols-3", className)}
+			className={cn("grid gap-4 md:grid-cols-3 md:gap-6", className)}
 			{...props}
 		/>
 	);

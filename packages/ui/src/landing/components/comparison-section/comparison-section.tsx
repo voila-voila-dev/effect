@@ -1,3 +1,4 @@
+import { ComparisonBeforeAfter } from "#/landing/components/comparison-section/before-after.tsx";
 import { ComparisonContent } from "#/landing/components/comparison-section/content.tsx";
 import { ComparisonMedia } from "#/landing/components/comparison-section/media.tsx";
 import { ComparisonPanel } from "#/landing/components/comparison-section/panel.tsx";
@@ -11,7 +12,8 @@ import { ComparisonTagList } from "#/landing/components/comparison-section/tag-l
 
 /**
  * Compose: `Root (tone) > Content (Eyebrow, Heading, Panels > Panel >
- * PanelTitle + PanelList > PanelItem, TagList > Tag) + Media`.
+ * PanelTitle + PanelList > PanelItem, TagList > Tag) + Media`. `BeforeAfter`
+ * builds the whole `Panels` pair from four copy fields.
  */
 export const ComparisonSection = {
 	Root: ComparisonSectionRoot,
@@ -21,6 +23,7 @@ export const ComparisonSection = {
 	PanelTitle: ComparisonPanelTitle,
 	PanelList: ComparisonPanelList,
 	PanelItem: ComparisonPanelItem,
+	BeforeAfter: ComparisonBeforeAfter,
 	TagList: ComparisonTagList,
 	Tag: ComparisonTag,
 	Media: ComparisonMedia,

@@ -74,3 +74,18 @@ export function Default() {
 		</ComparisonSection.Root>
 	);
 }
+
+export function BeforeAfter() {
+	return (
+		<ComparisonSection.Root tone="brand">
+			<ComparisonSection.Content>
+				<ComparisonSection.BeforeAfter
+					withoutTitle="Traditional hiring"
+					withoutItems={withoutItems}
+					withTitle="With Acme"
+					withItems={withItems}
+				/>
+			</ComparisonSection.Content>
+		</ComparisonSection.Root>
+	);
+}

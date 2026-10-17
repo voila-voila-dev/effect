@@ -18,7 +18,7 @@ function renderHeader() {
 						</SiteHeader.NavItem>
 					</SiteHeader.NavList>
 				</SiteHeader.Nav>
-				<SiteHeader.MobileToggle aria-label="Ouvrir ou fermer le menu" />
+				<SiteHeader.MobileToggle aria-label="Toggle menu" />
 			</SiteHeader.Bar>
 			<SiteHeader.MobileMenu>
 				<SiteHeader.MobileNavItem href="/#how-it-works">
@@ -36,7 +36,7 @@ describe("SiteHeader", () => {
 			"[data-slot=site-header-mobile-menu]",
 		);
 		const toggle = screen.getByRole("button", {
-			name: "Ouvrir ou fermer le menu",
+			name: "Toggle menu",
 		});
 
 		expect(menu?.classList.contains("hidden")).toBe(true);
@@ -76,5 +76,64 @@ describe("SiteHeader", () => {
 		);
 		const button = custom.getByRole("button", { name: "Action" });
 		expect(button.classList.contains("text-muted-foreground")).toBe(true);
+	});
+
+	it("closes the menu and releases the scroll lock when a mobile link is followed", () => {
+		const screen = renderHeader();
+		const toggle = screen.getByRole("button", {
+			name: "Toggle menu",
+		});
+		fireEvent.click(toggle);
+		expect(document.documentElement.getAttribute("data-scroll-locked")).toBe(
+			"mobile",
+		);
+
+		const mobileLink = screen.getAllByRole("link", { name: "How it works" })[1];
+		if (mobileLink === undefined) throw new Error("no mobile link");
+		fireEvent.click(mobileLink);
+		expect(toggle.getAttribute("aria-expanded")).toBe("false");
+		expect(document.documentElement.getAttribute("data-scroll-locked")).toBe(
+			null,
+		);
+	});
+
+	it("keeps the burger menu until xl when collapseBelow is xl", () => {
+		const screen = render(
+			<SiteHeader.Root collapseBelow="xl">
+				<SiteHeader.Bar>
+					<SiteHeader.Nav />
+					<SiteHeader.MobileToggle aria-label="Toggle menu" />
+				</SiteHeader.Bar>
+				<SiteHeader.MobileMenu />
+			</SiteHeader.Root>,
+		);
+		function slot(name: string) {
+			return screen.container.querySelector(`[data-slot=${name}]`)?.classList;
+		}
+
+		expect(slot("site-header-nav")?.contains("xl:flex")).toBe(true);
+		expect(slot("site-header-nav")?.contains("md:flex")).toBe(false);
+		expect(slot("site-header-mobile-toggle")?.contains("xl:hidden")).toBe(true);
+		expect(slot("site-header-mobile-menu")?.contains("xl:hidden")).toBe(true);
+
+		fireEvent.click(screen.getByRole("button", { name: "Toggle menu" }));
+		expect(document.documentElement.getAttribute("data-scroll-locked")).toBe(
+			"below-xl",
+		);
+	});
+
+	it("follows a controlled open state", () => {
+		const changes: boolean[] = [];
+		const screen = render(
+			<SiteHeader.Root open={false} onOpenChange={(next) => changes.push(next)}>
+				<SiteHeader.Bar>
+					<SiteHeader.MobileToggle aria-label="Toggle" />
+				</SiteHeader.Bar>
+			</SiteHeader.Root>,
+		);
+		const toggle = screen.getByRole("button", { name: "Toggle" });
+		fireEvent.click(toggle);
+		expect(changes).toEqual([true]);
+		expect(toggle.getAttribute("aria-expanded")).toBe("false");
 	});
 });

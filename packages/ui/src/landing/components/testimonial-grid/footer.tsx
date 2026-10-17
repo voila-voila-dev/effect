@@ -8,7 +8,7 @@ export function TestimonialFooter({ className, ...props }: Props) {
 		<div
 			data-slot="testimonial-footer"
 			className={cn(
-				"mt-6 flex flex-wrap items-center gap-3 border-t border-border/60 pt-5",
+				"mt-4 flex flex-wrap items-center gap-3 border-t border-border/60 pt-4 md:mt-6 md:pt-5",
 				className,
 			)}
 			{...props}

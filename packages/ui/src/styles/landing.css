@@ -4,6 +4,25 @@
  * `@voila.dev/ui/styles/sources.css` so Tailwind emits the classes the components use.
  */
 
+/* Page scroll lock for full-screen surfaces (burger menu, cart). The
+ * `useScrollLock` hook flags `<html>` with `data-scroll-locked`; the value is
+ * the scope. `"mobile"` and `"below-xl"` release the lock at `md` and `xl` here
+ * in CSS, so a surface hidden on desktop never leaves the page frozen and no
+ * JS resize listener is needed. */
+:root[data-scroll-locked] {
+	overflow: hidden;
+}
+@media (min-width: 768px) {
+	:root[data-scroll-locked="mobile"] {
+		overflow: visible;
+	}
+}
+@media (min-width: 1280px) {
+	:root[data-scroll-locked="below-xl"] {
+		overflow: visible;
+	}
+}
+
 /* Seamless logo marquee: the track renders its children twice, so sliding by
  * half its width loops without a visible jump. Used via the arbitrary utility
  * `animate-[landing-marquee_30s_linear_infinite]` in LogoMarquee. */
@@ -13,5 +32,133 @@
 	}
 	to {
 		transform: translateX(-50%);
+	}
+}
+
+/* The `#` link a long-form article puts after an `h2`/`h3`: hidden until the
+ * heading is hovered or the link itself is focused. */
+.article-anchor {
+	margin-inline-start: 0.4em;
+	color: color-mix(in oklch, var(--muted-foreground) 60%, transparent);
+	font-weight: 500;
+	text-decoration: none;
+	opacity: 0;
+	transition: opacity 150ms;
+}
+:is(h2, h3):hover > .article-anchor,
+.article-anchor:focus-visible {
+	opacity: 1;
+}
+.article-anchor:hover {
+	color: var(--brand);
+}
+
+/* A table inside a `ProseArticle`: framed, striped, and scrolled sideways on a
+ * phone rather than folded. Wrap the `<table>` in `<div class="article-table">`. */
+.article-table {
+	margin-block: 2.5rem;
+	overflow-x: auto;
+	border: 1px solid var(--border);
+	border-radius: 1rem;
+	font-size: 0.875em;
+
+	& table {
+		margin: 0;
+		min-width: 100%;
+		/* The frame sets the size; the typography plugin's own table size would shrink it twice. */
+		font-size: inherit;
+		line-height: 1.5;
+	}
+
+	& :is(th, td) {
+		padding: 0.75rem 1rem;
+		text-align: start;
+		vertical-align: top;
+	}
+
+	/* A phone scrolls the table rather than folding every figure onto two lines. */
+	& td {
+		min-width: 8rem;
+	}
+
+	& thead th {
+		background-color: var(--muted);
+		color: var(--foreground);
+		font-weight: 600;
+	}
+
+	& tbody th {
+		color: var(--foreground);
+		font-weight: 600;
+	}
+
+	& tbody tr:nth-child(even) {
+		background-color: color-mix(in oklch, var(--muted) 55%, transparent);
+	}
+
+	& tbody tr {
+		border-bottom-color: var(--border);
+	}
+
+	& tbody tr:last-child {
+		border-bottom: 0;
+	}
+}
+
+/* Fade the edge a table can still scroll towards. */
+@supports (animation-timeline: scroll()) {
+	.article-table {
+		animation: article-table-edges linear both;
+		animation-timeline: scroll(self inline);
+	}
+}
+
+@keyframes article-table-edges {
+	from {
+		mask-image: linear-gradient(to left, transparent, black 3rem);
+	}
+	1%,
+	99% {
+		mask-image: linear-gradient(
+			to right,
+			transparent,
+			black 3rem,
+			black calc(100% - 3rem),
+			transparent
+		);
+	}
+	to {
+		mask-image: linear-gradient(to right, transparent, black 3rem);
+	}
+}
+
+/* A reading-progress bar along the top of the viewport, driven by the page
+ * scroll alone: render an empty `<div class="article-progress">` once. Hidden
+ * where scroll-driven animations are unsupported. */
+.article-progress {
+	display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+	.article-progress {
+		position: fixed;
+		inset-inline: 0;
+		top: 0;
+		z-index: 60;
+		display: block;
+		height: 3px;
+		background-color: var(--brand);
+		transform-origin: left;
+		animation: article-progress linear both;
+		animation-timeline: scroll(root block);
+	}
+}
+
+@keyframes article-progress {
+	from {
+		transform: scaleX(0);
+	}
+	to {
+		transform: scaleX(1);
 	}
 }

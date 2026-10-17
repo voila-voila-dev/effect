@@ -178,3 +178,19 @@ export const HelperBenefits: Story = {
 		</ComparisonSection.Root>
 	),
 };
+
+/** `BeforeAfter` builds both panels from four copy fields, staggered. */
+export const BeforeAfter: Story = {
+	render: () => (
+		<ComparisonSection.Root tone="highlight">
+			<ComparisonSection.Content>
+				<ComparisonSection.BeforeAfter
+					withoutTitle={clientBenefits.withoutTitle}
+					withoutItems={clientBenefits.withoutItems}
+					withTitle={clientBenefits.withTitle}
+					withItems={clientBenefits.withItems}
+				/>
+			</ComparisonSection.Content>
+		</ComparisonSection.Root>
+	),
+};

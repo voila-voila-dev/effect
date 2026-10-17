@@ -69,7 +69,10 @@ export {
 	sectionVariants,
 } from "#/landing/components/section-variants.ts";
 export { SiteFooter } from "#/landing/components/site-footer/index.ts";
-export { SiteHeader } from "#/landing/components/site-header/index.ts";
+export {
+	SiteHeader,
+	type SiteHeaderCollapse,
+} from "#/landing/components/site-header/index.ts";
 export { StatsRow } from "#/landing/components/stats-row/index.ts";
 export { StepTracks } from "#/landing/components/step-tracks/index.ts";
 export {
@@ -86,6 +89,17 @@ export {
 	textVariants,
 	textWeightOptions,
 } from "#/landing/components/text-variants.ts";
+export { useScrollLock } from "#/landing/hooks/use-scroll-lock.ts";
+export {
+	type ArticleFigureOptions,
+	articleFigureNode,
+} from "#/landing/lib/article-figure.tsx";
+export {
+	type ArticleReadersOptions,
+	withArticleReaders,
+} from "#/landing/lib/article-readers.ts";
+export { ARTICLE_ZOOM_ATTRIBUTE } from "#/landing/lib/article-zoom.ts";
+export type { ScrollLockScope } from "#/landing/lib/scroll-lock-scope.ts";
 export {
 	accentHighlightBlobClass,
 	accentHighlightStarClass,

@@ -6,9 +6,10 @@
 	"workspaces": {
 		"packages": [
 			"packages/*",
-			"apps/*",
-			"examples/*",
-			"templates/*"
+			"domains/*/packages/*",
+			"domains/*/apps/*",
+			"domains/*/examples/*",
+			"domains/*/templates/*"
 		],
 		"catalog": {
 			"effect": "4.0.2",
@@ -41,10 +42,10 @@
 		"lint": "biome lint --write",
 		"check-types": "bun run --filter '*' check-types",
 		"test": "bun run --filter '*' test",
-		"build": "bun run --filter './packages/*' build",
+		"build": "bun run --filter './packages/*' --filter './domains/*/packages/*' build",
 		"check-docs": "bun scripts/check-docs.mjs",
 		"check-labels": "bun scripts/check-editor-labels.mjs",
-		"install-browsers": "cd packages/ui && bunx playwright install --with-deps chromium",
+		"install-browsers": "cd domains/ui/packages/ui && bunx playwright install --with-deps chromium",
 		"docs:dev": "bun run --filter @voila.dev/ui.voila.dev dev",
 		"docs:build": "bun run --filter @voila.dev/ui.voila.dev build",
 		"storybook:dev": "bun run --filter @voila.dev/storybook.ui.voila.dev dev",

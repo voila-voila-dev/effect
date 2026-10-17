@@ -12,16 +12,12 @@ on:
   push:
     branches: [main]
     paths:
-      - 'apps/**'
-      - 'templates/**'
+      - 'domains/ui/**'
+      - 'domains/docs/**'
+      - 'domains/*/packages/*/README.md'
+      - 'domains/*/packages/*/package.json'
       - 'packages/*/README.md'
       - 'packages/*/package.json'
-      - 'packages/chart/**'
-      - 'packages/docs/**'
-      - 'packages/motion/**'
-      - 'packages/ui/**'
-      - 'packages/ui-branding/**'
-      - 'packages/ui-docs/**'
       - 'scripts/check-docs-output.mjs'
       - '.github/actions/**'
       - '.github/workflows/ui-sites.yml'
@@ -29,16 +25,12 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
-      - 'apps/**'
-      - 'templates/**'
+      - 'domains/ui/**'
+      - 'domains/docs/**'
+      - 'domains/*/packages/*/README.md'
+      - 'domains/*/packages/*/package.json'
       - 'packages/*/README.md'
       - 'packages/*/package.json'
-      - 'packages/chart/**'
-      - 'packages/docs/**'
-      - 'packages/motion/**'
-      - 'packages/ui/**'
-      - 'packages/ui-branding/**'
-      - 'packages/ui-docs/**'
       - 'scripts/check-docs-output.mjs'
       - '.github/actions/**'
       - '.github/workflows/ui-sites.yml'
@@ -60,7 +52,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: [storybook.ui.voila.dev, ui.voila.dev, emoji.voila.dev, docs.voila.dev]
+        include:
+          - app: storybook.ui.voila.dev
+          - app: ui.voila.dev
+          - app: emoji.voila.dev
+          - app: docs.voila.dev
+            directory: domains/docs/apps/docs.voila.dev
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -69,6 +66,7 @@ jobs:
         uses: ./.github/actions/deploy-site
         with:
           app: ${{ matrix.app }}
+          directory: ${{ matrix.directory || '' }}
           cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           cloudflare-account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
@@ -92,10 +90,11 @@ jobs:
             worker: ui-voila-dev
             label: Docs
           - app: docs.voila.dev
+            directory: domains/docs/apps/docs.voila.dev
             worker: docs-voila-dev
             label: Platform docs
           - app: docs-site-template
-            directory: templates/docs-site
+            directory: domains/docs/templates/docs-site
             worker: docs-site-template
             label: Docs site template
     steps:

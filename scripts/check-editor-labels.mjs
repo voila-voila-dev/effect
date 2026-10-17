@@ -20,7 +20,7 @@ import path from "node:path";
 
 const EDITORS = [
 	{
-		root: "packages/ui/src/content-editor",
+		root: "domains/ui/packages/ui/src/content-editor",
 		hook: "useContentEditorLabels()",
 	},
 ];

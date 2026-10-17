@@ -5,12 +5,12 @@ description: >
   preview worker reached through its *.workers.dev URL.
 inputs:
   app:
-    description: 'Workspace directory under apps/, e.g. storybook.ui.voila.dev'
+    description: 'Workspace directory under domains/ui/apps/, e.g. storybook.ui.voila.dev'
     required: true
   directory:
     description: >
-      The site's workspace directory, when it is not apps/<app> (e.g.
-      templates/docs-site).
+      The site's workspace directory, when it is not domains/ui/apps/<app>
+      (e.g. domains/docs/apps/docs.voila.dev).
     required: false
     default: ''
   worker-name:
@@ -44,7 +44,7 @@ runs:
 
     - name: Build ${{ inputs.app }}
       shell: bash
-      run: bun run --filter './${{ inputs.directory || format('apps/{0}', inputs.app) }}' build
+      run: bun run --filter './${{ inputs.directory || format('domains/ui/apps/{0}', inputs.app) }}' build
 
     # `check-docs` reads the MDX; this reads the HTML that came out of it, which
     # is the only artefact that cannot lie. A dropped example still builds — the
@@ -62,7 +62,7 @@ runs:
       if: inputs.worker-name != ''
       uses: ./.github/actions/generate-preview-wrangler-config
       with:
-        working-directory: ${{ inputs.directory || format('apps/{0}', inputs.app) }}
+        working-directory: ${{ inputs.directory || format('domains/ui/apps/{0}', inputs.app) }}
         worker-name: ${{ inputs.worker-name }}
 
     - name: Deploy
@@ -71,7 +71,7 @@ runs:
       with:
         cloudflare-api-token: ${{ inputs.cloudflare-api-token }}
         cloudflare-account-id: ${{ inputs.cloudflare-account-id }}
-        working-directory: ${{ inputs.directory || format('apps/{0}', inputs.app) }}
+        working-directory: ${{ inputs.directory || format('domains/ui/apps/{0}', inputs.app) }}
         command: >-
           deploy ${{ inputs.worker-name != '' && '--config wrangler.preview.json' || '' }}
 

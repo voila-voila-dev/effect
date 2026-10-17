@@ -1,0 +1,6 @@
+{
+	"extends": [
+		"./tsconfig.json",
+		"@voila.dev/typescript-config/declarations.json"
+	]
+}

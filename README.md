@@ -11,33 +11,32 @@ when it needs to. Each package's documentation is at
 | Package | What it gives you |
 | --- | --- |
 | [`@voila.dev/biome-plugins`](./packages/biome-plugins) | Biome lint rules that keep an Effect codebase honest: schema-backed errors, seedable randomness, injected identifiers, validated construction, `runMain` entrypoints. |
-| [`@voila.dev/cache-lock`](./packages/cache-lock) | A key-value cache, a lease-based lock and a rate limiter as Effect services, in memory or on Redis, with failures the caller decides on. |
-| [`@voila.dev/crypto`](./packages/crypto) | A secret box bound to its record, signed token kinds with no token table, token digests and secure random, on Web Crypto. |
-| [`@voila.dev/effect-ddd`](./packages/effect-ddd) | Use cases with a declared gate, a registry, a permission catalogue, and architecture tests that freeze your bounded-context boundaries. |
-| [`@voila.dev/email`](./packages/email) | One `EmailSender` contract for any mail provider, the message it takes, and in-memory and console senders for tests and local development. |
-| [`@voila.dev/env`](./packages/env) | `.env` files into `process.env` or an Effect `ConfigProvider`: several files, earlier wins, the real environment always wins. |
-| [`@voila.dev/http`](./packages/http) | Outbound calls to third parties with typed timeouts, jittered retries, spans, bounded Schema decoding and a request log; an SSRF-guarded URL fetcher; Stripe, Svix, Twilio and SNS webhook checks. |
-| [`@voila.dev/live`](./packages/live) | Live updates over WebSocket: channels with a gate and a filter, a batching socket hub, a replay log on Redis streams, and a reconnecting browser client. |
-| [`@voila.dev/outbox`](./packages/outbox) | Domain events written in the same transaction as the change, delivered at least once with retries, backoff and parking (in memory or on Postgres), and cron jobs. |
+| [`@voila.dev/cache-lock`](./domains/effect/packages/cache-lock) | A key-value cache, a lease-based lock and a rate limiter as Effect services, in memory or on Redis, with failures the caller decides on. |
+| [`@voila.dev/crypto`](./domains/effect/packages/crypto) | A secret box bound to its record, signed token kinds with no token table, token digests and secure random, on Web Crypto. |
+| [`@voila.dev/effect-ddd`](./domains/effect/packages/effect-ddd) | Use cases with a declared gate, a registry, a permission catalogue, and architecture tests that freeze your bounded-context boundaries. |
+| [`@voila.dev/email`](./domains/email/packages/email) | Email as a domain: one `EmailSender` contract for any provider, an outbox that retries every send until it settles, the log of what each message became from the provider webhooks, a suppression list fed by bounces and complaints, and received mail routed back by signed reply addresses. |
+| [`@voila.dev/env`](./domains/effect/packages/env) | `.env` files into `process.env` or an Effect `ConfigProvider`: several files, earlier wins, the real environment always wins. |
+| [`@voila.dev/http`](./domains/effect/packages/http) | Outbound calls to third parties with typed timeouts, jittered retries, spans, bounded Schema decoding and a request log; an SSRF-guarded URL fetcher; Stripe, Svix, Twilio and SNS webhook checks. |
+| [`@voila.dev/live`](./domains/effect/packages/live) | Live updates over WebSocket: channels with a gate and a filter, a batching socket hub, a replay log on Redis streams, and a reconnecting browser client. |
+| [`@voila.dev/outbox`](./domains/effect/packages/outbox) | Domain events written in the same transaction as the change, delivered at least once with retries, backoff and parking (in memory or on Postgres), and cron jobs. |
 
 ## UI on React 19 and Tailwind 4
 
 | Package | What it gives you |
 | --- | --- |
-| [`@voila.dev/ui`](./packages/ui) | One package, every component — the base set plus data-table, spreadsheet, filter, maps, landing, icons and the content editor — behind subpath exports. Docs at [ui.voila.dev](https://ui.voila.dev), Storybook at [storybook.ui.voila.dev](https://storybook.ui.voila.dev). |
-| [`@voila.dev/chart`](./packages/chart) | Charts as data: marks, channels and scales drawn to SVG or Canvas, keyboard and screen-reader accessible. |
-| [`@voila.dev/motion`](./packages/motion) | Springs played by the browser, values on one frame loop, exits React waits for. |
+| [`@voila.dev/ui`](./domains/ui/packages/ui) | One package, every component — the base set plus data-table, spreadsheet, filter, maps, landing, icons and the content editor — behind subpath exports. Docs at [ui.voila.dev](https://ui.voila.dev), Storybook at [storybook.ui.voila.dev](https://storybook.ui.voila.dev). |
+| [`@voila.dev/chart`](./domains/ui/packages/chart) | Charts as data: marks, channels and scales drawn to SVG or Canvas, keyboard and screen-reader accessible. |
+| [`@voila.dev/motion`](./domains/ui/packages/motion) | Springs played by the browser, values on one frame loop, exits React waits for. |
 
-The sites live in [`apps/`](./apps): the UI docs (`ui.voila.dev`), the
-Storybook (`storybook.ui.voila.dev`), the emoji data (`emoji.voila.dev`) and the
-platform docs (`docs.voila.dev`), each deployed to Cloudflare Workers.
-`bun run docs:dev` and `bun run storybook:dev` start the first two locally,
-`bun run --filter @voila.dev/docs.voila.dev dev` the platform docs. The UI
-packages export their sources directly, so no build is needed there either; their browser tests need Chromium once (`bun run install-browsers`).
+The sites live in [`domains/ui/apps/`](./domains/ui/apps): the docs (`ui.voila.dev`), the Storybook
+(`storybook.ui.voila.dev`) and the emoji data (`emoji.voila.dev`), each deployed
+to Cloudflare Workers. `bun run docs:dev` and `bun run storybook:dev` start them
+locally. The UI packages export their sources directly, so no build is needed
+there either; their browser tests need Chromium once (`bun run install-browsers`).
 
 ### Example
 
-[`examples/organizations`](./examples/organizations) is a small context written
+[`domains/effect/examples/organizations`](./domains/effect/examples/organizations) is a small context written
 the way these packages expect: actors and gates in `identity/`, an aggregate, a
 repository service with an in-memory adapter, two use cases, a registry, and an
 architecture test that fails the build when `identity` imports a business
@@ -59,27 +58,29 @@ export const RenameOrganizationUseCase = UseCase.make({
 
 | Package | What it gives you |
 | --- | --- |
-| [`@voila.dev/docs`](./packages/docs) | The framework-free half of a docs site: a navigation registry, a typo-tolerant search, reader contexts, a link graph check, an OpenAPI reference model and an MDX pipeline for Vite. |
-| [`@voila.dev/ui-docs`](./packages/ui-docs) | The React layer on top: frame, sidebar, outline, search palette, MDX components and API reference pages, on Tailwind CSS 4 and Base UI. |
+| [`@voila.dev/docs`](./domains/docs/packages/docs) | The framework-free half of a docs site: a navigation registry, a typo-tolerant search, reader contexts, a link graph check, an OpenAPI reference model and an MDX pipeline for Vite. |
+| [`@voila.dev/ui-docs`](./domains/docs/packages/ui-docs) | The React layer on top: frame, sidebar, outline, search palette, MDX components and API reference pages, on Tailwind CSS 4 and Base UI. |
 
-[`templates/docs-site`](./templates/docs-site) is a whole site on the two to
-clone: TanStack Start, every page prerendered and served by a Cloudflare
-Worker, one `docs.config.ts` to edit, MDX pages and a test that fails on a dead
-link. [docs.voila.dev](https://docs.voila.dev)
-([`apps/docs.voila.dev`](./apps/docs.voila.dev)) is made from it.
+[`domains/docs/templates/docs-site`](./domains/docs/templates/docs-site) is a
+whole site on the two to clone: TanStack Start, every page prerendered and
+served by a Cloudflare Worker, one `docs.config.ts` to edit, MDX pages and a
+test that fails on a dead link. [docs.voila.dev](https://docs.voila.dev)
+([`domains/docs/apps/docs.voila.dev`](./domains/docs/apps/docs.voila.dev)) is
+made from it; `bun run --filter @voila.dev/docs.voila.dev dev` starts it
+locally.
 
 ## Providers
 
 Each one implements a contract you can replace (a `Context.Service`), calls
-out through [`@voila.dev/http`](./packages/http) and comes with an in-memory
+out through [`@voila.dev/http`](./domains/effect/packages/http) and comes with an in-memory
 fake.
 
 | Package | What it gives you |
 | --- | --- |
-| [`@voila.dev/annuaire-entreprises`](./packages/annuaire-entreprises) | The French company directory: a SIRET to its company, directors and address, a name search, withheld identities flagged, outages typed apart from "not found". |
-| [`@voila.dev/resend`](./packages/resend) | An `EmailSender` on Resend (rate-limit aware, batched), the receiving API with SPF/DKIM/DMARC verdicts and attachments, and the webhook event schema. |
-| [`@voila.dev/stripe`](./packages/stripe) | A light Stripe REST client: pinned API version, retries only when safe, errors that say whether Stripe created anything, card declines apart from incidents, field readers and the webhook event schema. |
-| [`@voila.dev/vies`](./packages/vies) | EU VAT number checks against VIES, member-state outages told apart from refused input, national VAT formats and a parser for numbers as people type them. |
+| [`@voila.dev/annuaire-entreprises`](./domains/providers/packages/annuaire-entreprises) | The French company directory: a SIRET to its company, directors and address, a name search, withheld identities flagged, outages typed apart from "not found". |
+| [`@voila.dev/resend`](./domains/providers/packages/resend) | An `EmailSender` on Resend (rate-limit aware, batched), the receiving API with SPF/DKIM/DMARC verdicts and attachments, and the webhook event schema. |
+| [`@voila.dev/stripe`](./domains/providers/packages/stripe) | A light Stripe REST client: pinned API version, retries only when safe, errors that say whether Stripe created anything, card declines apart from incidents, field readers and the webhook event schema. |
+| [`@voila.dev/vies`](./domains/providers/packages/vies) | EU VAT number checks against VIES, member-state outages told apart from refused input, national VAT formats and a parser for numbers as people type them. |
 
 ## Development
 
@@ -104,7 +105,7 @@ Merging to `main` opens the "Version packages" PR; merging that publishes.
 2. `biome-plugins`, `crypto`, `cache-lock`, `http`, `outbox` — **0.1** on npm
 3. `live` (WebSocket hub) — merged, first release next
 4. Documentation site on `@voila.dev/docs`: the docs site template
-   (`templates/docs-site`) and [docs.voila.dev](https://docs.voila.dev), built
+   (`domains/docs/templates/docs-site`) and [docs.voila.dev](https://docs.voila.dev), built
    from the packages' READMEs — merged
 5. Providers: `annuaire-entreprises`, `vies`, `email` + `resend`, `stripe` —
    merged, first release next

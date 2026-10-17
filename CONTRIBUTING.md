@@ -2,6 +2,33 @@
 
 ## Layout
 
+The repository is split by domain. Each domain keeps its published packages,
+its sites and its examples side by side:
+
+```
+packages/                  repository tooling shared by every domain
+  typescript-config/       the tsconfig bases
+  biome-plugins/           lint rules for Effect codebases
+domains/
+  effect/                  the backend groundwork: effect-ddd, crypto, env,
+    packages/              http, live, outbox, cache-lock
+    examples/
+  email/packages/          email: the contract every mail provider implements
+  providers/packages/      one adapter per third party: resend, stripe,
+                           annuaire-entreprises, vies
+  docs/packages/           docs (framework-free) and ui-docs (its React layer)
+  ui/
+    packages/              ui, chart, motion, ui-branding
+    apps/                  ui.voila.dev, storybook.ui.voila.dev, emoji.voila.dev
+```
+
+A new domain is a `domains/<name>/` folder with `packages/`, and `apps/` or
+`examples/` when it has some; the root workspaces pick them up. The npm names
+do not follow the folders: a package keeps its `@voila.dev/*` name wherever it
+lives.
+
+Inside a package:
+
 - **One idea per file.** A file holds one function, one type, or one small
   group that only makes sense together (`Gate` and its interface). When a file
   starts doing two things, split it.

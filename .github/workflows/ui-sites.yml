@@ -9,11 +9,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'apps/**'
-      - 'packages/chart/**'
-      - 'packages/motion/**'
-      - 'packages/ui/**'
-      - 'packages/ui-branding/**'
+      - 'domains/ui/**'
       - 'scripts/check-docs-output.mjs'
       - '.github/actions/**'
       - '.github/workflows/ui-sites.yml'
@@ -21,11 +17,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
-      - 'apps/**'
-      - 'packages/chart/**'
-      - 'packages/motion/**'
-      - 'packages/ui/**'
-      - 'packages/ui-branding/**'
+      - 'domains/ui/**'
       - 'scripts/check-docs-output.mjs'
       - '.github/actions/**'
       - '.github/workflows/ui-sites.yml'

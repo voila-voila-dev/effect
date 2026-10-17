@@ -17,10 +17,13 @@
  */
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { readPropsManifest } from "../apps/ui.voila.dev/src/lib/props-extract.ts";
+import { readPropsManifest } from "../domains/ui/apps/ui.voila.dev/src/lib/props-extract.ts";
 
 const repoRoot = path.join(import.meta.dirname, "..");
-const contentDir = path.join(repoRoot, "apps/ui.voila.dev/src/content/docs");
+const contentDir = path.join(
+	repoRoot,
+	"domains/ui/apps/ui.voila.dev/src/content/docs",
+);
 
 function listPages() {
 	return readdirSync(contentDir, { recursive: true, withFileTypes: true })
@@ -80,7 +83,7 @@ for (const page of pages) {
 }
 console.log(`checked internal links across ${pages.length} pages`);
 
-const srcDir = path.join(repoRoot, "apps/ui.voila.dev/src");
+const srcDir = path.join(repoRoot, "domains/ui/apps/ui.voila.dev/src");
 let memberChecks = 0;
 
 /** Resolves an `@/…` specifier to the file it names, or undefined for a package. */

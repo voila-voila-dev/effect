@@ -9,16 +9,32 @@ import {
 	undeclaredEdges,
 } from "@voila.dev/effect-ddd/architecture";
 
-// `message/` is the vocabulary, `sender/` the contract on it; each
-// implementation sits in its own folder and never imports another.
+// Four subdomains on a shared kernel. `message`, `access`, `ids` and `paging`
+// are the kernel and import nothing; `sending` is the transport, `suppression`
+// the list, and `delivery` (the outbox and the log) the one that uses both.
+// Nothing imports `delivery`.
 
 const ALLOWED: ReadonlyArray<ContextPair> = [
-	["console", "message"],
-	["console", "sender"],
-	["in-memory", "message"],
-	["in-memory", "sender"],
-	["sender", "message"],
+	["delivery", "access"],
+	["delivery", "ids"],
+	["delivery", "message"],
+	["delivery", "paging"],
+	["delivery", "sending"],
+	["delivery", "suppression"],
+	["sending", "message"],
+	["suppression", "access"],
+	["suppression", "ids"],
+	["suppression", "message"],
+	["suppression", "paging"],
 ];
+
+const ROOT_FILES = new Set([
+	"index.ts",
+	"package-structure.test.ts",
+	"use-case-registry.ts",
+	"use-case-registry.test.ts",
+	"email-domain.test-helper.ts",
+]);
 
 const root = import.meta.dirname;
 const edges = importEdges({
@@ -26,14 +42,13 @@ const edges = importEdges({
 	files: listSourceFiles(root),
 	contextOf: contextResolver(),
 });
-const internal = (context: string) =>
-	context !== "index.ts" && context !== "package-structure.test.ts";
+const internal = (context: string) => !ROOT_FILES.has(context);
 
 describe("package structure", () => {
-	it("keeps every dependency between folders on the written list", () => {
+	it("keeps every dependency between subdomains on the written list", () => {
 		expect(
 			describeEdges(undeclaredEdges(edges, ALLOWED, internal)),
-			"a new dependency between folders: add it to ALLOWED if it is deliberate, or invert it",
+			"a new dependency between subdomains: add it to ALLOWED if it is deliberate, or invert it",
 		).toStrictEqual([]);
 	});
 

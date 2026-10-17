@@ -1,8 +1,8 @@
 import { describe, expect, it } from "bun:test";
 import { Effect } from "effect";
-import { EmailAddress } from "../message/email-address.ts";
-import type { EmailMessage } from "../message/email-message.ts";
-import { EmailSender } from "../sender/email-sender.ts";
+import { EmailAddress } from "../../message/value-objects/email-address.ts";
+import type { EmailMessage } from "../../message/value-objects/email-message.ts";
+import { EmailSender } from "../services/email-sender.ts";
 import { inMemoryEmailSender } from "./in-memory-email-sender.ts";
 
 function to(address: string): EmailMessage {

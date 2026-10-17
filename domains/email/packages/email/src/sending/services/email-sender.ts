@@ -1,6 +1,6 @@
 import { Context, type Effect } from "effect";
-import type { EmailMessage } from "../message/email-message.ts";
-import type { EmailSendError } from "./email-send-error.ts";
+import type { EmailMessage } from "../../message/value-objects/email-message.ts";
+import type { EmailSendError } from "../errors/email-send-error.ts";
 
 /**
  * Delivers rendered messages through a mail provider. Which provider is the

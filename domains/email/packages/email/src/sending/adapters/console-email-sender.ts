@@ -1,6 +1,6 @@
 import { Effect, Layer } from "effect";
-import type { EmailMessage } from "../message/email-message.ts";
-import { EmailSender } from "../sender/email-sender.ts";
+import type { EmailMessage } from "../../message/value-objects/email-message.ts";
+import { EmailSender } from "../services/email-sender.ts";
 
 function describe(message: EmailMessage): string {
 	const attachments = message.attachments?.length

@@ -27,6 +27,7 @@
 	],
 	"exports": {
 		"./styles/docs.css": "./src/styles/docs.css",
+		"./styles/sources.css": "./src/styles/sources.css",
 		"./components/*": {
 			"@voila.dev/source": "./src/components/*.tsx",
 			"types": "./dist/components/*.d.ts",

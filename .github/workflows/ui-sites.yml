@@ -1,19 +1,27 @@
-name: UI sites
+name: Sites
 
-# The UI sites (the docs at ui.voila.dev, Storybook and the emoji data) on
-# Cloudflare Workers: on main they redeploy to their production workers; on a
-# pull request the docs and Storybook get a per-PR preview worker, torn down
-# by ui-sites-cleanup.yml. Lint, type-check and tests run in checks.yml.
+# The static sites on Cloudflare Workers: the UI docs (ui.voila.dev), Storybook,
+# the emoji data, the platform docs (docs.voila.dev) and the docs site template.
+# On main the sites redeploy to their production workers; on a pull request the
+# UI docs, Storybook, the platform docs and the template get a per-PR preview
+# worker, torn down by ui-sites-cleanup.yml. The template has no production
+# worker: its preview is how CI proves it still builds. Lint, type-check and
+# tests run in checks.yml.
 
 on:
   push:
     branches: [main]
     paths:
       - 'apps/**'
+      - 'templates/**'
+      - 'packages/*/README.md'
+      - 'packages/*/package.json'
       - 'packages/chart/**'
+      - 'packages/docs/**'
       - 'packages/motion/**'
       - 'packages/ui/**'
       - 'packages/ui-branding/**'
+      - 'packages/ui-docs/**'
       - 'scripts/check-docs-output.mjs'
       - '.github/actions/**'
       - '.github/workflows/ui-sites.yml'
@@ -22,17 +30,22 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'apps/**'
+      - 'templates/**'
+      - 'packages/*/README.md'
+      - 'packages/*/package.json'
       - 'packages/chart/**'
+      - 'packages/docs/**'
       - 'packages/motion/**'
       - 'packages/ui/**'
       - 'packages/ui-branding/**'
+      - 'packages/ui-docs/**'
       - 'scripts/check-docs-output.mjs'
       - '.github/actions/**'
       - '.github/workflows/ui-sites.yml'
   workflow_dispatch:
 
 concurrency:
-  group: ui-sites-${{ github.event.pull_request.number || github.ref }}
+  group: sites-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
@@ -47,7 +60,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: [storybook.ui.voila.dev, ui.voila.dev, emoji.voila.dev]
+        app: [storybook.ui.voila.dev, ui.voila.dev, emoji.voila.dev, docs.voila.dev]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -78,6 +91,13 @@ jobs:
           - app: ui.voila.dev
             worker: ui-voila-dev
             label: Docs
+          - app: docs.voila.dev
+            worker: docs-voila-dev
+            label: Platform docs
+          - app: docs-site-template
+            directory: templates/docs-site
+            worker: docs-site-template
+            label: Docs site template
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -87,6 +107,7 @@ jobs:
         uses: ./.github/actions/deploy-site
         with:
           app: ${{ matrix.app }}
+          directory: ${{ matrix.directory || '' }}
           worker-name: ${{ matrix.worker }}-pr-${{ github.event.pull_request.number }}
           cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           cloudflare-account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

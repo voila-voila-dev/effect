@@ -1,0 +1,18 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	// The Worker's name on your Cloudflare account.
+	"name": "docs-site",
+	"compatibility_date": "2025-10-01",
+	// Static-asset Worker (no `main`): serves the prerendered TanStack Start
+	// build, and `/404.html` with a 404 status for any path without a file.
+	"assets": {
+		"directory": "./dist/client",
+		"not_found_handling": "404-page"
+	},
+	"observability": {
+		"enabled": true
+	},
+	// Serve it on your domain once it is on Cloudflare:
+	// "routes": [{ "pattern": "docs.example.com", "custom_domain": true }],
+	"workers_dev": true
+}

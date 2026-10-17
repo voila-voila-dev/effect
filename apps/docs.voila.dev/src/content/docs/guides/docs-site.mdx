@@ -1,0 +1,51 @@
+---
+title: Start a docs site
+description: Clone the docs site template, edit one config file, write MDX and deploy to Cloudflare.
+icon: book
+audience: [everyone]
+kind: guide
+stage: start
+prerequisites: [index]
+next: [packages/docs, packages/ui-docs]
+---
+
+This site is the [docs site template](https://github.com/voila-voila-dev/platform/tree/main/templates/docs-site)
+with its own config and content: TanStack Start, prerendered to static
+files, served by a Cloudflare Worker, on
+[`@voila.dev/docs`](/packages/docs) and [`@voila.dev/ui-docs`](/packages/ui-docs).
+
+<Steps>
+  <Step title="Clone the template">
+    ```sh
+    bunx degit voila-voila-dev/platform/templates/docs-site my-docs
+    cd my-docs
+    ```
+
+    The template is built and tested inside the platform monorepo: its README
+    lists the three edits that take it out (the `workspace:^` versions and the
+    `@voila.dev/source` condition). Then `bun install`.
+  </Step>
+  <Step title="Edit docs.config.ts">
+    The site's name and address, where the docs are served, the frontmatter
+    vocabulary, the icons a page may name, the chrome's words and the brand.
+  </Step>
+  <Step title="Write the pages">
+    One `.mdx` file per page under `src/content/docs`, listed once in
+    `src/content/docs/navigation.ts`. `bun run test` fails on a dead link, a
+    page the sidebar forgets, or one nothing links to.
+  </Step>
+  <Step title="Deploy">
+    ```sh
+    bun run build
+    bunx wrangler deploy
+    ```
+  </Step>
+</Steps>
+
+## What this site adds
+
+The package pages are not MDX files: `src/docs/readme-pages.ts` reads every
+`packages/*/README.md` at build time and compiles it as Markdown, through a
+remark plugin that drops its title and points its relative links to the
+right page. A new package gets its page as soon as it has a README and a
+place in the sidebar.

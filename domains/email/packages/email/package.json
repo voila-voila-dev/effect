@@ -1,0 +1,60 @@
+{
+	"name": "@voila.dev/email",
+	"version": "0.0.0",
+	"description": "Email on Effect, as a domain: an EmailSender contract any provider implements, an outbox that retries every send until it settles, the log of what each message became from the provider webhooks, a suppression list fed by bounces and complaints, and the use cases around them.",
+	"license": "MIT",
+	"author": "voila.dev",
+	"type": "module",
+	"sideEffects": false,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/voila-voila-dev/platform.git",
+		"directory": "domains/email/packages/email"
+	},
+	"homepage": "https://github.com/voila-voila-dev/platform/tree/main/domains/email/packages/email#readme",
+	"bugs": {
+		"url": "https://github.com/voila-voila-dev/platform/issues"
+	},
+	"keywords": [
+		"effect",
+		"effect-ts",
+		"email",
+		"mail",
+		"transactional-email",
+		"resend",
+		"ses",
+		"smtp"
+	],
+	"exports": {
+		".": {
+			"@voila.dev/source": "./src/index.ts",
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist",
+		"src",
+		"!src/**/*.test.ts",
+		"!src/**/*.test-helper.ts"
+	],
+	"scripts": {
+		"build": "rm -rf dist && tsc -p tsconfig.build.json",
+		"check-types": "tsc --noEmit",
+		"test": "bun test --conditions=@voila.dev/source"
+	},
+	"dependencies": {
+		"@voila.dev/crypto": "workspace:^",
+		"@voila.dev/effect-ddd": "workspace:^",
+		"@voila.dev/outbox": "workspace:^"
+	},
+	"peerDependencies": {
+		"effect": "^4.0.0"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@voila.dev/typescript-config": "workspace:*",
+		"effect": "catalog:",
+		"typescript": "catalog:"
+	}
+}

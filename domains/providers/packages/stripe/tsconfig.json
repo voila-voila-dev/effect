@@ -1,0 +1,3 @@
+{
+	"extends": "@voila.dev/typescript-config/strict.json"
+}

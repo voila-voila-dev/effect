@@ -1,0 +1,11 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"display": "Strict (Effect packages)",
+	"extends": "./base.json",
+	"compilerOptions": {
+		"exactOptionalPropertyTypes": true,
+		"noUncheckedIndexedAccess": true,
+		"rewriteRelativeImportExtensions": true,
+		"types": ["bun"]
+	}
+}

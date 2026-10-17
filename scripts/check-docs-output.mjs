@@ -16,8 +16,14 @@ import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 const repoRoot = path.join(import.meta.dirname, "..");
-const clientDir = path.join(repoRoot, "apps/ui.voila.dev/dist/client");
-const contentDir = path.join(repoRoot, "apps/ui.voila.dev/src/content/docs");
+const clientDir = path.join(
+	repoRoot,
+	"domains/ui/apps/ui.voila.dev/dist/client",
+);
+const contentDir = path.join(
+	repoRoot,
+	"domains/ui/apps/ui.voila.dev/src/content/docs",
+);
 
 function listPages() {
 	return readdirSync(clientDir, { recursive: true, withFileTypes: true })
@@ -51,7 +57,7 @@ if (pages.length < 190) {
  * Routes whose `## API` is deliberately hand-written, declared in the page as
  * `{/* no-prop-table: why *␀/}`. Only one page qualifies today —
  * `ui/direction`, a bare re-export of Base UI's provider, so there is no source
- * under `packages/ui` for the extractor to read. The marker lives in the MDX
+ * under `domains/ui/packages/ui` for the extractor to read. The marker lives in the MDX
  * rather than in a list here so the exemption is visible to whoever is reading
  * the page, and it is stripped at compile time, which is why this reads the
  * source instead of looking for it in the HTML.

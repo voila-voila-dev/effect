@@ -18,6 +18,7 @@ when it needs to.
 | [`@voila.dev/http`](./packages/http) | Outbound calls to third parties with typed timeouts, jittered retries, spans, bounded Schema decoding and a request log; an SSRF-guarded URL fetcher; Stripe, Svix, Twilio and SNS webhook checks. |
 | [`@voila.dev/live`](./packages/live) | Live updates over WebSocket: channels with a gate and a filter, a batching socket hub, a replay log on Redis streams, and a reconnecting browser client. |
 | [`@voila.dev/outbox`](./packages/outbox) | Domain events written in the same transaction as the change, delivered at least once with retries, backoff and parking (in memory or on Postgres), and cron jobs. |
+| [`@voila.dev/script-kit`](./packages/script-kit) | Bun tooling scripts on Effect: one `runScript` entrypoint with env files loaded, dry-run-by-default `--commit` and `--limit` flags, a failure the runtime renders, subprocesses and GitHub Actions outputs. |
 
 ### Example
 

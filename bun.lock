@@ -186,7 +186,7 @@
       "name": "@voila.dev/outbox",
       "version": "0.1.1",
       "dependencies": {
-        "@voila.dev/effect-ddd": "workspace:*",
+        "@voila.dev/effect-ddd": "workspace:^",
       },
       "devDependencies": {
         "@types/bun": "catalog:",
@@ -212,6 +212,24 @@
         "typescript": "catalog:",
       },
       "peerDependencies": {
+        "effect": "^4.0.0",
+      },
+    },
+    "packages/script-kit": {
+      "name": "@voila.dev/script-kit",
+      "version": "0.0.0",
+      "dependencies": {
+        "@voila.dev/env": "workspace:^",
+      },
+      "devDependencies": {
+        "@effect/platform-bun": "catalog:",
+        "@types/bun": "catalog:",
+        "@voila.dev/effect-ddd": "workspace:*",
+        "effect": "catalog:",
+        "typescript": "catalog:",
+      },
+      "peerDependencies": {
+        "@effect/platform-bun": "^4.0.0",
         "effect": "^4.0.0",
       },
     },
@@ -277,8 +295,12 @@
       },
     },
   },
+  "overrides": {
+    "@effect/platform-node-shared": "4.0.2",
+  },
   "catalog": {
     "@biomejs/biome": "2.5.15",
+    "@effect/platform-bun": "4.0.2",
     "@types/bun": "1.4.3",
     "effect": "4.0.2",
     "typescript": "7.0.2",
@@ -345,6 +367,10 @@
     "@changesets/types": ["@changesets/types@6.1.0", "", {}, "sha512-rKQcJ+o1nKNgeoYRHKOS07tAMNd3YSN0uHaJOZYjBAgxfV7TUE7JE+z4BzZdQwb5hKaYbayKN5KrYV7ODb2rAA=="],
 
     "@changesets/write": ["@changesets/write@0.4.0", "", { "dependencies": { "@changesets/types": "^6.1.0", "fs-extra": "^7.0.1", "human-id": "^4.1.1", "prettier": "^2.7.1" } }, "sha512-CdTLvIOPiCNuH71pyDu3rA+Q0n65cmAbXnwWH84rKGiFumFzkmHNT8KHTMEchcxN+Kl8I54xGUhJ7l3E7X396Q=="],
+
+    "@effect/platform-bun": ["@effect/platform-bun@4.0.2", "", { "dependencies": { "@effect/platform-node-shared": "^4.0.2" }, "peerDependencies": { "effect": "^4.0.2" } }, "sha512-wbQ9jQKtTjqHOYvMrgINWKuP05Q0cXe/Rze2c2gOAakztE34tVzT4aRvvooUR2l+JGWf/hL26nmHXJ4/Urkqiw=="],
+
+    "@effect/platform-node-shared": ["@effect/platform-node-shared@4.0.2", "", { "dependencies": { "@types/ws": "^8.18.2", "ws": "^8.22.0" }, "peerDependencies": { "effect": "^4.0.2" } }, "sha512-xn8aDw9p/QUPt1Yi0C3HUMcycT+MjHfAe19FDUDrUuzcwq0xxskkamVSqbdykF/Dsuus4aZTsCBZA/vkhHIfbQ=="],
 
     "@floating-ui/core": ["@floating-ui/core@1.8.0", "", { "dependencies": { "@floating-ui/utils": "^0.2.12" } }, "sha512-0CIZ5itps/8x7BG8dEIhs53BvCUH2PCoogtakwRTut+Arm58sJooJ0AuZhLw2HJYIR5cMLNPBSS728sPho2khQ=="],
 
@@ -583,6 +609,8 @@
     "@voila.dev/outbox": ["@voila.dev/outbox@workspace:packages/outbox"],
 
     "@voila.dev/resend": ["@voila.dev/resend@workspace:packages/resend"],
+
+    "@voila.dev/script-kit": ["@voila.dev/script-kit@workspace:packages/script-kit"],
 
     "@voila.dev/stripe": ["@voila.dev/stripe@workspace:packages/stripe"],
 

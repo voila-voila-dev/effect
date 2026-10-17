@@ -49,6 +49,23 @@ interface FoldedEntry {
 	rest: string;
 }
 
+/** Each entry folded once: an index whose pages carry their prose would otherwise be folded again on every keystroke. */
+const foldedEntries = new WeakMap<SearchEntry, FoldedEntry>();
+
+function foldedEntryOf(entry: SearchEntry): FoldedEntry {
+	let folded = foldedEntries.get(entry);
+	if (!folded) {
+		folded = {
+			title: foldForSearch(entry.title),
+			rest: foldForSearch(
+				`${entry.context} ${entry.keywords ?? ""} ${entry.tags?.join(" ") ?? ""} ${entry.method ?? ""}`,
+			),
+		};
+		foldedEntries.set(entry, folded);
+	}
+	return folded;
+}
+
 /** Each token scores where it lands best; a token found nowhere drops the entry. */
 function tokenScore(token: string, entry: FoldedEntry): number {
 	const scores = [
@@ -117,12 +134,7 @@ export function searchDocs(
 	}
 	return entries
 		.map((entry) => {
-			const folded = {
-				title: foldForSearch(entry.title),
-				rest: foldForSearch(
-					`${entry.context} ${entry.keywords ?? ""} ${entry.tags?.join(" ") ?? ""} ${entry.method ?? ""}`,
-				),
-			};
+			const folded = foldedEntryOf(entry);
 			const scores = terms.map((alternatives) =>
 				Math.max(...alternatives.map((token) => tokenScore(token, folded))),
 			);

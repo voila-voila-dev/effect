@@ -10,6 +10,8 @@ interface SearchablePage {
 	headings: ReadonlyArray<DocHeading>;
 	/** Who the page is for and when, shown as chips on its result. */
 	tags?: ReadonlyArray<string>;
+	/** The page's prose (`page.mdx?text`), matched with its description so a page is found by what it says. */
+	text?: string;
 }
 
 /** A page and each of its sections; `group` is the sidebar group it sits in. */
@@ -23,7 +25,9 @@ export function pageSearchEntries(
 			title: page.title,
 			context: group,
 			href: page.href,
-			keywords: page.description,
+			keywords: page.text
+				? `${page.description} ${page.text}`
+				: page.description,
 			...(page.tags ? { tags: page.tags } : {}),
 		},
 		...page.headings.map((heading) => ({

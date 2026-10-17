@@ -1,11 +1,5 @@
-import { BooleanFilterField } from "#/filter/components/fields/boolean-filter-field.tsx";
-import { DateRangeFilterField } from "#/filter/components/fields/date-range-filter-field.tsx";
-import { GeoRadiusFilterField } from "#/filter/components/fields/geo-radius-filter-field.tsx";
-import { MoneyRangeFilterField } from "#/filter/components/fields/money-range-filter-field.tsx";
-import { NumberFilterField } from "#/filter/components/fields/number-filter-field.tsx";
-import { NumberRangeFilterField } from "#/filter/components/fields/number-range-filter-field.tsx";
-import { SelectFilterField } from "#/filter/components/fields/select-filter-field.tsx";
-import { TextFilterField } from "#/filter/components/fields/text-filter-field.tsx";
+import { FilterEditor } from "#/filter/components/fields/filter-editor.tsx";
+import { FilterProvider } from "#/filter/components/filter-provider.tsx";
 import type {
 	FilterDefinition,
 	FilterLabels,
@@ -20,18 +14,17 @@ interface Props {
 	/** Called with `undefined` when the field is cleared, which is how a filter is removed. */
 	onValueChange: (value: FilterValue | undefined) => void;
 	/**
-	 * Every string this field shows. `Filter.Form` supplies it; standalone, pass
-	 * `defaultFilterLabels` or your own.
+	 * Overrides for the strings this field shows, merged over the surrounding
+	 * filter root's (English defaults at the outermost level).
 	 */
-	labels: FilterLabels;
-	/** BCP 47 tag used to format this field's numbers, money and dates. */
-	locale: string;
+	labels?: Partial<FilterLabels>;
+	/** BCP 47 tag used to format this field's numbers, money and dates; inherited when omitted. */
+	locale?: string;
 }
 
 /**
- * Renders the editor a definition asks for. The value union is discriminated by
- * the same `kind` as the definition, so each branch narrows both at once — a new
- * filter kind is a compile error here until it has an editor.
+ * Renders the editor a definition's `kind` asks for, followed by the
+ * definition's `renderPreview` when it has one.
  */
 export function FilterField({
 	definition,
@@ -40,84 +33,23 @@ export function FilterField({
 	labels,
 	locale,
 }: Props) {
-	const valueOfKind = <Kind extends FilterValue["kind"]>(kind: Kind) =>
-		value?.kind === kind
-			? (value as Extract<FilterValue, { kind: Kind }>)
-			: undefined;
-
-	switch (definition.kind) {
-		case "text":
-			return (
-				<TextFilterField
-					definition={definition}
-					value={valueOfKind("text")}
-					onValueChange={onValueChange}
-					labels={labels}
-				/>
-			);
-		case "number":
-			return (
-				<NumberFilterField
-					definition={definition}
-					value={valueOfKind("number")}
-					onValueChange={onValueChange}
-					labels={labels}
-				/>
-			);
-		case "numberRange":
-			return (
-				<NumberRangeFilterField
-					definition={definition}
-					value={valueOfKind("numberRange")}
-					onValueChange={onValueChange}
-					labels={labels}
-				/>
-			);
-		case "moneyRange":
-			return (
-				<MoneyRangeFilterField
-					definition={definition}
-					value={valueOfKind("moneyRange")}
-					onValueChange={onValueChange}
-					labels={labels}
-				/>
-			);
-		case "select":
-			return (
-				<SelectFilterField
-					definition={definition}
-					value={valueOfKind("select")}
-					onValueChange={onValueChange}
-					labels={labels}
-				/>
-			);
-		case "dateRange":
-			return (
-				<DateRangeFilterField
-					definition={definition}
-					value={valueOfKind("dateRange")}
-					onValueChange={onValueChange}
-					labels={labels}
-					locale={locale}
-				/>
-			);
-		case "geoRadius":
-			return (
-				<GeoRadiusFilterField
-					definition={definition}
-					value={valueOfKind("geoRadius")}
-					onValueChange={onValueChange}
-					labels={labels}
-				/>
-			);
-		case "boolean":
-			return (
-				<BooleanFilterField
-					definition={definition}
-					value={valueOfKind("boolean")}
-					onValueChange={onValueChange}
-					labels={labels}
-				/>
-			);
-	}
+	const editor = (
+		<FilterEditor
+			definition={definition}
+			value={value}
+			onValueChange={onValueChange}
+		/>
+	);
+	return (
+		<FilterProvider labels={labels} locale={locale}>
+			{definition.renderPreview === undefined ? (
+				editor
+			) : (
+				<div className="flex min-w-0 flex-col gap-3">
+					{editor}
+					{definition.renderPreview(value)}
+				</div>
+			)}
+		</FilterProvider>
+	);
 }

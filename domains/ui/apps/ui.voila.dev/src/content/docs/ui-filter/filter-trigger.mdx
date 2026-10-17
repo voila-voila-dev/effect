@@ -1,6 +1,6 @@
 ---
 title: "Filter.Trigger"
-description: "The search-shaped button that opens the editor."
+description: "The buttons that open the editor, and the bar's live search input."
 sidebar:
   order: 4
 ---
@@ -15,12 +15,13 @@ import * as Example from "@/examples/ui-filter/filter-trigger";
 <Filter.Trigger
 	summary={search}
 	activeCount={2}
-	labels={defaultFilterLabels}
 	onClick={() => setOpen(true)}
 />;
 ```
 
 ## API
+
+### Filter.Trigger
 
 <PropTable of="Filter.Trigger" />
 
@@ -28,3 +29,24 @@ import * as Example from "@/examples/ui-filter/filter-trigger";
 filtered list stops looking like a short one. It is a plain `<button>`, so
 `onClick` and the rest are yours — [Filter.Root](/ui-filter/filter-root) wires
 it to [Filter.Panel](/ui-filter/filter-root#filterpanel) for you.
+
+### Filter.SearchInput and Filter.Button
+
+The pair a live bar shows instead: a real search input that reports every
+keystroke, and a "Filters" button carrying the active count.
+
+<Preview layout="stack">
+	<Example.SearchAndButton />
+</Preview>
+
+```tsx
+<Filter.SearchInput value={search} onValueChange={setSearch} />
+<Filter.Button activeCount={countActiveFilters(values)} onClick={() => setOpen(true)} />
+```
+
+<PropTable of="Filter.SearchInput" />
+
+<PropTable of="Filter.Button" />
+
+Pass `aria-pressed` to `Filter.Button` when it toggles an editor that stays
+open, such as [Filter.Dock](/ui-filter/filter-dock), so it reads as held.

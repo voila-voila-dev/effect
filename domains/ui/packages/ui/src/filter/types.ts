@@ -1,7 +1,8 @@
 // The vocabulary every filtered list speaks: a screen *declares* which fields
 // are filterable (`FilterDefinition`), and the editor, the summary chips and the
 // query layer all read the same declaration. Nothing here is domain-aware —
-// labels and copy arrive as props so the package stays free of translations.
+// labels and copy arrive once at the filter root (or a `Filter.Provider`) so
+// the package stays free of translations.
 
 import type * as React from "react";
 
@@ -11,6 +12,12 @@ export type FilterOption = {
 	readonly label: string;
 	/** Optional leading glyph (a status dot, a flag, an avatar). */
 	readonly icon?: React.ReactNode;
+	/**
+	 * Kept behind a "more" toggle until expanded, so a long tail of rarely
+	 * picked options doesn't drown the shortlist. A selected or search-matched
+	 * secondary option always shows.
+	 */
+	readonly secondary?: boolean;
 };
 
 type BaseDefinition = {
@@ -19,6 +26,12 @@ type BaseDefinition = {
 	readonly label: string;
 	/** One line under the label when the field needs explaining. */
 	readonly description?: string;
+	/**
+	 * Rendered under the editor, fed the current (draft) value — for a live
+	 * illustration of what the filter covers, e.g. a map previewing a radius.
+	 * The package stays domain-agnostic; the screen supplies the rendering.
+	 */
+	readonly renderPreview?: (value: FilterValue | undefined) => React.ReactNode;
 };
 
 /**
@@ -65,11 +78,25 @@ export type SelectFilterDefinition = ExcludableDefinition & {
 	readonly multiple?: boolean;
 };
 
+/** A named window ("30 days") the range can be set to in one tap. */
+export type DateRangePreset = {
+	readonly label: string;
+	/** `YYYY-MM-DD`; an open bound means "unbounded on that side". */
+	readonly from?: string;
+	readonly to?: string;
+};
+
 /** Bounds are `YYYY-MM-DD`, the value a native date input round-trips. */
 export type DateRangeFilterDefinition = BaseDefinition & {
 	readonly kind: "dateRange";
 	readonly min?: string;
 	readonly max?: string;
+	/**
+	 * Shortcuts offered above the two bounds. A dashboard reads its period far
+	 * more often than it picks exact days, and the shortcut belongs in the
+	 * filter editor with the range it sets rather than loose on the page.
+	 */
+	readonly presets?: ReadonlyArray<DateRangePreset>;
 };
 
 /** A geocoded place a `geoRadius` filter can centre on. */
@@ -97,6 +124,28 @@ export type GeoRadiusFilterDefinition = BaseDefinition & {
 	readonly defaultKm?: number;
 };
 
+/** One pickable record of an `entity` filter (a customer, a supplier…). */
+export type EntityFilterOption = {
+	readonly id: string;
+	readonly label: string;
+};
+
+/**
+ * "Is one of these records" — options come from a search-as-you-type lookup
+ * instead of a fixed list, so the field scales to thousands of records. The
+ * package queries nothing itself; the screen supplies `searchOptions`, keeping
+ * the field domain-blind like `geoRadius`.
+ */
+export type EntityFilterDefinition = ExcludableDefinition & {
+	readonly kind: "entity";
+	readonly searchOptions: (
+		query: string,
+	) => Promise<ReadonlyArray<EntityFilterOption>>;
+	/** Allow several records at once; the value stays a list either way. */
+	readonly multiple?: boolean;
+	readonly searchPlaceholder?: string;
+};
+
 export type BooleanFilterDefinition = BaseDefinition & {
 	readonly kind: "boolean";
 	/** Labels for the two set states; the third state is "any", i.e. unset. */
@@ -112,6 +161,7 @@ export type FilterDefinition =
 	| SelectFilterDefinition
 	| DateRangeFilterDefinition
 	| GeoRadiusFilterDefinition
+	| EntityFilterDefinition
 	| BooleanFilterDefinition;
 
 export type FilterKind = FilterDefinition["kind"];
@@ -161,6 +211,13 @@ export type GeoRadiusFilterValue = {
 	readonly radiusKm: number;
 };
 
+export type EntityFilterValue = {
+	readonly kind: "entity";
+	/** Id and label both kept, so the chip and a shared URL restore without a lookup. */
+	readonly entities: ReadonlyArray<EntityFilterOption>;
+	readonly excluded?: boolean;
+};
+
 export type BooleanFilterValue = {
 	readonly kind: "boolean";
 	readonly value: boolean;
@@ -174,6 +231,7 @@ export type FilterValue =
 	| SelectFilterValue
 	| DateRangeFilterValue
 	| GeoRadiusFilterValue
+	| EntityFilterValue
 	| BooleanFilterValue;
 
 /**
@@ -188,24 +246,36 @@ export type FilterLabels = {
 	readonly trigger: string;
 	readonly title: string;
 	readonly description?: string;
+	/** Commits the draft of `Filter.Panel` (the `apply` mode of `Filter.Root`). */
 	readonly apply: string;
 	/** Empties one field. */
 	readonly clear: string;
 	/** Empties the whole panel. */
 	readonly clearAll: string;
-	readonly cancel: string;
+	/** @deprecated No part renders it anymore; kept so existing label sets still type-check. */
+	readonly cancel?: string;
 	readonly close: string;
 	readonly search: string;
 	readonly searchPlaceholder: string;
 	/** Placeholder of the search box a long option list gets. */
 	readonly optionSearchPlaceholder: string;
+	/** Placeholder of the field-search box a long editor gets. */
+	readonly filterSearchPlaceholder: string;
+	/** Shown when the field search matches no filter. */
+	readonly noFilterFound: string;
+	/** Shown when an entity lookup returns nothing. */
+	readonly entityNoResults: string;
 	readonly is: string;
 	readonly isNot: string;
 	readonly from: string;
 	readonly to: string;
 	readonly min: string;
 	readonly max: string;
-	readonly any: string;
+	/**
+	 * @deprecated The boolean field is two option pills now (tap the active one
+	 * to release it); "any" is the empty selection and has no label of its own.
+	 */
+	readonly any?: string;
 	readonly remove: string;
 	/** Chip and field copy for a radius around a place, e.g. "30 km around Nantes". */
 	readonly around: (place: string, kilometres: number) => string;
@@ -216,6 +286,10 @@ export type FilterLabels = {
 	readonly activeCount: (count: number) => string;
 	readonly resultCount: (count: number) => string;
 	readonly selectedCount: (count: number) => string;
+	/** Reveals the secondary options a select keeps folded, e.g. "12 more…". */
+	readonly moreOptions: (count: number) => string;
+	/** Folds the secondary options back. */
+	readonly lessOptions: string;
 };
 
 export const defaultFilterLabels: FilterLabels = {
@@ -225,18 +299,19 @@ export const defaultFilterLabels: FilterLabels = {
 	apply: "Apply",
 	clear: "Clear",
 	clearAll: "Clear all",
-	cancel: "Cancel",
 	close: "Close",
 	search: "Search",
 	searchPlaceholder: "Search…",
 	optionSearchPlaceholder: "Search options…",
+	filterSearchPlaceholder: "Search filters…",
+	noFilterFound: "No filter matches.",
+	entityNoResults: "No results.",
 	is: "is",
 	isNot: "is not",
 	from: "From",
 	to: "To",
 	min: "Min",
 	max: "Max",
-	any: "Any",
 	remove: "Remove",
 	around: (place, kilometres) => `${kilometres} km around ${place}`,
 	placePlaceholder: "Town, address…",
@@ -246,4 +321,6 @@ export const defaultFilterLabels: FilterLabels = {
 	activeCount: (count) => `${count} active`,
 	resultCount: (count) => `${count} results`,
 	selectedCount: (count) => `${count} selected`,
+	moreOptions: (count) => `${count} more…`,
+	lessOptions: "Show less",
 };

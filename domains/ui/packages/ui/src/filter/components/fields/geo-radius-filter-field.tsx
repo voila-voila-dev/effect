@@ -1,15 +1,15 @@
 import { MapPinIcon } from "@phosphor-icons/react";
-import { useEffect, useId, useState } from "react";
+import { useId, useState } from "react";
 import { Button } from "#/button/components/button.tsx";
 import { FilterFieldFrame } from "#/filter/components/fields/filter-field-frame.tsx";
-import { PlaceResults } from "#/filter/components/fields/place-results.tsx";
+import { FilterFieldInput } from "#/filter/components/fields/filter-field-input.tsx";
+import { LookupResults } from "#/filter/components/fields/lookup-results.tsx";
+import { useDebouncedLookup } from "#/filter/hooks/use-debounced-lookup.ts";
+import { useFilterLabels } from "#/filter/hooks/use-filter-labels.ts";
 import type {
-	FilterLabels,
 	GeoRadiusFilterDefinition,
 	GeoRadiusFilterValue,
-	PlaceSuggestion,
 } from "#/filter/types.ts";
-import { Input } from "#/input/components/input.tsx";
 import { RadiusMap } from "#/radius-map/components/radius-map.tsx";
 import { Slider } from "#/slider/components/slider.tsx";
 
@@ -17,58 +17,11 @@ const DEFAULT_MIN_KM = 5;
 const DEFAULT_MAX_KM = 200;
 const DEFAULT_STEP_KM = 5;
 const DEFAULT_RADIUS_KM = 30;
-/** Debounced place lookup: a keystroke is not a query. */
-function usePlaceSearch(
-	query: string,
-	searchPlaces: GeoRadiusFilterDefinition["searchPlaces"],
-): {
-	results: ReadonlyArray<PlaceSuggestion>;
-	busy: boolean;
-} {
-	const [results, setResults] = useState<ReadonlyArray<PlaceSuggestion>>([]);
-	const [busy, setBusy] = useState(false);
-
-	useEffect(() => {
-		const trimmed = query.trim();
-		if (trimmed.length < 2) {
-			setResults([]);
-			setBusy(false);
-			return;
-		}
-		setBusy(true);
-		let cancelled = false;
-		const handle = setTimeout(() => {
-			searchPlaces(trimmed)
-				.then((found) => {
-					if (!cancelled) {
-						setResults(found);
-					}
-				})
-				.catch(() => {
-					if (!cancelled) {
-						setResults([]);
-					}
-				})
-				.finally(() => {
-					if (!cancelled) {
-						setBusy(false);
-					}
-				});
-		}, SEARCH_DEBOUNCE_MS);
-		return () => {
-			cancelled = true;
-			clearTimeout(handle);
-		};
-	}, [query, searchPlaces]);
-
-	return { results, busy };
-}
 
 interface Props {
 	definition: GeoRadiusFilterDefinition;
 	value: GeoRadiusFilterValue | undefined;
 	onValueChange: (value: GeoRadiusFilterValue | undefined) => void;
-	labels: FilterLabels;
 }
 
 /**
@@ -80,11 +33,11 @@ export function GeoRadiusFilterField({
 	definition,
 	value,
 	onValueChange,
-	labels,
 }: Props) {
+	const labels = useFilterLabels();
 	const controlId = useId();
 	const [query, setQuery] = useState("");
-	const { results, busy } = usePlaceSearch(query, definition.searchPlaces);
+	const { results, busy } = useDebouncedLookup(query, definition.searchPlaces);
 
 	const minKm = definition.minKm ?? DEFAULT_MIN_KM;
 	const maxKm = definition.maxKm ?? DEFAULT_MAX_KM;
@@ -95,19 +48,19 @@ export function GeoRadiusFilterField({
 				label={definition.label}
 				description={definition.description}
 				controlId={controlId}
-				labels={labels}
 			>
-				<Input
+				<FilterFieldInput
 					id={controlId}
 					value={query}
 					placeholder={labels.placePlaceholder}
 					onChange={(event) => setQuery(event.target.value)}
 				/>
-				<PlaceResults
+				<LookupResults
 					results={results}
 					busy={busy}
 					query={query}
-					labels={labels}
+					noResults={labels.placeNoResults}
+					icon={<MapPinIcon />}
 					onPick={(place) => {
 						setQuery("");
 						onValueChange({
@@ -125,7 +78,6 @@ export function GeoRadiusFilterField({
 		<FilterFieldFrame
 			label={definition.label}
 			description={definition.description}
-			labels={labels}
 			onClear={() => onValueChange(undefined)}
 		>
 			<div className="flex items-center gap-2">
@@ -170,5 +122,3 @@ export function GeoRadiusFilterField({
 		</FilterFieldFrame>
 	);
 }
-
-export const SEARCH_DEBOUNCE_MS = 300;

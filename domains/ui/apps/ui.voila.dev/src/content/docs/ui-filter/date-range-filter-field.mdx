@@ -12,5 +12,16 @@ import * as Example from "@/examples/ui-filter/date-range-filter-field";
 </Preview>
 
 ```tsx
-const definition: FilterDefinition = { kind: "dateRange", key: "sentAt", label: "Sent" };
+const definition: FilterDefinition = {
+	kind: "dateRange",
+	key: "sentAt",
+	label: "Sent",
+	presets: [
+		{ label: "7 days", from: isoDaysAgo(6), to: today },
+		{ label: "30 days", from: isoDaysAgo(29), to: today },
+	],
+};
 ```
+
+`presets` are one-tap windows above the two bounds; the one whose bounds match
+the value reads as pressed. A bound left out of a preset stays open.

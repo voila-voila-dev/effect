@@ -1,8 +1,8 @@
 import { useId } from "react";
 import { FilterFieldFrame } from "#/filter/components/fields/filter-field-frame.tsx";
 import { FilterRangeRow } from "#/filter/components/fields/filter-range-row.tsx";
+import { useFilterLabels } from "#/filter/hooks/use-filter-labels.ts";
 import type {
-	FilterLabels,
 	MoneyRangeFilterDefinition,
 	MoneyRangeFilterValue,
 } from "#/filter/types.ts";
@@ -22,7 +22,6 @@ interface Props {
 	definition: MoneyRangeFilterDefinition;
 	value: MoneyRangeFilterValue | undefined;
 	onValueChange: (value: MoneyRangeFilterValue) => void;
-	labels: FilterLabels;
 }
 
 /** A price floor and ceiling, either of which may be left open. */
@@ -30,8 +29,8 @@ export function MoneyRangeFilterField({
 	definition,
 	value,
 	onValueChange,
-	labels,
 }: Props) {
+	const labels = useFilterLabels();
 	const controlId = useId();
 	const isEmpty = value?.min === undefined && value?.max === undefined;
 
@@ -40,7 +39,6 @@ export function MoneyRangeFilterField({
 			label={definition.label}
 			description={definition.description}
 			controlId={controlId}
-			labels={labels}
 			onClear={
 				isEmpty ? undefined : () => onValueChange({ kind: "moneyRange" })
 			}

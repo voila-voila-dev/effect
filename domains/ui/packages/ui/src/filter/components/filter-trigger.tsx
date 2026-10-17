@@ -4,6 +4,7 @@ import {
 } from "@phosphor-icons/react";
 import type * as React from "react";
 import { Badge } from "#/badge/components/badge.tsx";
+import { useFilterSettings } from "#/filter/hooks/use-filter-settings.ts";
 import type { FilterLabels } from "#/filter/types.ts";
 import { cn } from "#/lib/utils.ts";
 
@@ -16,10 +17,10 @@ interface Props extends React.ComponentProps<"button"> {
 	 */
 	activeCount: number;
 	/**
-	 * Every string this button shows. `Filter.Root` supplies it; standalone, pass
-	 * `defaultFilterLabels` or your own.
+	 * Overrides for the strings this button shows, merged over the surrounding
+	 * filter root's (English defaults at the outermost level).
 	 */
-	labels: FilterLabels;
+	labels?: Partial<FilterLabels>;
 }
 
 /**
@@ -31,10 +32,11 @@ interface Props extends React.ComponentProps<"button"> {
 export function FilterTrigger({
 	summary,
 	activeCount,
-	labels,
+	labels: labelOverrides,
 	className,
 	...props
 }: Props) {
+	const { labels } = useFilterSettings(labelOverrides, undefined);
 	return (
 		<button
 			type="button"

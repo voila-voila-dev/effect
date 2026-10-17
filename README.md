@@ -13,7 +13,7 @@ when it needs to.
 | [`@voila.dev/cache-lock`](./domains/effect/packages/cache-lock) | A key-value cache, a lease-based lock and a rate limiter as Effect services, in memory or on Redis, with failures the caller decides on. |
 | [`@voila.dev/crypto`](./domains/effect/packages/crypto) | A secret box bound to its record, signed token kinds with no token table, token digests and secure random, on Web Crypto. |
 | [`@voila.dev/effect-ddd`](./domains/effect/packages/effect-ddd) | Use cases with a declared gate, a registry, a permission catalogue, and architecture tests that freeze your bounded-context boundaries. |
-| [`@voila.dev/email`](./domains/email/packages/email) | One `EmailSender` contract for any mail provider, the message it takes, and in-memory and console senders for tests and local development. |
+| [`@voila.dev/email`](./domains/email/packages/email) | Email as a domain: one `EmailSender` contract for any provider, an outbox that retries every send until it settles, the log of what each message became from the provider webhooks, and a suppression list fed by bounces and complaints. |
 | [`@voila.dev/env`](./domains/effect/packages/env) | `.env` files into `process.env` or an Effect `ConfigProvider`: several files, earlier wins, the real environment always wins. |
 | [`@voila.dev/http`](./domains/effect/packages/http) | Outbound calls to third parties with typed timeouts, jittered retries, spans, bounded Schema decoding and a request log; an SSRF-guarded URL fetcher; Stripe, Svix, Twilio and SNS webhook checks. |
 | [`@voila.dev/live`](./domains/effect/packages/live) | Live updates over WebSocket: channels with a gate and a filter, a batching socket hub, a replay log on Redis streams, and a reconnecting browser client. |

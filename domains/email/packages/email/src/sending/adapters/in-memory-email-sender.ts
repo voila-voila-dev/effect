@@ -1,7 +1,7 @@
 import { Effect, Layer } from "effect";
-import type { EmailMessage } from "../message/email-message.ts";
-import { EmailSendError } from "../sender/email-send-error.ts";
-import { EmailSender } from "../sender/email-sender.ts";
+import type { EmailMessage } from "../../message/value-objects/email-message.ts";
+import { EmailSendError } from "../errors/email-send-error.ts";
+import { EmailSender } from "../services/email-sender.ts";
 
 export interface SentEmail {
 	readonly id: string;

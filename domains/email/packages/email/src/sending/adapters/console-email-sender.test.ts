@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { Effect, Logger } from "effect";
-import { EmailAddress } from "../message/email-address.ts";
+import { EmailAddress } from "../../message/value-objects/email-address.ts";
 import { consoleEmailSender } from "./console-email-sender.ts";
 
 describe("consoleEmailSender", () => {

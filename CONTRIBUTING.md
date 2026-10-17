@@ -13,7 +13,8 @@ domains/
   effect/                  the backend groundwork: effect-ddd, crypto, env,
     packages/              http, live, outbox, cache-lock
     examples/
-  email/packages/          email: the contract every mail provider implements
+  email/packages/          email: sending, the delivery outbox and log, the
+                           suppression list
   providers/packages/      one adapter per third party: resend, stripe,
                            annuaire-entreprises, vies
   docs/packages/           docs (framework-free) and ui-docs (its React layer)

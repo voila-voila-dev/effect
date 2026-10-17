@@ -46,10 +46,10 @@ import type {
 	DocsPropMember,
 	DocsPropOrigin,
 	DocsPropsManifest,
-} from "./docs-props.types";
+} from "./docs-props.types.ts";
 
 // domains/ui, the kit's domain: the app and the package are neighbours there.
-const domainRoot = path.join(import.meta.dirname, "../../../..");
+const domainRoot = path.join(import.meta.dirname, "../../..");
 const packageRoot = path.join(domainRoot, "packages/ui");
 const packageSrc = path.join(packageRoot, "src");
 const configFile = path.join(packageRoot, "tsconfig.json");

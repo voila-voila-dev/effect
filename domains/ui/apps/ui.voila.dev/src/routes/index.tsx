@@ -1,4 +1,3 @@
-import manifest from "virtual:docs-manifest";
 import {
 	ArrowDownIcon,
 	ArrowRightIcon,
@@ -23,6 +22,7 @@ import {
 	StatsRow,
 } from "@voila.dev/ui/landing";
 import { Skeleton } from "@voila.dev/ui/skeleton";
+import { DocsSearchProvider } from "@voila.dev/ui-docs/components/search/docs-search";
 import {
 	Fragment,
 	lazy,
@@ -32,9 +32,11 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { SiteHeader } from "@/components/docs/site-header";
-import { Wordmark } from "@/components/docs/wordmark";
+import { loadSearchIndex, SiteDocsProvider } from "@/components/docs-layout";
 import { ComponentCards } from "@/components/home/component-cards";
+import { HomeHeader } from "@/components/home/home-header";
+import { Wordmark } from "@/components/wordmark";
+import { docsShowcase } from "@/docs/site";
 
 export const Route = createFileRoute("/")({
 	head: () => ({
@@ -184,8 +186,19 @@ function EditorPlaceholder() {
 
 function Home() {
 	return (
+		// The docs' context, for the search palette (and ⌘K) in the header.
+		<SiteDocsProvider>
+			<DocsSearchProvider loadIndex={loadSearchIndex}>
+				<HomePage />
+			</DocsSearchProvider>
+		</SiteDocsProvider>
+	);
+}
+
+function HomePage() {
+	return (
 		<div className="min-h-svh bg-background text-foreground">
-			<SiteHeader />
+			<HomeHeader />
 			<main>
 				<LandingHero.Root layout="centered" background="gradient-primary">
 					<LandingHero.Content className="text-center">
@@ -279,8 +292,8 @@ function Home() {
 						</SectionIntro.Description>
 					</SectionIntro.Root>
 					<div className="mx-auto mt-10 max-w-5xl">
-						<div className="preview text-left">
-							<p className="preview__label">
+						<div className="docs-preview text-left">
+							<p className="docs-preview-label">
 								Live — this is the real component
 							</p>
 							<DeferredMount placeholder={<EditorPlaceholder />}>
@@ -329,10 +342,10 @@ function Home() {
 						</SectionIntro.Description>
 					</SectionIntro.Root>
 					<div className="mx-auto mt-10 grid max-w-5xl gap-3 sm:grid-cols-2 lg:grid-cols-3">
-						{manifest.showcase.map((pkg) => (
+						{docsShowcase.map((pkg) => (
 							<Link
 								key={pkg.name}
-								to={pkg.slug}
+								to={pkg.href}
 								className="group rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/40"
 							>
 								<p className="font-mono text-sm font-semibold text-foreground">

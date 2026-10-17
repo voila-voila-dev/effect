@@ -110,7 +110,8 @@ Merging to `main` opens the "Version packages" PR; merging that publishes.
 5. Providers: `annuaire-entreprises`, `vies`, `email` + `resend`, `stripe` —
    merged, first release next
 6. UI: `ui`, `chart` and `motion` moved in from `voila-voila-dev/ui`; their
-   docs site next moves onto `@voila.dev/docs`
+   docs site, [ui.voila.dev](https://ui.voila.dev), runs on `@voila.dev/docs` and
+   `@voila.dev/ui-docs`
 
 Next in this repository: `trust` (KYC/KYB).
 

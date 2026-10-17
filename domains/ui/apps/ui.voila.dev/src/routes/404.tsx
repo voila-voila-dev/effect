@@ -1,12 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { NotFound } from "@/components/docs/not-found";
+
+import { docsConfig } from "../../docs.config.ts";
+import { NotFound } from "../components/not-found.tsx";
 
 /**
- * Prerendered to `/404.html`, which the Cloudflare static-assets worker serves
- * (with a 404 status) for any path that has no file — see `wrangler.jsonc`'s
- * `not_found_handling`.
+ * Prerendered to `/404.html`, which the Worker serves with a 404 status for
+ * any path that has no file (`not_found_handling` in `wrangler.jsonc`).
  */
 export const Route = createFileRoute("/404")({
-	head: () => ({ meta: [{ title: "Not found · ui.voila.dev" }] }),
+	head: () => ({
+		meta: [
+			{ title: `Page not found · ${docsConfig.name}` },
+			{ name: "robots", content: "noindex" },
+		],
+	}),
 	component: NotFound,
 });

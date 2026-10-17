@@ -1,30 +1,35 @@
 import path from "node:path";
-import mdx from "@mdx-js/rollup";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypePrettyCode from "rehype-pretty-code";
-import rehypeSlug from "rehype-slug";
-import remarkFrontmatter from "remark-frontmatter";
-import remarkGfm from "remark-gfm";
-import remarkMdxFrontmatter from "remark-mdx-frontmatter";
-import { defineConfig, type UserConfig } from "vite";
+import { docsMdx } from "@voila.dev/docs/mdx/plugin";
 import {
-	docsManifest,
-	docsPages,
-	docsPropsWatch,
-	docsSearchIndex,
-} from "./src/lib/docs-plugin";
-import { failOnPrerenderError } from "./src/lib/prerender-guard";
-import { remarkPropTable } from "./src/lib/remark-prop-table";
-import { remarkTocExport } from "./src/lib/remark-toc-export";
+	defaultClientConditions,
+	defaultServerConditions,
+	defineConfig,
+	type UserConfig,
+} from "vite";
+
+import { docsConfig } from "./docs.config.ts";
+import { contentPagePaths } from "./vite/content-pages.ts";
+import { failOnPrerenderError } from "./vite/fail-on-prerender-error.ts";
+import { docsPropsWatch } from "./vite/props-watch.ts";
+import { remarkPropTable } from "./vite/remark-prop-table.ts";
+
+// The @voila.dev packages resolve to their sources, so the site builds without
+// building them first, and documents the code on its own branch.
+const SOURCE_CONDITION = "@voila.dev/source";
 
 export default defineConfig({
 	resolve: {
 		alias: {
+			// The pages import their live examples from `@/examples/…`.
 			"@": path.join(import.meta.dirname, "src"),
 		},
+		conditions: [SOURCE_CONDITION, ...defaultClientConditions],
+	},
+	ssr: {
+		resolve: { conditions: [SOURCE_CONDITION, ...defaultServerConditions] },
 	},
 	// MapLibre 6 is ESM-only and starts its worker from a URL relative to its
 	// own module. Pre-bundling rewrites that module into `deps/`, where the
@@ -36,61 +41,37 @@ export default defineConfig({
 	},
 	plugins: [
 		tailwindcss(),
-		docsManifest(),
-		docsSearchIndex(),
+		// `<PropTable of="Button" />` becomes the component's props table at
+		// build time, read from `packages/ui` by the type checker.
+		docsMdx({ remarkPlugins: [remarkPropTable] }),
 		docsPropsWatch(),
-		{
-			// `enforce: "pre"` so MDX compiles to JSX before React's plugin runs.
-			enforce: "pre",
-			...mdx({
-				providerImportSource: "@mdx-js/react",
-				remarkPlugins: [
-					remarkFrontmatter,
-					[remarkMdxFrontmatter, { name: "frontmatter" }],
-					remarkGfm,
-					// After GFM, so the tables it builds get GFM's table handling.
-					remarkPropTable,
-					remarkTocExport,
-				],
-				rehypePlugins: [
-					rehypeSlug,
-					[
-						rehypeAutolinkHeadings,
-						{
-							behavior: "wrap",
-							properties: { className: ["heading-anchor"] },
-						},
-					],
-					[
-						rehypePrettyCode,
-						{
-							theme: {
-								light: "github-light-default",
-								dark: "github-dark-default",
-							},
-							keepBackground: false,
-							defaultLang: "txt",
-						},
-					],
-				],
-			}),
-		},
 		tanstackStart({
 			prerender: {
+				// Every page is prerendered to a file the Worker serves as is.
 				enabled: true,
 				crawlLinks: true,
+				// `/ui/button/index.html`, served at `/ui/button/`: the addresses the
+				// site has always had.
 				autoSubfolderIndex: true,
 				failOnError: true,
+				// The prerenderer fetches each page from a server it starts itself;
+				// a connection refused under load costs a retry, not the build.
+				concurrency: 4,
+				retryCount: 2,
+				retryDelay: 500,
+				// In-page anchors would only render the same page again.
+				filter: (page) => !page.path.includes("#"),
 			},
+			// Every page, so none depends on the crawl finding a link to it.
 			pages: [
-				...docsPages(),
+				...contentPagePaths().map((path) => ({ path })),
 				{
 					path: "/404",
 					sitemap: { exclude: true },
 					prerender: { enabled: true, outputPath: "/404.html" },
 				},
 			],
-			sitemap: { enabled: true, host: "https://ui.voila.dev" },
+			sitemap: { enabled: true, host: docsConfig.url },
 		}),
 		// After `tanstackStart`, so its prerender runs inside this plugin's watch.
 		failOnPrerenderError(),

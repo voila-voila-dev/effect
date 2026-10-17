@@ -28,7 +28,7 @@
 	"scripts": {
 		"build": "true",
 		"check-types": "tsc --noEmit",
-		"test": "bun test"
+		"test": "bun test --conditions=@voila.dev/source"
 	},
 	"peerDependencies": {
 		"@biomejs/biome": "^2.5.0"
@@ -36,6 +36,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",
 		"@types/bun": "catalog:",
+		"@voila.dev/typescript-config": "workspace:*",
 		"typescript": "catalog:"
 	}
 }

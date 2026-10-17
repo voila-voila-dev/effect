@@ -20,6 +20,7 @@
       },
       "devDependencies": {
         "@types/bun": "catalog:",
+        "@voila.dev/typescript-config": "workspace:*",
         "typescript": "catalog:",
       },
     },
@@ -29,6 +30,7 @@
       "devDependencies": {
         "@biomejs/biome": "catalog:",
         "@types/bun": "catalog:",
+        "@voila.dev/typescript-config": "workspace:*",
         "typescript": "catalog:",
       },
       "peerDependencies": {
@@ -41,6 +43,7 @@
       "devDependencies": {
         "@types/bun": "catalog:",
         "@voila.dev/effect-ddd": "workspace:*",
+        "@voila.dev/typescript-config": "workspace:*",
         "effect": "catalog:",
         "typescript": "catalog:",
       },
@@ -54,6 +57,7 @@
       "devDependencies": {
         "@types/bun": "catalog:",
         "@voila.dev/effect-ddd": "workspace:*",
+        "@voila.dev/typescript-config": "workspace:*",
         "effect": "catalog:",
         "typescript": "catalog:",
       },
@@ -85,6 +89,7 @@
         "@mdx-js/mdx": "^3.1.1",
         "@types/bun": "catalog:",
         "@voila.dev/effect-ddd": "workspace:^",
+        "@voila.dev/typescript-config": "workspace:*",
         "typescript": "catalog:",
         "vite": "8.3.4",
       },
@@ -100,6 +105,7 @@
       "version": "0.1.2",
       "devDependencies": {
         "@types/bun": "catalog:",
+        "@voila.dev/typescript-config": "workspace:*",
         "effect": "catalog:",
         "typescript": "catalog:",
       },
@@ -113,6 +119,7 @@
       "devDependencies": {
         "@types/bun": "catalog:",
         "@voila.dev/effect-ddd": "workspace:*",
+        "@voila.dev/typescript-config": "workspace:*",
         "effect": "catalog:",
         "typescript": "catalog:",
       },
@@ -125,6 +132,7 @@
       "version": "0.1.2",
       "devDependencies": {
         "@types/bun": "catalog:",
+        "@voila.dev/typescript-config": "workspace:*",
         "effect": "catalog:",
         "typescript": "catalog:",
       },
@@ -144,6 +152,7 @@
       "devDependencies": {
         "@types/bun": "catalog:",
         "@voila.dev/effect-ddd": "workspace:*",
+        "@voila.dev/typescript-config": "workspace:*",
         "effect": "catalog:",
         "typescript": "catalog:",
       },
@@ -159,6 +168,7 @@
       },
       "devDependencies": {
         "@types/bun": "catalog:",
+        "@voila.dev/typescript-config": "workspace:*",
         "effect": "catalog:",
         "typescript": "catalog:",
       },
@@ -174,6 +184,7 @@
       },
       "devDependencies": {
         "@types/bun": "catalog:",
+        "@voila.dev/typescript-config": "workspace:*",
         "effect": "catalog:",
         "typescript": "catalog:",
       },
@@ -191,6 +202,7 @@
         "@effect/platform-bun": "catalog:",
         "@types/bun": "catalog:",
         "@voila.dev/effect-ddd": "workspace:*",
+        "@voila.dev/typescript-config": "workspace:*",
         "effect": "catalog:",
         "typescript": "catalog:",
       },
@@ -198,6 +210,10 @@
         "@effect/platform-bun": "^4.0.0",
         "effect": "^4.0.0",
       },
+    },
+    "packages/typescript-config": {
+      "name": "@voila.dev/typescript-config",
+      "version": "0.0.0",
     },
     "packages/ui-docs": {
       "name": "@voila.dev/ui-docs",
@@ -217,6 +233,7 @@
         "@types/react": "^19.3.0",
         "@types/react-dom": "^19.3.0",
         "@voila.dev/effect-ddd": "workspace:^",
+        "@voila.dev/typescript-config": "workspace:*",
         "react": "19.2.6",
         "react-dom": "19.2.6",
         "typescript": "catalog:",
@@ -237,6 +254,7 @@
       "devDependencies": {
         "@types/bun": "catalog:",
         "@voila.dev/effect-ddd": "workspace:*",
+        "@voila.dev/typescript-config": "workspace:*",
         "effect": "catalog:",
         "typescript": "catalog:",
       },
@@ -255,6 +273,7 @@
       "devDependencies": {
         "@types/bun": "catalog:",
         "@voila.dev/effect-ddd": "workspace:*",
+        "@voila.dev/typescript-config": "workspace:*",
         "effect": "catalog:",
         "typescript": "catalog:",
       },
@@ -271,6 +290,7 @@
       "devDependencies": {
         "@types/bun": "catalog:",
         "@voila.dev/effect-ddd": "workspace:*",
+        "@voila.dev/typescript-config": "workspace:*",
         "effect": "catalog:",
         "typescript": "catalog:",
       },
@@ -287,6 +307,7 @@
       "devDependencies": {
         "@types/bun": "catalog:",
         "@voila.dev/effect-ddd": "workspace:*",
+        "@voila.dev/typescript-config": "workspace:*",
         "effect": "catalog:",
         "typescript": "catalog:",
       },
@@ -613,6 +634,8 @@
     "@voila.dev/script-kit": ["@voila.dev/script-kit@workspace:packages/script-kit"],
 
     "@voila.dev/stripe": ["@voila.dev/stripe@workspace:providers/stripe"],
+
+    "@voila.dev/typescript-config": ["@voila.dev/typescript-config@workspace:packages/typescript-config"],
 
     "@voila.dev/ui-docs": ["@voila.dev/ui-docs@workspace:packages/ui-docs"],
 

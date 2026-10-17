@@ -1,0 +1,22 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"display": "Build",
+	"compilerOptions": {
+		"noEmit": false,
+		"allowImportingTsExtensions": false,
+		"declaration": true,
+		"declarationMap": true,
+		"sourceMap": true,
+		"customConditions": [],
+		"types": ["node"],
+		"rootDir": "${configDir}/src",
+		"outDir": "${configDir}/dist"
+	},
+	"include": ["${configDir}/src"],
+	"exclude": [
+		"${configDir}/src/**/*.test.ts",
+		"${configDir}/src/**/*.test.tsx",
+		"${configDir}/src/**/*.test-helper.ts",
+		"${configDir}/src/**/*.test-helper.tsx"
+	]
+}

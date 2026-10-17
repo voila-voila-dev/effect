@@ -51,6 +51,7 @@
 	"devDependencies": {
 		"@types/bun": "catalog:",
 		"@voila.dev/effect-ddd": "workspace:*",
+		"@voila.dev/typescript-config": "workspace:*",
 		"effect": "catalog:",
 		"typescript": "catalog:"
 	}

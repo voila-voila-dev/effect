@@ -1,0 +1,107 @@
+---
+title: "AudioPlayer"
+description: "A recording as a card: play, seek, skip, speed and download."
+category: "data-display"
+---
+
+import * as Example from "@/examples/ui/audio-player";
+
+<Preview layout="center">
+	<Example.Default />
+</Preview>
+
+```tsx
+<AudioPlayer.Root
+	src={recording.url}
+	title="Kickoff call"
+	description="Jane Doe · 30 s"
+	durationSeconds={recording.seconds}
+	downloadName="kickoff-call.mp3"
+/>
+```
+
+The `<audio>` element stays hidden so every browser draws the same controls.
+`durationSeconds` is shown until the file's own metadata arrives — a webm or a
+stream reports `Infinity` until its end is known, so the figure you already
+have stands in.
+
+## Driving it from a transcript
+
+`ref` exposes `seek(seconds)`: it moves the playhead and plays from there,
+waiting for the metadata if the file has not loaded yet.
+
+<Preview layout="center">
+	<Example.Transcript />
+</Preview>
+
+```tsx
+const player = useRef<AudioPlayerHandle>(null);
+
+<AudioPlayer.Root ref={player} src={src} title="Kickoff call" />
+<button onClick={() => player.current?.seek(17)}>Next steps</button>
+```
+
+## Playback held higher up
+
+`useAudioPlayback` owns one `<audio>` element's state apart from its controls.
+Hold it above your tabs and the recording keeps playing while the controls
+showing it mount and unmount — render `AudioPlayer.Panel` for the full card, or
+compose a smaller player from the parts.
+
+<Preview layout="center">
+	<Example.Compact />
+</Preview>
+
+```tsx
+const playback = useAudioPlayback({ src, durationSeconds: 12 });
+
+<audio {...playback.element} />
+<AudioPlayer.PlayToggle playback={playback} size="icon-sm" />
+<AudioPlayer.SpeedToggle rate={playback.rate} onRateChange={playback.chooseRate} />
+```
+
+## Labels
+
+Every string comes through `labels`, English by default. `rate` formats a
+speed for its button, so a French player reads `1,5×`:
+
+```tsx
+<AudioPlayer.Root
+	labels={{
+		play: "Lire",
+		pause: "Mettre en pause",
+		rate: (rate) => `${String(rate).replace(".", ",")}×`,
+	}}
+	…
+/>
+```
+
+## API
+
+### AudioPlayer.Root
+
+<PropTable of="AudioPlayer.Root" />
+
+### AudioPlayer.Panel
+
+<PropTable of="AudioPlayer.Panel" />
+
+### AudioPlayer.PlayToggle
+
+<PropTable of="AudioPlayer.PlayToggle" />
+
+### AudioPlayer.SeekBar
+
+<PropTable of="AudioPlayer.SeekBar" />
+
+### AudioPlayer.SkipButtons
+
+<PropTable of="AudioPlayer.SkipButtons" />
+
+### AudioPlayer.SpeedToggle
+
+<PropTable of="AudioPlayer.SpeedToggle" />
+
+### AudioPlayer.DownloadButton
+
+<PropTable of="AudioPlayer.DownloadButton" />

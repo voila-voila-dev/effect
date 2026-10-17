@@ -54,7 +54,7 @@ which is the bundle tax the subpaths exist to avoid. Import
 
 | Subpath | |
 | --- | --- |
-| `@voila.dev/ui/<component>` | 85 components, one convention. The floor everything else stands on. |
+| `@voila.dev/ui/<component>` | 88 components, one convention. The floor everything else stands on. |
 | `@voila.dev/ui/styles/themes/*.css` | Your whole brand in one CSS file. Six ship; change it, everything follows. |
 | `@voila.dev/ui/content-editor` | A rich content editor, and the email editor, that live in your app, from one feature registry. |
 | `@voila.dev/ui/spreadsheet` | An editable, virtualized grid your users will mistake for a native app. |

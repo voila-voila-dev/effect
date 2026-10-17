@@ -41,6 +41,27 @@ import * as Example from "@/examples/ui-spreadsheet/quick-start";
 The grid never sorts or reorders your rows itself — it reports the intent and
 you reorder the array, so the data stays the single source of truth.
 
+## Remembered column widths
+
+`useSpreadsheetColumnSizing` keeps the widths a user dragged in `localStorage`
+and hands back the `columnSizing`/`onColumnSizingChange` pair for the root, plus
+`reset` for a "restore default widths" action. Only resized columns are stored,
+and a stored width under a column the table no longer declares, or outside a
+plausible range, is dropped on read.
+
+```tsx
+const sizing = useSpreadsheetColumnSizing({
+	storageKey: "acme.variants.column-sizing",
+	columnIds: ["name", "reference", "price"],
+});
+
+<Spreadsheet.Root
+	columnSizing={sizing.columnSizing}
+	onColumnSizingChange={sizing.onColumnSizingChange}
+	…
+/>
+```
+
 ## API
 
 ### Spreadsheet.Root

@@ -1,0 +1,57 @@
+---
+title: "SelectField"
+description: "A select over a list of options, optionally one you can add to."
+category: "forms"
+---
+
+import * as Example from "@/examples/ui/select-field";
+
+<Preview layout="center">
+	<Example.Default />
+</Preview>
+
+```tsx
+<SelectField
+	options={[{ value: "design", label: "Designer" }, …]}
+	value={role}
+	onValueChange={setRole}
+	placeholder="Pick a role"
+/>
+```
+
+The form field built from [ResponsiveSelect](/ui/responsive-select) and
+[Combobox](/ui/combobox), so a form does not re-wire either for the common case.
+It takes the options already resolved and labelled — where they come from, what
+to say while they load and when they fail stay with you. A closed field keeps
+`ResponsiveSelect`'s native picker on phones.
+
+## A "none" row
+
+The empty value is the placeholder and is never emitted. When "nothing" is a
+real choice — "All roles" in a filter, "No template" in a form — pass
+`nullOption`, and choosing it emits `null`.
+
+<Preview layout="center">
+	<Example.NullOption />
+</Preview>
+
+## Creatable
+
+`onCreate` lets the reader keep what they typed when nothing matches: one more
+row at the end of the list, rather than a trip to some other screen that loses
+whatever they were in the middle of. Typing needs a text input, so a creatable
+field renders a combobox styled as the trigger it replaces, at the same heights.
+
+<Preview layout="center">
+	<Example.Creatable />
+</Preview>
+
+Matching ignores case and accents, so "etude" finds "Étude". The create row is
+never offered for a label that already exists. For options fetched per query,
+pass `searchValue`/`onSearchChange` and the field stops narrowing on its own;
+`loading` shows a spinner instead of announcing an empty list, and `emptyHint`
+says what an empty catalog means.
+
+## API
+
+<PropTable of="SelectField" />

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
 	getPaginationRange,
 	PAGINATION_ELLIPSIS,
-} from "#/data-table/hooks/use-pagination.ts";
+} from "#/hooks/use-pagination.ts";
 
 describe("getPaginationRange", () => {
 	it("returns an empty range when there are no pages", () => {

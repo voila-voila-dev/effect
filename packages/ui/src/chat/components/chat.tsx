@@ -38,6 +38,13 @@ import { ChatTime } from "#/chat/components/chat-time.tsx";
 import { ChatTranscript } from "#/chat/components/chat-transcript.tsx";
 import { ChatUnreadSeparator } from "#/chat/components/chat-unread-separator.tsx";
 import { ChatViewport } from "#/chat/components/chat-viewport.tsx";
+import { ChatWidget } from "#/chat/components/chat-widget.tsx";
+import { ChatWidgetAction } from "#/chat/components/chat-widget-action.tsx";
+import { ChatWidgetDetail } from "#/chat/components/chat-widget-detail.tsx";
+import { ChatWidgetHeader } from "#/chat/components/chat-widget-header.tsx";
+import { ChatWidgetHeading } from "#/chat/components/chat-widget-heading.tsx";
+import { ChatWidgetIcon } from "#/chat/components/chat-widget-icon.tsx";
+import { ChatWidgetTitle } from "#/chat/components/chat-widget-title.tsx";
 
 /**
  * The Chat parts as one namespace. The bubble, message, marker and scroller
@@ -115,6 +122,14 @@ export const Chat = {
 	Text: ChatText,
 	Time: ChatTime,
 	ExternalLinkDialog: ChatExternalLinkDialog,
+	// Widget: the thing a message is about, under its bubble
+	Widget: ChatWidget,
+	WidgetHeader: ChatWidgetHeader,
+	WidgetIcon: ChatWidgetIcon,
+	WidgetHeading: ChatWidgetHeading,
+	WidgetTitle: ChatWidgetTitle,
+	WidgetDetail: ChatWidgetDetail,
+	WidgetAction: ChatWidgetAction,
 	// Composer + conversation list
 	Composer: ChatComposer,
 	ComposerAttachments: ChatComposerAttachments,

@@ -84,7 +84,7 @@ const aiCards = [
 		icon: StackIcon,
 		title: "Predictable to generate against",
 		description:
-			"One convention across 85 components: Base UI underneath, cva variants on top. What the model learns from one file holds for all of them.",
+			"One convention across 88 components: Base UI underneath, cva variants on top. What the model learns from one file holds for all of them.",
 	},
 	{
 		icon: SwatchesIcon,
@@ -258,7 +258,7 @@ function Home() {
 							nativeButton={false}
 							render={<Link to={"/ui/quick-start" as string} />}
 						>
-							Browse all 85 components <ArrowRightIcon />
+							Browse all 88 components <ArrowRightIcon />
 						</Button>
 					</div>
 				</section>

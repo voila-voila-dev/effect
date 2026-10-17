@@ -117,6 +117,9 @@ const editableTableCellVariants = cva({
 				// NestedTableInput fills its cell and defers ring/tint to it.
 				"[&_[data-slot=nested-table-input]]:rounded-none [&_[data-slot=nested-table-input]]:border-0",
 				"[&_[data-slot=nested-table-input]:focus-visible]:ring-0",
+				// ExpandingTextareaInput: same flush-summary shape as NestedTableInput.
+				"[&_[data-slot=expanding-textarea-input]]:rounded-none [&_[data-slot=expanding-textarea-input]]:border-0",
+				"[&_[data-slot=expanding-textarea-input]:focus-visible]:ring-0",
 				// Center non-filling controls; cut their rings.
 				"[&_[data-slot=checkbox]]:mx-auto [&_[data-slot=switch]]:mx-auto [&_[data-slot=switch]]:flex",
 				"[&_[data-slot=checkbox]:focus-visible]:ring-0 [&_[data-slot=switch]:focus-visible]:ring-0",

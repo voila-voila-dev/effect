@@ -28,6 +28,31 @@ render disabled rather than navigating nowhere.
 For a paginated table, [DataTable](/ui-datatable/pagination) has this wired up
 already.
 
+## Windowing the page numbers
+
+`usePagination` from `@voila.dev/ui/hooks` turns a page and a page count into
+the items to render: zero-based page indexes and `PAGINATION_ELLIPSIS` where
+pages are elided, always the same length so the bar does not jump as the
+current page moves. `getPaginationRange` is the same, outside React.
+
+```tsx
+const items = usePagination({ page, pageCount, siblingCount: 1, boundaryCount: 1 });
+
+<Pagination.Content>
+	{items.map((item, index) =>
+		item === PAGINATION_ELLIPSIS ? (
+			<Pagination.Item key={`gap-${index}`}><Pagination.Ellipsis /></Pagination.Item>
+		) : (
+			<Pagination.Item key={item}>
+				<Pagination.Link isActive={item === page} onClick={() => setPage(item)}>
+					{item + 1}
+				</Pagination.Link>
+			</Pagination.Item>
+		),
+	)}
+</Pagination.Content>
+```
+
 ## API
 
 ### Pagination.Root

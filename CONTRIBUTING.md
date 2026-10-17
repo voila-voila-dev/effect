@@ -14,7 +14,7 @@ domains/
     packages/              http, live, outbox, cache-lock
     examples/
   email/packages/          email: sending, the delivery outbox and log, the
-                           suppression list
+                           suppression list, received mail and reply routing
   providers/packages/      one adapter per third party: resend, stripe,
                            annuaire-entreprises, vies
   docs/packages/           docs (framework-free) and ui-docs (its React layer)

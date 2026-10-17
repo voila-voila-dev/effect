@@ -3,7 +3,8 @@
 Email as a domain on [Effect](https://effect.website), not just a send call.
 The code that mails a sign-in code should not know which provider carries it,
 should not lose the message when that provider is down, and should not keep
-mailing an address that bounced. This package covers all three, behind
+mailing an address that bounced; and a reply to it should land where it
+belongs. This package covers all of it, behind
 contracts an application implements with its own storage:
 
 - **sending**: one `EmailSender` contract any provider implements
@@ -16,6 +17,9 @@ contracts an application implements with its own storage:
 - **suppression**: hard bounces, complaints and repeated soft bounces put the
   address on a list every later send checks, transactional mail included.
   Operators can also block or release an address by hand.
+- **inbound**: received mail is stored with its body, headers and SPF, DKIM
+  and DMARC verdicts. A reply to a signed reply address goes to the
+  application's handler, and auto-replies are refused before anything else.
 
 ```sh
 bun add @voila.dev/email @voila.dev/effect-ddd effect
@@ -33,9 +37,14 @@ src/
   delivery/      aggregates/EmailLog, value-objects/ (status, bounce kind), policies/ (retry
                  curve, drain order), payloads/ (provider event), events/, services/
                  EmailLogRepository, adapters/, use-cases/
+  inbound/       aggregates/InboundEmail, value-objects/ (outcome, verdict), policies/
+                 (auto-reply guard, attachment allowlist), services/ (fetcher, handler,
+                 repository, ReplyAddresses), adapters/ (signed reply addresses,
+                 in-memory), use-cases/
 ```
 
-`delivery` uses `sending` and `suppression`, and nothing uses `delivery`.
+`delivery` uses `sending` and `suppression`, `inbound` reads the delivery log
+to thread replies, and nothing uses `inbound`.
 `src/package-structure.test.ts` enforces this.
 
 ## Sending
@@ -83,6 +92,44 @@ in between, suppress it too. A blocked bounce never does, since the server
 refused the sender, not the recipient. Recording the same event twice is
 harmless.
 
+## Receiving
+
+Give a message a reply address that routes back to what it concerns:
+
+```ts
+const replyTo = yield* ReplyAddresses.pipe(
+	Effect.flatMap((addresses) => addresses.mint({ payload: conversationId, expiresAt })),
+); // r.<payload>.<expiry>.<tag>@reply.example.com
+```
+
+`signedReplyAddresses({ domain })` signs them with the `TokenSigner` of
+[`@voila.dev/crypto`](../../../effect/packages/crypto). Nothing is stored when
+one is minted, and a guessed or altered address does not verify. Keep the
+payload to a short id, about 25 characters at most.
+
+When the provider reports a received message, store it, then route it:
+
+```ts
+const inbound = yield* RecordInboundEmailUseCase.execute({ actor, payload }); // fetches body, headers, verdicts
+yield* RouteInboundEmailUseCase.execute({ actor, payload: { inbound } });
+```
+
+Routing works through these steps, in order:
+
+1. A message already routed is left alone.
+2. Machine mail is rejected: an `Auto-Submitted` or list header, a daemon or
+   no-reply sender, or a sender on one of `InboundEmailSettings.ownDomains`.
+   This check runs before the token, because an auto-reply carries our own
+   valid address.
+3. The `to` address must verify. If it does not, the reply address of the
+   send it quotes in `In-Reply-To` is tried.
+4. Your `InboundEmailHandler` gets the payload. It decides what the payload
+   means, checks the sender and DMARC, and answers routed, unroutable or
+   rejected.
+
+`FetchInboundAttachmentUseCase` hands over a file's bytes only when the
+attachment policy allows it: PDF, images or Word, up to 15 MB.
+
 ## Operators
 
 The application maps its own roles onto the domain's permissions:
@@ -98,12 +145,15 @@ new EmailOperator({ operatorId: user.id, permissions: ["email.log.read", "email.
 | `GetEmailLogUseCase`, `SearchEmailLogsUseCase` | `email.log.read` |
 | `ResendEmailUseCase` | `email.log.resend` |
 | `SuppressAddressUseCase`, `ReleaseSuppressedAddressUseCase`, `SearchSuppressedAddressesUseCase` | `email.suppression.manage` |
+| `RecordInboundEmailUseCase`, `RouteInboundEmailUseCase`, `FetchInboundAttachmentUseCase` | system |
+| `GetInboundEmailUseCase`, `SearchInboundEmailsUseCase` | `email.inbound.read` |
 
 `emailUseCases` lists them all, for a catalogue or an RPC layer.
 
 ## Storage
 
-The domain names `EmailLogRepository` and `SuppressionList`; the application
+The domain names `EmailLogRepository`, `SuppressionList`,
+`InboundEmailRepository` and `InboundEmailFetcher`; the application
 implements them on its database. A repository's `claimDuePending` must lease
 its rows, so that two drains never take the same log. The in-memory adapters
 (`inMemoryEmailLogRepository`, `inMemorySuppressionList`, `inMemoryEmailSender`)

@@ -11,8 +11,8 @@ import {
 
 // Four subdomains on a shared kernel. `message`, `access`, `ids` and `paging`
 // are the kernel and import nothing; `sending` is the transport, `suppression`
-// the list, and `delivery` (the outbox and the log) the one that uses both.
-// Nothing imports `delivery`.
+// the list, `delivery` (the outbox and the log) uses both, and `inbound`
+// reads the log to thread replies. Nothing imports `inbound`.
 
 const ALLOWED: ReadonlyArray<ContextPair> = [
 	["delivery", "access"],
@@ -21,6 +21,11 @@ const ALLOWED: ReadonlyArray<ContextPair> = [
 	["delivery", "paging"],
 	["delivery", "sending"],
 	["delivery", "suppression"],
+	["inbound", "access"],
+	["inbound", "delivery"],
+	["inbound", "ids"],
+	["inbound", "message"],
+	["inbound", "paging"],
 	["sending", "message"],
 	["suppression", "access"],
 	["suppression", "ids"],

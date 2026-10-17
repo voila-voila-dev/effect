@@ -13,6 +13,8 @@ export const EMAIL_PERMISSIONS = [
 	"email.suppression.manage",
 	/** Run the outbox sweep by hand. */
 	"email.outbox.process",
+	/** Read the received mail, bodies included. */
+	"email.inbound.read",
 ] as const;
 
 export const EmailPermission = Schema.Literals(EMAIL_PERMISSIONS);

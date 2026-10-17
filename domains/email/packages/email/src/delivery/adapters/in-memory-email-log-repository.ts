@@ -144,6 +144,12 @@ export function inMemoryEmailLogRepository() {
 					logs.set(log.id, new EmailLog({ ...log, ...state }));
 				}
 			}),
+		findByRfcMessageId: (rfcMessageId) =>
+			Effect.sync(() =>
+				Option.fromNullishOr(
+					[...logs.values()].find((log) => log.rfcMessageId === rfcMessageId),
+				),
+			),
 		countSoftBouncesSinceLastDelivery: (recipient) =>
 			Effect.sync(() => {
 				const address = normalizeEmailAddress(recipient);

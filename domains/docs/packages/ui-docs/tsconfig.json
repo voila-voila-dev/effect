@@ -1,9 +1,7 @@
 {
-	"extends": "../../../../tsconfig.base.json",
-	"compilerOptions": {
-		"lib": ["ESNext", "DOM", "DOM.Iterable"],
-		"jsx": "react-jsx",
-		"customConditions": ["@voila.dev/source"]
-	},
+	"extends": [
+		"@voila.dev/typescript-config/strict.json",
+		"@voila.dev/typescript-config/react.json"
+	],
 	"include": ["src", "test"]
 }

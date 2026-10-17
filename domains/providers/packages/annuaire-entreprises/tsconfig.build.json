@@ -1,9 +1,3 @@
 {
-	"extends": "../../../../tsconfig.build.json",
-	"compilerOptions": {
-		"rootDir": "src",
-		"outDir": "dist"
-	},
-	"include": ["src"],
-	"exclude": ["src/**/*.test.ts", "src/**/*.test-helper.ts"]
+	"extends": ["./tsconfig.json", "@voila.dev/typescript-config/build.json"]
 }

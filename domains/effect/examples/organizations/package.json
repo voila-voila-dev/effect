@@ -13,6 +13,7 @@
 	},
 	"devDependencies": {
 		"@types/bun": "catalog:",
+		"@voila.dev/typescript-config": "workspace:*",
 		"typescript": "catalog:"
 	}
 }

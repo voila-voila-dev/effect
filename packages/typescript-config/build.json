@@ -1,20 +1,11 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-	"display": "Package build",
+	"display": "Build",
+	"extends": "./declarations.json",
 	"compilerOptions": {
-		"noEmit": false,
-		"emitDeclarationOnly": true,
-		"declaration": true,
-		"declarationMap": true,
-		"rootDir": "${configDir}/src",
-		"outDir": "${configDir}/dist",
-		"incremental": false
-	},
-	"include": ["${configDir}/src/**/*.ts", "${configDir}/src/**/*.tsx"],
-	"exclude": [
-		"${configDir}/src/**/*.test.ts",
-		"${configDir}/src/**/*.test.tsx",
-		"${configDir}/src/**/*.stories.ts",
-		"${configDir}/src/**/*.stories.tsx"
-	]
+		"emitDeclarationOnly": false,
+		"sourceMap": true,
+		"allowImportingTsExtensions": false,
+		"types": ["node"]
+	}
 }

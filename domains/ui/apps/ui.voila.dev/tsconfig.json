@@ -1,9 +1,6 @@
 {
-	"extends": "@voila.dev/typescript-config/base.json",
+	"extends": "@voila.dev/typescript-config/react.json",
 	"compilerOptions": {
-		"lib": ["ESNext", "DOM", "DOM.Iterable"],
-		"jsx": "react-jsx",
-		"jsxImportSource": "react",
 		"types": ["vite/client", "node"],
 		"paths": {
 			"@/*": ["./src/*"]

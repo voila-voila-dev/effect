@@ -215,6 +215,22 @@
         "effect": "^4.0.0",
       },
     },
+    "packages/stripe": {
+      "name": "@voila.dev/stripe",
+      "version": "0.0.0",
+      "dependencies": {
+        "@voila.dev/http": "workspace:^",
+      },
+      "devDependencies": {
+        "@types/bun": "catalog:",
+        "@voila.dev/effect-ddd": "workspace:*",
+        "effect": "catalog:",
+        "typescript": "catalog:",
+      },
+      "peerDependencies": {
+        "effect": "^4.0.0",
+      },
+    },
     "packages/ui-docs": {
       "name": "@voila.dev/ui-docs",
       "version": "0.1.0",
@@ -567,6 +583,8 @@
     "@voila.dev/outbox": ["@voila.dev/outbox@workspace:packages/outbox"],
 
     "@voila.dev/resend": ["@voila.dev/resend@workspace:packages/resend"],
+
+    "@voila.dev/stripe": ["@voila.dev/stripe@workspace:packages/stripe"],
 
     "@voila.dev/ui-docs": ["@voila.dev/ui-docs@workspace:packages/ui-docs"],
 

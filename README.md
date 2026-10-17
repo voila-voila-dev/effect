@@ -49,6 +49,7 @@ fake.
 | --- | --- |
 | [`@voila.dev/annuaire-entreprises`](./packages/annuaire-entreprises) | The French company directory: a SIRET to its company, directors and address, a name search, withheld identities flagged, outages typed apart from "not found". |
 | [`@voila.dev/resend`](./packages/resend) | An `EmailSender` on Resend (rate-limit aware, batched), the receiving API with SPF/DKIM/DMARC verdicts and attachments, and the webhook event schema. |
+| [`@voila.dev/stripe`](./packages/stripe) | A light Stripe REST client: pinned API version, retries only when safe, errors that say whether Stripe created anything, card declines apart from incidents, field readers and the webhook event schema. |
 | [`@voila.dev/vies`](./packages/vies) | EU VAT number checks against VIES, member-state outages told apart from refused input, national VAT formats and a parser for numbers as people type them. |
 
 ## Development
@@ -74,8 +75,8 @@ Merging to `main` opens the "Version packages" PR; merging that publishes.
 2. `biome-plugins`, `crypto`, `cache-lock`, `http`, `outbox` — **0.1** on npm
 3. `live` (WebSocket hub) — merged, first release next
 4. Documentation site on `@voila.dev/docs`
-5. Providers: `annuaire-entreprises`, `vies`, `email` + `resend` — merged, first
-   release next; then `stripe`
+5. Providers: `annuaire-entreprises`, `vies`, `email` + `resend`, `stripe` —
+   merged, first release next
 
 Next in this repository: the UI packages (`@voila.dev/ui` and its companions)
 and `trust` (KYC/KYB).

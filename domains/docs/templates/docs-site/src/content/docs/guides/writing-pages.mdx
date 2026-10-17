@@ -1,0 +1,58 @@
+---
+title: Writing pages
+description: The frontmatter every page declares, the components it can use, and how the sidebar finds it.
+icon: book
+audience: [everyone]
+kind: reference
+stage: build
+prerequisites: [guides/quickstart]
+next: [guides/deploying]
+---
+
+A page is an `.mdx` file under `src/content/docs`. Its path is its address:
+`guides/writing-pages.mdx` is served at `/guides/writing-pages`, and an
+`index.mdx` at its folder's address.
+
+## Frontmatter
+
+| Field | What it says |
+| --- | --- |
+| `title`, `description` | The page's h1 and lead, its `<title>` and its meta description. |
+| `sidebarTitle` | A shorter title for the sidebar. |
+| `icon` | One of the icons `docs.config.ts` declares. |
+| `audience` | Who the page is for: one or more of the audiences in `docs.config.ts`. |
+| `kind` | `guide` (one task), `reference` (rules and lists), `explanation`, or `path`. |
+| `stage` | The moment of the reader's journey, from `docs.config.ts`. |
+| `prerequisites`, `next` | Slugs of the pages to read before and after, shown around the content. |
+| `sources`, `lastVerified` | The external pages a procedure was checked against, and when. |
+
+A typo in the frontmatter fails the build and names the file.
+
+## Components
+
+Every page can use these without importing them:
+
+<CodeGroup>
+```mdx title="Callouts"
+<Note>Something worth knowing.</Note>
+<Tip>A shortcut.</Tip>
+<Warning>Something that can go wrong.</Warning>
+```
+
+```mdx title="Cards"
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/guides/quickstart" />
+</CardGroup>
+```
+</CodeGroup>
+
+There are also `Steps`, `Tabs`, `Accordion` and `Screenshot`.
+
+<Warning>
+  A link to a page that does not exist fails `bun run test`.
+</Warning>
+
+## The sidebar
+
+`src/content/docs/navigation.ts` lists every page by its slug, in tabs and
+groups. A page it does not list, or lists twice, fails the test.

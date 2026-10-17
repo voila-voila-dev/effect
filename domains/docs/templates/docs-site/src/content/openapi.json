@@ -1,0 +1,123 @@
+{
+	"openapi": "3.1.0",
+	"info": {
+		"title": "Acme API",
+		"version": "1.0.0",
+		"description": "A sample API: replace this file with the OpenAPI document your API writes."
+	},
+	"servers": [{ "url": "https://api.example.com" }],
+	"tags": [{ "name": "Notes", "description": "A user's notes." }],
+	"paths": {
+		"/notes": {
+			"get": {
+				"tags": ["Notes"],
+				"operationId": "notes.list",
+				"summary": "List notes",
+				"description": "The caller's notes, the most recent first.",
+				"parameters": [
+					{
+						"name": "limit",
+						"in": "query",
+						"required": false,
+						"description": "How many notes to return.",
+						"schema": { "type": "integer", "minimum": 1, "maximum": 100 }
+					}
+				],
+				"security": [{ "bearer": [] }],
+				"responses": {
+					"200": {
+						"description": "The notes.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": { "$ref": "#/components/schemas/Note" }
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": ["Notes"],
+				"operationId": "notes.create",
+				"summary": "Create a note",
+				"description": "Saves a note and answers with it.",
+				"security": [{ "bearer": [] }],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/NewNote" }
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "The note, saved.",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/Note" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/notes/{id}": {
+			"get": {
+				"tags": ["Notes"],
+				"operationId": "notes.get",
+				"summary": "Get a note",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" }
+					}
+				],
+				"security": [{ "bearer": [] }],
+				"responses": {
+					"200": {
+						"description": "The note.",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/Note" }
+							}
+						}
+					},
+					"404": { "description": "No note has this id." }
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"NewNote": {
+				"type": "object",
+				"required": ["text"],
+				"properties": {
+					"text": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 10000,
+						"examples": ["Call the bank on Monday."]
+					}
+				}
+			},
+			"Note": {
+				"type": "object",
+				"required": ["id", "text", "createdAt"],
+				"properties": {
+					"id": { "type": "string", "examples": ["note_01J9Z"] },
+					"text": { "type": "string" },
+					"createdAt": { "type": "string", "format": "date-time" }
+				}
+			}
+		},
+		"securitySchemes": {
+			"bearer": { "type": "http", "scheme": "bearer" }
+		}
+	}
+}

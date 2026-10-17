@@ -1,0 +1,32 @@
+---
+title: "Select filter"
+description: "One or many options; a long list gets its own search box."
+sidebar:
+  order: 11
+---
+
+import * as Example from "@/examples/ui-filter/select-filter-field";
+
+<Preview layout="stack">
+	<Example.SelectField />
+</Preview>
+
+```tsx
+const definition: FilterDefinition = {
+	kind: "select",
+	key: "status",
+	label: "Status",
+	multiple: true,
+	allowExclusion: true,
+	options: [
+		{ value: "sent", label: "Sent" },
+		{ value: "failed", label: "Failed" },
+		{ value: "deferred", label: "Deferred", secondary: true },
+	],
+};
+```
+
+From eight options on, the list grows its own search box. Options marked
+`secondary` wait behind a "N more…" toggle so a long tail of rarely picked
+choices doesn't drown the shortlist; a selected or search-matched one always
+shows.

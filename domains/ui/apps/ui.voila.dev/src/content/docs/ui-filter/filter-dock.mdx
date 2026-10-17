@@ -1,0 +1,56 @@
+---
+title: "Filter.Dock"
+description: "The editor as a rail beside the list, applying live; a drawer on mobile."
+sidebar:
+  order: 5
+---
+
+import * as Example from "@/examples/ui-filter/filter-dock";
+
+Press **Filters**: the rail opens beside the rows and stays there while you
+narrow, read, and narrow again. A panel that covers the answer has to be
+dismissed before each read; a rail does not.
+
+<Preview layout="stack">
+	<Example.Docked />
+</Preview>
+
+```tsx
+const [open, setOpen] = useState(false);
+
+<Filter.Root
+	mode="live"
+	definitions={definitions}
+	values={values}
+	onValuesChange={setValues}
+	open={open}
+	onOpenChange={setOpen}
+	panelRenderedElsewhere
+/>
+
+<div className="flex gap-4">
+	<Table className="flex-1" />
+	<Filter.Dock
+		open={open}
+		onOpenChange={setOpen}
+		definitions={definitions}
+		values={values}
+		onValuesChange={setValues}
+	/>
+</div>;
+```
+
+`panelRenderedElsewhere` tells the bar to draw no editor of its own: its button
+becomes a pressed/unpressed toggle for the rail, so the two never both draw
+the fields. Under 768px the dock is the live [Filter.Sheet](/ui-filter/filter-root#filtersheet)
+drawer instead — a rail would leave no room for the rows it filters.
+
+## API
+
+<PropTable of="Filter.Dock" />
+
+The rail is `sticky` so it follows a page-scrolled list down; in a
+full-height layout whose table scrolls itself, pass
+`className="static h-full max-h-none"`. It usually sits outside the bar in
+the tree, so give it the same `labels` and `locale` — or wrap both in one
+[Filter.Provider](/ui-filter/filter-form#filterprovider).

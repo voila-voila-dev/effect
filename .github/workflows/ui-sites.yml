@@ -1,0 +1,123 @@
+name: Sites
+
+# The static sites on Cloudflare Workers: the UI docs (ui.voila.dev), Storybook,
+# the emoji data, the platform docs (docs.voila.dev) and the docs site template.
+# On main the sites redeploy to their production workers; on a pull request the
+# UI docs, Storybook, the platform docs and the template get a per-PR preview
+# worker, torn down by ui-sites-cleanup.yml. The template has no production
+# worker: its preview is how CI proves it still builds. Lint, type-check and
+# tests run in checks.yml.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'domains/ui/**'
+      - 'domains/docs/**'
+      - 'domains/*/packages/*/README.md'
+      - 'domains/*/packages/*/package.json'
+      - 'packages/*/README.md'
+      - 'packages/*/package.json'
+      - 'scripts/check-docs-output.mjs'
+      - '.github/actions/**'
+      - '.github/workflows/ui-sites.yml'
+      - 'bun.lock'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'domains/ui/**'
+      - 'domains/docs/**'
+      - 'domains/*/packages/*/README.md'
+      - 'domains/*/packages/*/package.json'
+      - 'packages/*/README.md'
+      - 'packages/*/package.json'
+      - 'scripts/check-docs-output.mjs'
+      - '.github/actions/**'
+      - '.github/workflows/ui-sites.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: sites-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy ${{ matrix.app }}
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - app: storybook.ui.voila.dev
+          - app: ui.voila.dev
+          - app: emoji.voila.dev
+          - app: docs.voila.dev
+            directory: domains/docs/apps/docs.voila.dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build and deploy
+        uses: ./.github/actions/deploy-site
+        with:
+          app: ${{ matrix.app }}
+          directory: ${{ matrix.directory || '' }}
+          cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cloudflare-account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+  preview:
+    name: Preview (${{ matrix.label }})
+    # Forks cannot read the Cloudflare secrets; skip rather than fail red.
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      pull-requests: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - app: storybook.ui.voila.dev
+            worker: storybook-ui-voila-dev
+            label: Storybook
+          - app: ui.voila.dev
+            worker: ui-voila-dev
+            label: Docs
+          - app: docs.voila.dev
+            directory: domains/docs/apps/docs.voila.dev
+            worker: docs-voila-dev
+            label: Platform docs
+          - app: docs-site-template
+            directory: domains/docs/templates/docs-site
+            worker: docs-site-template
+            label: Docs site template
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build and deploy the preview worker
+        id: deploy
+        uses: ./.github/actions/deploy-site
+        with:
+          app: ${{ matrix.app }}
+          directory: ${{ matrix.directory || '' }}
+          worker-name: ${{ matrix.worker }}-pr-${{ github.event.pull_request.number }}
+          cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cloudflare-account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Post the preview link
+        uses: voila-voila-dev/.github/actions/sticky-pr-comment@81236edbf9d9298d770ddaeb6df370f0c5f87778 # main
+        with:
+          id: ${{ matrix.app }}_preview
+          body: |
+            **${{ matrix.label }} preview** :rocket:
+
+            ${{ steps.deploy.outputs.url }}
+
+            Deployed from `${{ github.event.pull_request.head.sha }}`.

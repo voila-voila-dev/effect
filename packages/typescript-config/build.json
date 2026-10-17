@@ -1,0 +1,11 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"display": "Build",
+	"extends": "./declarations.json",
+	"compilerOptions": {
+		"emitDeclarationOnly": false,
+		"sourceMap": true,
+		"allowImportingTsExtensions": false,
+		"types": ["node"]
+	}
+}

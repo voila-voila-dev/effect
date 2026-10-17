@@ -1,0 +1,59 @@
+{
+	"name": "@voila.dev/effect-ddd",
+	"version": "0.1.2",
+	"description": "Use cases, gates and architecture tests for domain-driven, hexagonal applications on Effect.",
+	"license": "MIT",
+	"author": "voila.dev",
+	"type": "module",
+	"sideEffects": false,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/voila-voila-dev/platform.git",
+		"directory": "domains/effect/packages/effect-ddd"
+	},
+	"homepage": "https://github.com/voila-voila-dev/platform/tree/main/domains/effect/packages/effect-ddd#readme",
+	"bugs": {
+		"url": "https://github.com/voila-voila-dev/platform/issues"
+	},
+	"keywords": [
+		"effect",
+		"effect-ts",
+		"ddd",
+		"domain-driven-design",
+		"hexagonal",
+		"clean-architecture",
+		"use-case"
+	],
+	"exports": {
+		".": {
+			"@voila.dev/source": "./src/index.ts",
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		},
+		"./architecture": {
+			"@voila.dev/source": "./src/architecture/index.ts",
+			"types": "./dist/architecture/index.d.ts",
+			"default": "./dist/architecture/index.js"
+		}
+	},
+	"files": [
+		"dist",
+		"src",
+		"!src/**/*.test.ts",
+		"!src/**/*.test-helper.ts"
+	],
+	"scripts": {
+		"build": "rm -rf dist && tsc -p tsconfig.build.json",
+		"check-types": "tsc --noEmit",
+		"test": "bun test --conditions=@voila.dev/source"
+	},
+	"peerDependencies": {
+		"effect": "^4.0.0"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@voila.dev/typescript-config": "workspace:*",
+		"effect": "catalog:",
+		"typescript": "catalog:"
+	}
+}

@@ -1,0 +1,37 @@
+---
+title: Quickstart
+description: Create an API key and make your first request in five minutes.
+icon: rocket
+audience: [everyone]
+kind: guide
+stage: start
+next: [guides/writing-pages]
+---
+
+A guide is one task, start to finish. Keep it to the steps a reader follows,
+and link to the explanations instead of repeating them.
+
+<Steps>
+  <Step title="Create an API key">
+    Open **Settings → API keys** and create a key. It is shown once: keep it
+    somewhere safe.
+  </Step>
+  <Step title="Make a request">
+    List your notes with the key in the `Authorization` header:
+
+    ```sh
+    curl https://api.example.com/notes \
+      -H "Authorization: Bearer $ACME_API_KEY"
+    ```
+  </Step>
+  <Step title="Read the answer">
+    The API answers with the notes as JSON. The
+    [API reference](/api) lists every field.
+  </Step>
+</Steps>
+
+## Next
+
+<Tip>
+  Every page ends with its `next` pages, from the frontmatter.
+</Tip>

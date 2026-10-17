@@ -1,0 +1,82 @@
+@import "tailwindcss";
+@import "@voila.dev/ui-docs/styles/docs.css";
+/* The utilities the docs' components use, scanned from the installed package. */
+@import "@voila.dev/ui-docs/styles/sources.css";
+
+/* The docs' theme script toggles `.dark` on <html>. */
+@custom-variant dark (&:is(.dark *));
+
+/* The palette: the usual tokens the components read. Change these for your
+ * brand; `--primary` colors links, the focus ring and the screenshots' tint. */
+:root {
+	--background: oklch(1 0 0);
+	--foreground: oklch(0.205 0 0);
+	--muted: oklch(0.97 0 0);
+	--muted-foreground: oklch(0.52 0 0);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.205 0 0);
+	--primary: oklch(0.511 0.23 276.97);
+	--primary-foreground: oklch(1 0 0);
+	--border: oklch(0.922 0 0);
+	--input: oklch(0.922 0 0);
+	--ring: oklch(0.511 0.23 276.97);
+	--destructive: oklch(0.577 0.245 27.33);
+	--destructive-foreground: oklch(1 0 0);
+}
+
+.dark {
+	--background: oklch(0.145 0 0);
+	--foreground: oklch(0.97 0 0);
+	--muted: oklch(0.24 0 0);
+	--muted-foreground: oklch(0.7 0 0);
+	--popover: oklch(0.205 0 0);
+	--popover-foreground: oklch(0.97 0 0);
+	--primary: oklch(0.673 0.182 276.94);
+	--primary-foreground: oklch(0.145 0 0);
+	--border: oklch(1 0 0 / 12%);
+	--input: oklch(1 0 0 / 15%);
+	--ring: oklch(0.673 0.182 276.94);
+	--destructive: oklch(0.704 0.191 22.22);
+	--destructive-foreground: oklch(0.145 0 0);
+}
+
+/* The docs' own tokens (`--docs-canvas`, `--docs-info`, `--docs-success`,
+ * `--docs-warning`, `--docs-caution`, each with a `-foreground`, and
+ * `--docs-shot-tint`) have defaults in docs.css; map them onto the brand. */
+:root,
+.dark {
+	--docs-info: var(--primary);
+	--docs-info-foreground: var(--primary-foreground);
+}
+
+@theme inline {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+}
+
+@theme {
+	--font-sans:
+		ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+	--font-heading: var(--font-sans);
+	--font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@layer base {
+	body {
+		background-color: var(--background);
+		color: var(--foreground);
+		font-family: var(--font-sans);
+		-webkit-font-smoothing: antialiased;
+	}
+}

@@ -1,0 +1,61 @@
+{
+	"name": "@voila.dev/resend",
+	"version": "0.0.0",
+	"description": "Resend on Effect: an EmailSender for @voila.dev/email with batching and 429 backoff, the receiving API (body, SPF/DKIM/DMARC verdicts, attachments), the webhook event schema, and in-memory fakes.",
+	"license": "MIT",
+	"author": "voila.dev",
+	"type": "module",
+	"sideEffects": false,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/voila-voila-dev/platform.git",
+		"directory": "domains/providers/packages/resend"
+	},
+	"homepage": "https://github.com/voila-voila-dev/platform/tree/main/domains/providers/packages/resend#readme",
+	"bugs": {
+		"url": "https://github.com/voila-voila-dev/platform/issues"
+	},
+	"keywords": [
+		"effect",
+		"effect-ts",
+		"resend",
+		"email",
+		"transactional-email",
+		"inbound-email",
+		"webhooks",
+		"svix"
+	],
+	"exports": {
+		".": {
+			"@voila.dev/source": "./src/index.ts",
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist",
+		"src",
+		"!src/**/*.test.ts",
+		"!src/**/*.test-helper.ts"
+	],
+	"scripts": {
+		"build": "rm -rf dist && tsc -p tsconfig.build.json",
+		"check-types": "tsc --noEmit",
+		"test": "bun test --conditions=@voila.dev/source"
+	},
+	"dependencies": {
+		"@voila.dev/crypto": "workspace:^",
+		"@voila.dev/email": "workspace:^",
+		"@voila.dev/http": "workspace:^"
+	},
+	"peerDependencies": {
+		"effect": "^4.0.0"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@voila.dev/effect-ddd": "workspace:*",
+		"@voila.dev/typescript-config": "workspace:*",
+		"effect": "catalog:",
+		"typescript": "catalog:"
+	}
+}

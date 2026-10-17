@@ -1,0 +1,57 @@
+---
+title: "Filter.Form"
+description: "Every declared filter, in order — the editor without the overlay around it."
+sidebar:
+  order: 2
+---
+
+import * as Example from "@/examples/ui-filter/filter-form";
+
+<Preview layout="stack">
+	<Example.Form />
+</Preview>
+
+```tsx
+<Filter.Form
+	definitions={definitions}
+	values={values}
+	onValuesChange={setValues}
+	locale="en-US"
+/>;
+```
+
+## API
+
+### Filter.Form
+
+<PropTable of="Filter.Form" />
+
+Unlike [Filter.Root](/ui-filter/filter-root), `onValuesChange` fires on every
+edit — there is no draft and no apply step. That is the point of this part: in a
+sidebar that filters as you type, a commit button would be in the way. In a
+panel the user has to dismiss, it would not.
+
+### Filter.Field
+
+<PropTable of="Filter.Field" />
+
+One filter on its own, which is what `Filter.Form` renders in a loop. Reach for
+it when a single filter belongs somewhere else on the page — a status select in
+a toolbar — rather than in the editor with the rest. Clearing it calls
+`onValueChange` with `undefined`, which is how a filter leaves the record.
+
+A definition may carry `renderPreview(value)`: whatever it returns renders
+under the field, fed the current (draft) value — a map of the area a radius
+covers, a count of what a range would match. The package stays domain-blind;
+the screen draws the preview.
+
+### Filter.Provider
+
+<PropTable of="Filter.Provider" />
+
+Every part takes `labels` and `locale` itself, merged over the nearest
+provider's (English defaults at the outermost level), so a partial is enough.
+Wrap a screen in one provider when its parts sit apart in the tree — a bar in
+the header, a [Filter.Dock](/ui-filter/filter-dock) beside the table — and
+give the copy once. A custom field reads it back with `useFilterLabels()` and
+`useFilterLocale()`.

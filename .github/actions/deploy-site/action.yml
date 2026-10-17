@@ -1,0 +1,84 @@
+name: 'Deploy a site'
+description: >
+  Build one of the static sites and deploy it to Cloudflare Workers, either
+  to its production worker (bound to a custom domain) or to an isolated per-PR
+  preview worker reached through its *.workers.dev URL.
+inputs:
+  app:
+    description: 'Workspace directory under domains/ui/apps/, e.g. storybook.ui.voila.dev'
+    required: true
+  directory:
+    description: >
+      The site's workspace directory, when it is not domains/ui/apps/<app>
+      (e.g. domains/docs/apps/docs.voila.dev).
+    required: false
+    default: ''
+  worker-name:
+    description: >
+      Worker to deploy to. Leave empty to deploy the app's own wrangler.jsonc
+      (production). Set it to deploy a derived per-PR config instead.
+    required: false
+    default: ''
+  cloudflare-api-token:
+    description: 'Cloudflare API token'
+    required: true
+  cloudflare-account-id:
+    description: 'Cloudflare account id'
+    required: true
+outputs:
+  url:
+    description: 'The deployed preview URL (empty for production deploys)'
+    value: ${{ steps.preview_url.outputs.url }}
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Bun and Node
+      uses: voila-voila-dev/.github/actions/setup-bun@main
+      with:
+        setup-node: 'true'
+        node-version: '24'
+        enable-cache: 'true'
+
+    - name: Install dependencies
+      uses: voila-voila-dev/.github/actions/install@main
+
+    - name: Build ${{ inputs.app }}
+      shell: bash
+      run: bun run --filter './${{ inputs.directory || format('domains/ui/apps/{0}', inputs.app) }}' build
+
+    # `check-docs` reads the MDX; this reads the HTML that came out of it, which
+    # is the only artefact that cannot lie. A dropped example still builds — the
+    # preview renders an empty stage and the response is 200 — and an `## API`
+    # heading whose `of=` names nothing ships with no table under it. Between the
+    # build and the deploy is the last place to catch either.
+    - name: Check the built docs
+      if: inputs.app == 'ui.voila.dev'
+      shell: bash
+      run: bun scripts/check-docs-output.mjs
+
+    # Per-PR previews get a derived config: the worker is renamed (so it never
+    # touches production) and `routes` are stripped, leaving the workers.dev URL.
+    - name: Generate preview wrangler config
+      if: inputs.worker-name != ''
+      uses: ./.github/actions/generate-preview-wrangler-config
+      with:
+        working-directory: ${{ inputs.directory || format('domains/ui/apps/{0}', inputs.app) }}
+        worker-name: ${{ inputs.worker-name }}
+
+    - name: Deploy
+      id: deploy
+      uses: ./.github/actions/wrangler
+      with:
+        cloudflare-api-token: ${{ inputs.cloudflare-api-token }}
+        cloudflare-account-id: ${{ inputs.cloudflare-account-id }}
+        working-directory: ${{ inputs.directory || format('domains/ui/apps/{0}', inputs.app) }}
+        command: >-
+          deploy ${{ inputs.worker-name != '' && '--config wrangler.preview.json' || '' }}
+
+    - name: Resolve preview URL
+      id: preview_url
+      if: inputs.worker-name != ''
+      uses: ./.github/actions/resolve-worker-url
+      with:
+        command-output: ${{ steps.deploy.outputs.command-output }}
+        worker-name: ${{ inputs.worker-name }}

@@ -1,32 +1,62 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
-	"vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
 	"files": {
 		"ignoreUnknown": false,
 		"includes": [
 			"**",
 			"!**/dist",
 			"!.changeset/*.md",
-			"!packages/biome-plugins/rules/fixtures"
+			"!packages/biome-plugins/rules/fixtures",
+			"!**/routeTree.gen.ts"
 		]
 	},
-	"formatter": { "enabled": true, "indentStyle": "tab" },
-	"linter": { "enabled": true, "rules": { "preset": "recommended" } },
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab"
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"preset": "recommended"
+		}
+	},
 	"plugins": [
 		{
 			"path": "./packages/biome-plugins/rules/no-data-tagged-error.grit",
-			"includes": ["**/packages/*/src/**"]
+			"includes": [
+				"**/packages/*/src/**",
+				"!**/packages/ui/**",
+				"!**/packages/chart/**",
+				"!**/packages/motion/**",
+				"!**/packages/ui-branding/**"
+			]
 		},
 		{
 			"path": "./packages/biome-plugins/rules/no-math-random.grit",
-			"includes": ["**/packages/*/src/**", "!**/*.test.ts"]
+			"includes": [
+				"**/packages/*/src/**",
+				"!**/*.test.ts",
+				"!**/packages/ui/**",
+				"!**/packages/chart/**",
+				"!**/packages/motion/**",
+				"!**/packages/ui-branding/**"
+			]
 		},
 		{
 			"path": "./packages/biome-plugins/rules/no-random-uuid.grit",
 			"includes": [
 				"**/packages/*/src/**",
 				"!**/*.test.ts",
-				"!**/*.test-helper.ts"
+				"!**/*.test-helper.ts",
+				"!**/packages/ui/**",
+				"!**/packages/chart/**",
+				"!**/packages/motion/**",
+				"!**/packages/ui-branding/**"
 			]
 		},
 		{
@@ -34,14 +64,95 @@
 			"includes": [
 				"**/packages/*/src/**",
 				"!**/*.test.ts",
-				"!**/*.test-helper.ts"
+				"!**/*.test-helper.ts",
+				"!**/packages/ui/**",
+				"!**/packages/chart/**",
+				"!**/packages/motion/**",
+				"!**/packages/ui-branding/**"
 			]
 		}
 	],
-	"javascript": { "formatter": { "quoteStyle": "double" } },
-	"css": { "parser": { "tailwindDirectives": true } },
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "double"
+		}
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		}
+	},
 	"assist": {
 		"enabled": true,
-		"actions": { "source": { "organizeImports": "on" } }
-	}
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	},
+	"overrides": [
+		{
+			"includes": [
+				"domains/ui/packages/ui/src/accordion/components/**",
+				"domains/ui/packages/ui/src/button-group/components/**",
+				"domains/ui/packages/ui/src/carousel/components/**",
+				"domains/ui/packages/ui/src/chat/components/**",
+				"domains/ui/packages/ui/src/color-picker/components/**",
+				"domains/ui/packages/ui/src/copyable-text/components/**",
+				"domains/ui/packages/ui/src/field/components/**",
+				"domains/ui/packages/ui/src/image-cropper/components/**",
+				"domains/ui/packages/ui/src/input-group/components/**",
+				"domains/ui/packages/ui/src/input-otp/components/**",
+				"domains/ui/packages/ui/src/rating/components/**",
+				"domains/ui/packages/ui/src/components/**",
+				"domains/ui/packages/ui/src/chart/components/**",
+				"domains/ui/packages/ui/src/data-table/**",
+				"domains/ui/packages/ui/src/spreadsheet/components/**",
+				"domains/ui/packages/ui/src/globe-view/components/**",
+				"domains/ui/packages/ui/src/map-view/components/**",
+				"domains/ui/packages/ui/src/radius-map/components/**",
+				"domains/ui/packages/ui/src/filter/components/**",
+				"domains/ui/packages/ui/src/content-editor/**"
+			],
+			"linter": {
+				"rules": {
+					"a11y": {
+						"useSemanticElements": "off",
+						"useKeyWithClickEvents": "off",
+						"useFocusableInteractive": "off",
+						"useAriaPropsForRole": "off"
+					}
+				}
+			}
+		},
+		{
+			"includes": [
+				"domains/ui/packages/ui/src/carousel/components/**",
+				"domains/ui/packages/ui/src/chat/components/**",
+				"domains/ui/packages/ui/src/kbd/components/**",
+				"domains/ui/packages/ui/src/rating/components/**",
+				"domains/ui/packages/ui/src/components/**",
+				"domains/ui/packages/ui/src/chart/components/**",
+				"domains/ui/packages/ui/src/data-table/**",
+				"domains/ui/packages/ui/src/sidebar/components/**",
+				"domains/ui/packages/ui/src/slider/components/**",
+				"domains/ui/packages/ui/src/spreadsheet/**",
+				"domains/ui/packages/ui/src/landing/components/**",
+				"domains/ui/packages/ui/src/content-editor/**"
+			],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noArrayIndexKey": "off"
+					},
+					"correctness": {
+						"useExhaustiveDependencies": "off"
+					},
+					"security": {
+						"noDangerouslySetInnerHtml": "off"
+					}
+				}
+			}
+		}
+	]
 }

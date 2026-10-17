@@ -1,0 +1,7 @@
+{
+	"extends": [
+		"@voila.dev/typescript-config/strict.json",
+		"@voila.dev/typescript-config/react.json"
+	],
+	"include": ["src", "test"]
+}

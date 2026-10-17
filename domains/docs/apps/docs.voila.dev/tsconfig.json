@@ -1,0 +1,9 @@
+{
+	"extends": "@voila.dev/typescript-config/react.json",
+	"compilerOptions": {
+		"types": ["bun", "vite/client"],
+		"noUncheckedIndexedAccess": true
+	},
+	"include": ["src", "vite", "docs.config.ts", "vite.config.ts"],
+	"exclude": ["dist", "node_modules"]
+}

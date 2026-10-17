@@ -1,0 +1,79 @@
+{
+	"name": "@voila.dev/docs",
+	"version": "0.1.0",
+	"description": "Framework-free building blocks of a documentation site: a navigation registry, a typo-tolerant search, reader contexts, a link graph check, an OpenAPI reference model and an MDX pipeline for Vite.",
+	"license": "MIT",
+	"author": "voila.dev",
+	"type": "module",
+	"sideEffects": false,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/voila-voila-dev/platform.git",
+		"directory": "domains/docs/packages/docs"
+	},
+	"homepage": "https://github.com/voila-voila-dev/platform/tree/main/domains/docs/packages/docs#readme",
+	"bugs": {
+		"url": "https://github.com/voila-voila-dev/platform/issues"
+	},
+	"keywords": [
+		"documentation",
+		"docs",
+		"mdx",
+		"openapi",
+		"search",
+		"vite"
+	],
+	"exports": {
+		"./*": {
+			"@voila.dev/source": "./src/*.ts",
+			"types": "./dist/*.d.ts",
+			"default": "./dist/*.js"
+		}
+	},
+	"files": [
+		"dist",
+		"src",
+		"!src/**/*.test.ts",
+		"!src/**/*.test-helper.ts",
+		"!src/api-reference/fixtures"
+	],
+	"scripts": {
+		"build": "rm -rf dist && tsc -p tsconfig.build.json",
+		"check-types": "tsc --noEmit",
+		"test": "bun test --conditions=@voila.dev/source"
+	},
+	"dependencies": {
+		"@mdx-js/rollup": "^3.1.1",
+		"@shikijs/rehype": "^4.5.0",
+		"@types/hast": "^3.0.4",
+		"estree-util-value-to-estree": "^3.5.0",
+		"hast-util-to-string": "^3.0.1",
+		"mdast-util-mdx-jsx": "^3.2.0",
+		"mdast-util-mdxjs-esm": "^2.0.1",
+		"rehype-slug": "^6.0.0",
+		"remark-frontmatter": "^5.0.0",
+		"remark-gfm": "^4.0.1",
+		"remark-mdx-frontmatter": "^6.0.0",
+		"remark-smartypants": "^3.0.3",
+		"shiki": "^4.5.0",
+		"unist-util-visit": "^5.0.0",
+		"zod": "^4.6.5"
+	},
+	"peerDependencies": {
+		"vite": ">=7"
+	},
+	"peerDependenciesMeta": {
+		"vite": {
+			"optional": true
+		}
+	},
+	"devDependencies": {
+		"@mdx-js/mdx": "^3.1.1",
+		"@types/bun": "catalog:",
+		"@types/mdast": "^4.0.4",
+		"@voila.dev/effect-ddd": "workspace:^",
+		"@voila.dev/typescript-config": "workspace:*",
+		"typescript": "catalog:",
+		"vite": "catalog:"
+	}
+}

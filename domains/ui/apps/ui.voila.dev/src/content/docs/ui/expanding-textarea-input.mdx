@@ -1,0 +1,42 @@
+---
+title: "ExpandingTextareaInput"
+description: "Multi-line text behind a one-line cell."
+category: "forms"
+---
+
+import * as Example from "@/examples/ui/expanding-textarea-input";
+
+<Preview layout="center">
+	<Example.Default />
+</Preview>
+
+```tsx
+<ExpandingTextareaInput
+	value={note}
+	onValueChange={setNote}
+	ariaLabel="Notes"
+	placeholder="Add a note"
+/>
+```
+
+Closed, it is a flush preview of the first line, so a long note never stretches
+its row. Opening it drops a textarea over the cell — as wide as the cell, its
+first line where the preview was — so it reads as the cell unfolding in place.
+Escape or a click away closes it; ⌘/Ctrl+Enter closes it from the keyboard.
+
+## In a table
+
+Made for a [Spreadsheet](/ui-spreadsheet/spreadsheet) cell, which flattens it
+like any control and draws the focus ring itself — but it works in any table
+where one line must summarize a paragraph.
+
+<Preview layout="center">
+	<Example.InATable />
+</Preview>
+
+For a value that is a whole sub-table rather than text, see
+[Spreadsheet.NestedInput](/ui-spreadsheet/nested-table-input).
+
+## API
+
+<PropTable of="ExpandingTextareaInput" />

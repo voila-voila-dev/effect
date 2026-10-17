@@ -1,27 +1,17 @@
 import { useId } from "react";
 import { FilterFieldFrame } from "#/filter/components/fields/filter-field-frame.tsx";
+import { FilterFieldInput } from "#/filter/components/fields/filter-field-input.tsx";
 import { FilterOperatorToggle } from "#/filter/components/fields/filter-operator-toggle.tsx";
-import type {
-	FilterLabels,
-	TextFilterDefinition,
-	TextFilterValue,
-} from "#/filter/types.ts";
-import { Input } from "#/input/components/input.tsx";
+import type { TextFilterDefinition, TextFilterValue } from "#/filter/types.ts";
 
 interface Props {
 	definition: TextFilterDefinition;
 	value: TextFilterValue | undefined;
 	onValueChange: (value: TextFilterValue) => void;
-	labels: FilterLabels;
 }
 
 /** Free-text contains/does-not-contain filter. */
-export function TextFilterField({
-	definition,
-	value,
-	onValueChange,
-	labels,
-}: Props) {
+export function TextFilterField({ definition, value, onValueChange }: Props) {
 	const controlId = useId();
 	const text = value?.text ?? "";
 	const excluded = value?.excluded ?? false;
@@ -31,7 +21,6 @@ export function TextFilterField({
 			label={definition.label}
 			description={definition.description}
 			controlId={controlId}
-			labels={labels}
 			operator={
 				definition.allowExclusion === true ? (
 					<FilterOperatorToggle
@@ -40,7 +29,6 @@ export function TextFilterField({
 						onExcludedChange={(next) =>
 							onValueChange({ kind: "text", text, excluded: next })
 						}
-						labels={labels}
 					/>
 				) : undefined
 			}
@@ -50,7 +38,7 @@ export function TextFilterField({
 					: () => onValueChange({ kind: "text", text: "", excluded })
 			}
 		>
-			<Input
+			<FilterFieldInput
 				id={controlId}
 				value={text}
 				placeholder={definition.placeholder}

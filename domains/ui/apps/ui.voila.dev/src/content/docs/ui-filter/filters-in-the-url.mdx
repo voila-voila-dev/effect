@@ -1,0 +1,60 @@
+---
+title: "Filters in the URL"
+description: "One readable query param per active filter, decoded defensively."
+sidebar:
+  order: 19
+---
+
+import * as Example from "@/examples/ui-filter/filter-url";
+
+A filtered view worth sharing lives in the URL. `encodeFilterValues` turns the
+record into one short, readable param per active filter; `decodeFilterValues`
+reads it back against the screen's declarations.
+
+<Preview layout="stack">
+	<Example.UrlState />
+</Preview>
+
+```tsx
+import {
+	decodeFilterValues,
+	encodeFilterValues,
+	RESERVED_LIST_PARAMS,
+} from "@voila.dev/ui/filter";
+
+const values = decodeFilterValues(definitions, searchParams);
+
+function setValues(next: FilterValues) {
+	navigate({
+		search: (previous) => ({
+			...withoutFilterKeys(previous, definitions),
+			...encodeFilterValues(definitions, next),
+		}),
+	});
+}
+```
+
+| kind | param |
+| --- | --- |
+| `text` | `paris`, `!paris` (excluded) |
+| `number` | `30` |
+| `numberRange`, `moneyRange` | `10..20`, `10..`, `..20` (money in minor units) |
+| `select` | `paid,refunded`, `!failed` (the whole list excluded) |
+| `dateRange` | `2026-01-01..2026-06-30`, open bounds allowed |
+| `boolean` | `true`, `false` |
+| `geoRadius` | `30@47.218,-1.553@Nantes` |
+| `entity` | `id~label` list, `!` excludes; labels escaped |
+
+The definition, not the param, decides how a value is read, so a stale
+bookmark degrades to fewer filters and never to a broken screen: unknown keys,
+options the select no longer offers, unreadable ranges and a filter that
+changed kind are all dropped. Routers that JSON-parse their query strings
+(TanStack Router does) hand `30` back as a number and `true` as a boolean; the
+decoder takes those too.
+
+Two constants keep the codec and your list state in agreement.
+`RESERVED_LIST_PARAMS` (`q`, `sort`, `dir`, `page`) are the list's own params —
+a filter key colliding with one is skipped and reported in the console.
+`CLEARED_FILTER_SENTINEL` (`~`) is what you write under a key to say "cleared"
+when the screen opens on default filters, where an absent key already means
+"use the default"; the decoder ignores it.

@@ -1,11 +1,10 @@
 import type * as React from "react";
-import type { FilterLabels } from "#/filter/types.ts";
+import { useFilterLabels } from "#/filter/hooks/use-filter-labels.ts";
 import { cn } from "#/lib/utils.ts";
 
 interface Props extends React.ComponentProps<"fieldset"> {
 	excluded: boolean;
 	onExcludedChange: (excluded: boolean) => void;
-	labels: FilterLabels;
 	/**
 	 * An empty field has nothing to invert — "is not <nothing>" filters nothing —
 	 * so the switch stays inert until the field holds a value.
@@ -21,11 +20,11 @@ interface Props extends React.ComponentProps<"fieldset"> {
 export function FilterOperatorToggle({
 	excluded,
 	onExcludedChange,
-	labels,
 	disabled = false,
 	className,
 	...props
 }: Props) {
+	const labels = useFilterLabels();
 	return (
 		<fieldset
 			data-slot="filter-operator"

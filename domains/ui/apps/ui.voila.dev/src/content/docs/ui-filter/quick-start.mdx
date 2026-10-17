@@ -85,15 +85,18 @@ itself, so it works against any address provider.
 
 ## Page map
 
-- [Filter.Root](/ui-filter/filter-root): the whole surface: search, trigger, editor, chips, result count.
+- [Filter.Root](/ui-filter/filter-root): the whole surface: search, trigger, editor, chips, result count — draft-then-apply or live.
 - [Filter.Form](/ui-filter/filter-form): the editor on its own, for a sidebar or a settings sheet.
 - [Filter.Chips](/ui-filter/filter-chips): the active filters as removable chips.
-- [Filter.Trigger](/ui-filter/filter-trigger): the search-shaped button that opens the editor.
+- [Filter.Trigger](/ui-filter/filter-trigger): the buttons that open the editor, and the live search input.
+- [Filter.Dock](/ui-filter/filter-dock): the editor as a rail beside the list.
 - [Text](/ui-filter/text-filter-field): free text, with "is not".
 - [Select](/ui-filter/select-filter-field): one or several options, with exclusion.
 - [Number](/ui-filter/number-filter-field): a single numeric value.
 - [Money range](/ui-filter/money-range-filter-field): bounds in minor units, formatted per locale.
 - [Date range](/ui-filter/date-range-filter-field): `YYYY-MM-DD` bounds a native input round-trips.
-- [Boolean](/ui-filter/boolean-filter-field): tri-state: true, false, any.
+- [Boolean](/ui-filter/boolean-filter-field): yes, no, or any (unset).
 - [Geo radius](/ui-filter/geo-radius-filter-field): "within N km of a place", against your geocoder.
+- [Entity](/ui-filter/entity-filter-field): "is one of these records", against your own lookup.
+- [Filters in the URL](/ui-filter/filters-in-the-url): one readable param per active filter.
 - [A real listing page](/ui-filter/listing-page-recipe): filters, a datatable and a map wired to one record.

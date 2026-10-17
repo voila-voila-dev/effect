@@ -1,69 +1,61 @@
 import { FilterFieldFrame } from "#/filter/components/fields/filter-field-frame.tsx";
+import { OptionToggle } from "#/filter/components/fields/option-toggle.tsx";
 import type {
 	BooleanFilterDefinition,
 	BooleanFilterValue,
-	FilterLabels,
 } from "#/filter/types.ts";
-import { cn } from "#/lib/utils.ts";
 
 interface Props {
 	definition: BooleanFilterDefinition;
 	value: BooleanFilterValue | undefined;
 	onValueChange: (value: BooleanFilterValue | undefined) => void;
-	labels: FilterLabels;
 }
 
 /**
- * Three states, not two: yes, no, and "any" (the filter unset). A switch can
- * only say yes/no, which silently turns "I don't care" into "must be false" —
- * so the third state gets its own segment.
+ * Yes and no as two option pills — the same control as a single-choice select,
+ * so a screenful of mixed filters reads as one thing. The third state ("any")
+ * is the empty selection: tapping the active pill releases it, and the frame's
+ * clear action does the same, which is how every other field says "unset". A
+ * switch would have no third state and silently turn "I don't care" into
+ * "must be false".
  */
 export function BooleanFilterField({
 	definition,
 	value,
 	onValueChange,
-	labels,
 }: Props) {
-	const states: ReadonlyArray<{ key: string; label: string; set?: boolean }> = [
-		{ key: "any", label: labels.any },
-		{ key: "true", label: definition.trueLabel, set: true },
-		{ key: "false", label: definition.falseLabel, set: false },
+	const states: ReadonlyArray<{ label: string; state: boolean }> = [
+		{ label: definition.trueLabel, state: true },
+		{ label: definition.falseLabel, state: false },
 	];
 
 	return (
 		<FilterFieldFrame
 			label={definition.label}
 			description={definition.description}
-			labels={labels}
+			onClear={value === undefined ? undefined : () => onValueChange(undefined)}
 		>
-			<fieldset className="inline-flex w-full items-center gap-1 rounded-full bg-muted p-1 sm:w-auto">
-				<legend className="sr-only">{definition.label}</legend>
-				{states.map((state) => {
-					const active = value?.value === state.set;
+			<div
+				role="listbox"
+				aria-label={definition.label}
+				className="flex flex-wrap gap-2"
+			>
+				{states.map(({ label, state }) => {
+					const selected = value?.value === state;
 					return (
-						<button
-							key={state.key}
-							type="button"
-							aria-pressed={active}
-							onClick={() =>
+						<OptionToggle
+							key={String(state)}
+							option={{ value: String(state), label }}
+							selected={selected}
+							onToggle={() =>
 								onValueChange(
-									state.set === undefined
-										? undefined
-										: { kind: "boolean", value: state.set },
+									selected ? undefined : { kind: "boolean", value: state },
 								)
 							}
-							className={cn(
-								"flex-1 cursor-pointer rounded-full px-3 py-1 text-sm transition-colors sm:flex-none",
-								active
-									? "bg-background font-medium text-foreground shadow-xs"
-									: "text-muted-foreground hover:text-foreground",
-							)}
-						>
-							{state.label}
-						</button>
+						/>
 					);
 				})}
-			</fieldset>
+			</div>
 		</FilterFieldFrame>
 	);
 }

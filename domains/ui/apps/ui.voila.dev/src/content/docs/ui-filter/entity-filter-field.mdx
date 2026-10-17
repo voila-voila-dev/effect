@@ -1,0 +1,33 @@
+---
+title: "Entity filter"
+description: "Is one of these records — search-as-you-type against your own lookup."
+sidebar:
+  order: 17
+---
+
+import * as Example from "@/examples/ui-filter/entity-filter-field";
+
+<Preview layout="stack">
+	<Example.EntityField />
+</Preview>
+
+```tsx
+const definition: FilterDefinition = {
+	kind: "entity",
+	key: "customer",
+	label: "Customer",
+	multiple: true,
+	allowExclusion: true,
+	searchOptions: async (query) => api.customers.search(query),
+};
+```
+
+A `select` lists its options up front; an entity filter has too many for that
+— thousands of customers, suppliers or members — so it asks your
+`searchOptions` after two characters and a 300 ms pause. Picked records show as
+removable chips above the box.
+
+The value keeps each record's `id` **and** `label`
+(`{ kind: "entity", entities: [{ id, label }] }`), so the chip and a shared URL
+render names without a second lookup. A lookup that rejects reads as "no
+results" rather than breaking the panel.

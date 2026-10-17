@@ -148,6 +148,44 @@ describe("describeFilterValue", () => {
 		).toBe("Around: 30 km around Nantes");
 	});
 
+	it("names the picked records of an entity filter from the value itself", () => {
+		const customer: FilterDefinition = {
+			kind: "entity",
+			key: "customer",
+			label: "Customer",
+			multiple: true,
+			allowExclusion: true,
+			searchOptions: async () => [],
+		};
+		expect(
+			describe_(
+				{
+					kind: "entity",
+					entities: [
+						{ id: "c1", label: "Acme" },
+						{ id: "c2", label: "Globex" },
+					],
+					excluded: true,
+				},
+				customer,
+			),
+		).toBe("Customer is not Acme, Globex");
+		expect(
+			describe_(
+				{
+					kind: "entity",
+					entities: [
+						{ id: "c1", label: "Acme" },
+						{ id: "c2", label: "Globex" },
+						{ id: "c3", label: "Initech" },
+					],
+				},
+				customer,
+			),
+		).toBe("Customer is 3 selected");
+		expect(isFilterValueEmpty({ kind: "entity", entities: [] })).toBe(true);
+	});
+
 	it("returns null for a filter the screen no longer declares", () => {
 		expect(
 			describeFilterValue({

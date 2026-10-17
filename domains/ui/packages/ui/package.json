@@ -1,6 +1,6 @@
 {
 	"name": "@voila.dev/ui",
-	"version": "6.0.134",
+	"version": "6.1.0",
 	"type": "module",
 	"description": "One package, every component: the base set plus data-table, spreadsheet, filter, map, landing, icon and the email block editor — subpath exports only, tree-shakeable by construction.",
 	"license": "MIT",

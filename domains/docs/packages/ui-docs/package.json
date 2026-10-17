@@ -1,6 +1,6 @@
 {
 	"name": "@voila.dev/ui-docs",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "The React layer of a documentation site on @voila.dev/docs: frame, sidebar, outline, search palette, reader context, MDX components and API reference pages, on Tailwind CSS 4 and Base UI.",
 	"license": "MIT",
 	"author": "voila.dev",

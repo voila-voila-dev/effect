@@ -16,7 +16,7 @@
     },
     "domains/docs/apps/docs.voila.dev": {
       "name": "@voila.dev/docs.voila.dev",
-      "version": "0.0.0",
+      "version": "0.0.1",
       "dependencies": {
         "@phosphor-icons/react": "catalog:react",
         "@tanstack/react-router": "^1.170.34",
@@ -43,7 +43,7 @@
     },
     "domains/docs/packages/docs": {
       "name": "@voila.dev/docs",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "dependencies": {
         "@mdx-js/rollup": "^3.1.1",
         "@shikijs/rehype": "^4.5.0",
@@ -79,7 +79,7 @@
     },
     "domains/docs/packages/ui-docs": {
       "name": "@voila.dev/ui-docs",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "dependencies": {
         "@base-ui/react": "^1.9.0",
         "@voila.dev/docs": "workspace:^",
@@ -109,7 +109,7 @@
     },
     "domains/docs/templates/docs-site": {
       "name": "@voila.dev/docs-site-template",
-      "version": "0.0.0",
+      "version": "0.0.1",
       "dependencies": {
         "@phosphor-icons/react": "^2.1.10",
         "@tanstack/react-router": "^1.170.34",
@@ -252,7 +252,7 @@
     },
     "domains/email/packages/email": {
       "name": "@voila.dev/email",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "dependencies": {
         "@voila.dev/crypto": "workspace:^",
         "@voila.dev/effect-ddd": "workspace:^",
@@ -270,7 +270,7 @@
     },
     "domains/providers/packages/annuaire-entreprises": {
       "name": "@voila.dev/annuaire-entreprises",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "dependencies": {
         "@voila.dev/http": "workspace:^",
       },
@@ -287,7 +287,7 @@
     },
     "domains/providers/packages/resend": {
       "name": "@voila.dev/resend",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "dependencies": {
         "@voila.dev/crypto": "workspace:^",
         "@voila.dev/email": "workspace:^",
@@ -306,7 +306,7 @@
     },
     "domains/providers/packages/stripe": {
       "name": "@voila.dev/stripe",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "dependencies": {
         "@voila.dev/http": "workspace:^",
       },
@@ -323,7 +323,7 @@
     },
     "domains/providers/packages/vies": {
       "name": "@voila.dev/vies",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "dependencies": {
         "@voila.dev/http": "workspace:^",
       },
@@ -349,7 +349,7 @@
     },
     "domains/ui/apps/storybook.ui.voila.dev": {
       "name": "@voila.dev/storybook.ui.voila.dev",
-      "version": "0.0.0",
+      "version": "0.0.1",
       "dependencies": {
         "@phosphor-icons/react": "catalog:react",
         "@voila.dev/chart": "workspace:*",
@@ -381,7 +381,7 @@
     },
     "domains/ui/apps/ui.voila.dev": {
       "name": "@voila.dev/ui.voila.dev",
-      "version": "0.0.0",
+      "version": "0.0.1",
       "dependencies": {
         "@phosphor-icons/react": "catalog:react",
         "@tailwindcss/vite": "catalog:tailwind",
@@ -431,7 +431,7 @@
     },
     "domains/ui/packages/chart": {
       "name": "@voila.dev/chart",
-      "version": "6.0.134",
+      "version": "6.0.135",
       "dependencies": {
         "@voila.dev/motion": "workspace:*",
         "d3-contour": "4.0.2",
@@ -474,7 +474,7 @@
     },
     "domains/ui/packages/motion": {
       "name": "@voila.dev/motion",
-      "version": "6.0.134",
+      "version": "6.0.135",
       "devDependencies": {
         "@testing-library/react": "^16.3.3",
         "@types/react": "^19.3.0",
@@ -500,7 +500,7 @@
     },
     "domains/ui/packages/ui": {
       "name": "@voila.dev/ui",
-      "version": "6.0.134",
+      "version": "6.1.0",
       "dependencies": {
         "@base-ui/react": "^1.8.0",
         "@phosphor-icons/react": "catalog:react",
@@ -587,7 +587,7 @@
     },
     "domains/ui/packages/ui-branding": {
       "name": "@voila.dev/ui-branding",
-      "version": "0.0.0",
+      "version": "0.0.1",
       "dependencies": {
         "@voila.dev/ui": "workspace:*",
       },

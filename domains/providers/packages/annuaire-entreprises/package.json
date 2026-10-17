@@ -1,6 +1,6 @@
 {
 	"name": "@voila.dev/annuaire-entreprises",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "The French company directory (Annuaire des Entreprises) on Effect: a SIRET to its company, directors and address, a name search, typed outages, and an in-memory fake.",
 	"license": "MIT",
 	"author": "voila.dev",

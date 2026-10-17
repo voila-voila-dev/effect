@@ -1,6 +1,6 @@
 {
 	"name": "@voila.dev/chart",
-	"version": "6.0.134",
+	"version": "6.0.135",
 	"type": "module",
 	"description": "Charts as data: a definition of marks, channels and scales, drawn to SVG or Canvas, keyboard and screen-reader accessible. The core has no dependencies; the heavy layouts (geo, hierarchy, sankey…) sit behind their own subpaths.",
 	"license": "MIT",

@@ -1,6 +1,6 @@
 {
 	"name": "@voila.dev/vies",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "EU VAT numbers on Effect: VIES checks with typed outages and refusals, the national formats of every member state, a parser for numbers as people type them, and an in-memory fake.",
 	"license": "MIT",
 	"author": "voila.dev",

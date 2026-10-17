@@ -44,6 +44,7 @@
 		"test": "bun test --conditions=@voila.dev/source"
 	},
 	"dependencies": {
+		"@voila.dev/crypto": "workspace:^",
 		"@voila.dev/effect-ddd": "workspace:^",
 		"@voila.dev/outbox": "workspace:^"
 	},

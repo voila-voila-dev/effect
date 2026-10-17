@@ -63,6 +63,14 @@ export class EmailLogRepository extends Context.Service<
 			state: EmailDeliveryState,
 		) => Effect.Effect<void>;
 		/**
+		 * How a reply finds the send it answers, by the RFC `Message-ID` it quotes
+		 * in `In-Reply-To`: the header a mail client echoes, which only the
+		 * delivery webhook ties to the send.
+		 */
+		readonly findByRfcMessageId: (
+			rfcMessageId: string,
+		) => Effect.Effect<Option.Option<EmailLog>>;
+		/**
 		 * Soft bounces to this address since its last delivery: the run that
 		 * tells a busy mailbox from an abandoned one. Read rather than kept as
 		 * a counter, which every delivery on every path would have to reset.
